@@ -6,39 +6,18 @@
 [ext_resource path="res://Map.gd" type="Script" id=4]
 [ext_resource path="res://GridVisualize.gd" type="Script" id=5]
 
-[node name="Root" type="Node" index="0"]
+[node name="Root" type="Node"]
 
-[node name="Player" parent="." index="0" instance=ExtResource( 1 )]
-
-position = Vector2( 133.173, 108.344 )
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 31.173, 31.344 )
 script = ExtResource( 2 )
-SPEED = 200.0
 
-[node name="Map" type="TileMap" parent="." index="1"]
-
-mode = 0
+[node name="Map" type="TileMap" parent="."]
 tile_set = ExtResource( 3 )
-cell_size = Vector2( 64, 64 )
-cell_quadrant_size = 16
-cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-cell_half_offset = 2
-cell_tile_origin = 0
-cell_y_sort = false
-cell_clip_uv = false
-collision_use_kinematic = false
-collision_friction = 1.0
-collision_bounce = 0.0
-collision_layer = 1
-collision_mask = 1
-occluder_light_mask = 1
 format = 1
-tile_data = PoolIntArray( 65543, 2, 0, 196610, 2, 0, 196613, 2, 0, 196618, 2, 0, 393221, 2, 0, 393225, 2, 0, 458764, 2, 0, 524292, 2, 0 )
+tile_data = PoolIntArray( 196613, 2, 0, 196618, 2, 0, 393221, 2, 0, 393225, 2, 0, 458764, 2, 0, 524292, 2, 0, 524299, 1, 0 )
 script = ExtResource( 4 )
-_sections_unfolded = [ "Cell" ]
-map_size = Vector2( 16, 16 )
 
-[node name="GridVisual" type="Node2D" parent="Map" index="0"]
-
+[node name="GridVisual" type="Node2D" parent="Map"]
 script = ExtResource( 5 )
-
 

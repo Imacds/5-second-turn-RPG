@@ -9,7 +9,7 @@ export(Vector2) var map_size = Vector2(16, 16)
 # You can find them at the bottom of the script
 var path_start_position = Vector2() setget _set_path_start_position
 var path_end_position = Vector2() setget _set_path_end_position
-onready var Player = preload("res://Player.tscn")
+onready var Player = preload("res://scenes/Player.tscn")
 
 var _point_path = []
 var grid = []

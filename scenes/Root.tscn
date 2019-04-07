@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Player.gd" type="Script" id=2]
-[ext_resource path="res://TilePath.tres" type="TileSet" id=3]
-[ext_resource path="res://Map.gd" type="Script" id=4]
-[ext_resource path="res://GridVisualize.gd" type="Script" id=5]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/Player.gd" type="Script" id=2]
+[ext_resource path="res://paths/TilePath.tres" type="TileSet" id=3]
+[ext_resource path="res://scripts/Map.gd" type="Script" id=4]
+[ext_resource path="res://scripts/GridVisualize.gd" type="Script" id=5]
 
 [node name="Root" type="Node"]
 

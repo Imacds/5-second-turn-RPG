@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 export(float) var SPEED = 200.0
 
-enum STATES { IDLE, WAIT, TURN }
+enum STATES { IDLE, FOLLOW }
 var _state = null
 
 var path = []
@@ -16,10 +16,9 @@ const Down = Vector2(0,1)
 const Left = Vector2(-1,0)
 var cell_size = 64
 
-onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
-onready var turn_manager = get_tree().get_root().get_node("Root/TurnManager")
-onready var grid = get_tree().get_root().get_node("Root/Map")
-onready var pathing = get_parent().get_node("Path")
+var movable_cells = []
+
+onready var grid = get_parent().get_node('Map')
 var type
 
 var dragging = false
@@ -34,42 +33,44 @@ const Max_speed = 400
 var velocity = Vector2()
 
 func _ready():
-	_change_state(STATES.IDLE)
+	#calculate_movement()
+	_change_state(IDLE)
 	set_process_input(true)
 	set_physics_process(true)
-		
+	
 
 func get_position():
 	return position
+	
+#func calculate_movement():
+	
 
 
 func _change_state(new_state):
-	if new_state == STATES.WAIT:
-		path = pathing.get_path_relative(position, target_position)
+	if new_state == FOLLOW:
+		path = get_parent().get_node('Map').get_path(position, target_position)
 		if not path or len(path) == 1:
-			_change_state(STATES.IDLE)
+			_change_state(IDLE)
 			return
 		# The index 0 is the starting cell
 		# we don't want the character to move back to it in this example
 		target_point_world = path[1]
+	else:
+		grid.clear_draw()
 	_state = new_state
 
+
 func _process(delta):
-	if not _state == STATES.TURN:
+	if not _state == FOLLOW:
 		return
 	var arrived_to_next_point = move_to(target_point_world)
 	if arrived_to_next_point:
-		_change_state(STATES.WAIT)
 		path.remove(0)
 		if len(path) == 0:
-			_change_state(STATES.IDLE)
+			_change_state(IDLE)
 			return
 		target_point_world = path[0]
-
-func do_turn():
-	if _state == STATES.WAIT:
-		_state = STATES.TURN
-
+		
 func _physics_process(delta):
 	direction = Vector2()
 	speed = 0
@@ -87,7 +88,7 @@ func _physics_process(delta):
 	if not is_moving and direction != Vector2():
 		target_dir = direction
 		if grid.is_cell_empty(position, target_dir):
-			target_pos = pathing.update_line()
+			target_pos = grid.update_child_pos(self)
 			is_moving = true
 	elif is_moving:
 		speed = Max_speed
@@ -120,11 +121,10 @@ func move_to(world_position):
 	return position.distance_to(world_position) < ARRIVE_DISTANCE
 
 
-func _unhandled_input(event):
-	if selection_manager.selected == get_parent() and not Input.is_key_pressed(KEY_CONTROL):
-		if event.is_action_pressed('click'):
-			if Input.is_key_pressed(KEY_SHIFT):
-				global_position = get_global_mouse_position()
-			else:
-				target_position = get_global_mouse_position()
-			_change_state(STATES.WAIT)
+func _input(event):
+	if event.is_action_pressed('click'):
+		if Input.is_key_pressed(KEY_SHIFT):
+			global_position = get_global_mouse_position()
+		else:
+			target_position = get_global_mouse_position()
+		_change_state(FOLLOW)

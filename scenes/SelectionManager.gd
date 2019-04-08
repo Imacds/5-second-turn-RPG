@@ -8,6 +8,8 @@ onready var players = [get_parent().get_node("Player1"), get_parent().get_node("
 var index = 0
 
 func toggle_control():
+	print(index)
+	print(selected)
 	index = (index + 1) % 2
 	selected = players[index]
 

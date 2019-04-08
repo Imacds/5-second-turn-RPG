@@ -1,13 +1,8 @@
 extends Node
 
 # Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+onready var players = [get_parent().get_node("Player1"), get_parent().get_node("Player2")]
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func pass_turn():
+	for player in players:
+		player.get_node("Char").do_turn()

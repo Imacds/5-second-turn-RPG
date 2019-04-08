@@ -46,7 +46,7 @@ position = Vector2( 883.382, 86.4269 )
 script = ExtResource( 7 )
 DRAW_COLOR = Color( 0.415686, 0.984314, 0.396078, 1 )
 
-[node name="Button" type="Button" parent="."]
+[node name="Button1" type="Button" parent="."]
 margin_left = 13.5052
 margin_top = 13.5052
 margin_right = 108.505
@@ -62,5 +62,5 @@ margin_bottom = 64.1987
 text = "Switch Control"
 script = ExtResource( 9 )
 
-[connection signal="pressed" from="Button" to="Button" method="_on_Button_pressed"]
-[connection signal="pressed" from="Button2" to="Button" method="_on_Button2_pressed"]
+[connection signal="pressed" from="Button1" to="Button1" method="_on_Button1_pressed"]
+[connection signal="pressed" from="Button2" to="Button2" method="_on_Button2_pressed"]

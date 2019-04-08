@@ -8,9 +8,9 @@ extends Button
 func _ready():
 	pass # Replace with function body.
 
-onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
+onready var turn_manager = get_tree().get_root().get_node("Root/TurnManager")
 
-func _on_Button2_pressed():
-	selection_manager.toggle_control()
+func _on_Button1_pressed():
+	turn_manager.pass_turn()
 
 

@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 export(float) var SPEED = 200.0
 
-enum STATES { IDLE, FOLLOW }
+enum STATES { IDLE, WAIT, TURN }
 var _state = null
 
 var path = []
@@ -17,6 +17,7 @@ const Left = Vector2(-1,0)
 var cell_size = 64
 
 onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
+onready var turn_manager = get_tree().get_root().get_node("Root/TurnManager")
 onready var grid = get_tree().get_root().get_node("Root/Map")
 onready var pathing = get_parent().get_node("Path")
 var type
@@ -43,7 +44,7 @@ func get_position():
 
 
 func _change_state(new_state):
-	if new_state == STATES.FOLLOW:
+	if new_state == STATES.WAIT:
 		path = pathing.get_path_relative(position, target_position)
 		if not path or len(path) == 1:
 			_change_state(STATES.IDLE)
@@ -54,16 +55,21 @@ func _change_state(new_state):
 	_state = new_state
 
 func _process(delta):
-	if not _state == STATES.FOLLOW:
+	if not _state == STATES.TURN:
 		return
 	var arrived_to_next_point = move_to(target_point_world)
 	if arrived_to_next_point:
+		_change_state(STATES.WAIT)
 		path.remove(0)
 		pathing.pop_path()
 		if len(path) == 0:
 			_change_state(STATES.IDLE)
 			return
 		target_point_world = path[0]
+
+func do_turn():
+	if _state == STATES.WAIT:
+		_state = STATES.TURN
 
 func _physics_process(delta):
 	direction = Vector2()
@@ -122,4 +128,4 @@ func _unhandled_input(event):
 				global_position = get_global_mouse_position()
 			else:
 				target_position = get_global_mouse_position()
-			_change_state(STATES.FOLLOW)
+			_change_state(STATES.WAIT)

@@ -16,7 +16,7 @@ const Down = Vector2(0,1)
 const Left = Vector2(-1,0)
 var cell_size = 64
 
-onready var grid = get_parent().get_node('Map')
+onready var grid = get_tree().get_root().get_node("Root/Map")
 var type
 
 var dragging = false
@@ -34,7 +34,7 @@ func _ready():
 	_change_state(STATES.IDLE)
 	set_process_input(true)
 	set_physics_process(true)
-	
+		
 
 func get_position():
 	return position
@@ -42,7 +42,7 @@ func get_position():
 
 func _change_state(new_state):
 	if new_state == STATES.FOLLOW:
-		path = get_parent().get_node('Map').get_path_relative(position, target_position)
+		path = grid.get_path_relative(position, target_position)
 		if not path or len(path) == 1:
 			_change_state(STATES.IDLE)
 			return
@@ -126,5 +126,6 @@ func _input(event):
 		if Input.is_key_pressed(KEY_SHIFT):
 			global_position = get_global_mouse_position()
 		else:
+			print("FOLLOW")
 			target_position = get_global_mouse_position()
 		_change_state(STATES.FOLLOW)

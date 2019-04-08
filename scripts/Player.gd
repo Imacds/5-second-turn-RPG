@@ -61,7 +61,7 @@ func _process(delta):
 	if arrived_to_next_point:
 		_change_state(STATES.WAIT)
 		path.remove(0)
-		pathing.pop_path()
+		#pathing.pop_path()
 		if len(path) == 0:
 			_change_state(STATES.IDLE)
 			return

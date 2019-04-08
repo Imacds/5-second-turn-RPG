@@ -115,7 +115,7 @@ func move_to(world_position):
 	return position.distance_to(world_position) < ARRIVE_DISTANCE
 
 
-func _input(event):
+func _unhandled_input(event):
 	if selection_manager.selected == get_parent() and not Input.is_key_pressed(KEY_CONTROL):
 		if event.is_action_pressed('click'):
 			if Input.is_key_pressed(KEY_SHIFT):

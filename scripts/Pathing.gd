@@ -16,7 +16,7 @@ export(Color) var DRAW_COLOR = Color('#fff')
 
 # Click and Shift force the start and end position of the path to update
 # and the node to redraw everything
-func _input(event):
+func _unhandled_input(event):
 	if selection_manager.selected == get_parent() and not Input.is_key_pressed(KEY_CONTROL):
 		if event.is_action_pressed('click') and Input.is_key_pressed(KEY_SHIFT):
 			# To call the setter method from this script we have to use the explicit self.

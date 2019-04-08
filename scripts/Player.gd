@@ -16,6 +16,7 @@ const Down = Vector2(0,1)
 const Left = Vector2(-1,0)
 var cell_size = 64
 
+onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
 onready var grid = get_tree().get_root().get_node("Root/Map")
 onready var pathing = get_parent().get_node("Path")
 var type
@@ -115,9 +116,10 @@ func move_to(world_position):
 
 
 func _input(event):
-	if event.is_action_pressed('click'):
-		if Input.is_key_pressed(KEY_SHIFT):
-			global_position = get_global_mouse_position()
-		else:
-			target_position = get_global_mouse_position()
-		_change_state(STATES.FOLLOW)
+	if selection_manager.selected == get_parent() and not Input.is_key_pressed(KEY_CONTROL):
+		if event.is_action_pressed('click'):
+			if Input.is_key_pressed(KEY_SHIFT):
+				global_position = get_global_mouse_position()
+			else:
+				target_position = get_global_mouse_position()
+			_change_state(STATES.FOLLOW)

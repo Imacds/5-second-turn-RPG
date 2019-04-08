@@ -9,7 +9,7 @@
 
 [node name="Root" type="Node"]
 
-[node name="SelectionManager" type="Node" parent="."]
+[node name="SelectionManager" type="Node2D" parent="."]
 script = ExtResource( 1 )
 
 [node name="Map" type="TileMap" parent="."]

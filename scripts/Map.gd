@@ -5,27 +5,16 @@ onready var astar_node = AStar.new()
 # The Tilemap node doesn't have clear bounds so we're defining the map's limits here
 export(Vector2) var map_size = Vector2(16, 16)
 
-# The path start and end variables use setter methods
-# You can find them at the bottom of the script
-var path_start_position = Vector2() setget _set_path_start_position
-var path_end_position = Vector2() setget _set_path_end_position
-onready var Player = preload("res://scenes/Player.tscn")
-
-var _point_path = []
 var grid = []
 
 onready var tile_size = cell_size
 onready var half_tile_size = tile_size / 2
-
-const BASE_LINE_WIDTH = 3.0
-const DRAW_COLOR = Color('#fff')
 
 # get_used_cells_by_id is a method from the TileMap node
 # here the id 0 corresponds to the grey tile, the obstacles
 onready var obstacles = get_used_cells_by_id(2)
 onready var _half_cell_size = cell_size / 2
 var nameOfObstacle = "obstacle"
-var keyUsed = false
 
 func _ready():
 	for x in range(map_size.x):
@@ -38,23 +27,6 @@ func _ready():
 		
 	var walkable_cells_list = astar_add_walkable_cells(obstacles)
 	astar_connect_walkable_cells(walkable_cells_list)
-
-
-# Click and Shift force the start and end position of the path to update
-# and the node to redraw everything
-func _input(event):
-	if event.is_action_pressed('click') and Input.is_key_pressed(KEY_SHIFT):
-		# To call the setter method from this script we have to use the explicit self.
-		keyUsed = false
-		self.path_start_position = world_to_map(get_global_mouse_position())
-	elif event.is_action_pressed('click'):
-		keyUsed = false
-		self.path_end_position = world_to_map(get_global_mouse_position())
-	elif event.is_action_pressed('move_up') or event.is_action_pressed('move_down') or event.is_action_pressed('move_left') or event.is_action_pressed('move_right'):
-		clear_previous_path_drawing()
-		keyUsed = true
-		update()
-		
 
 func get_cell_content(pos):
 	return grid[pos.x][pos.y]
@@ -140,82 +112,3 @@ func is_outside_map_bounds(point):
 
 func calculate_point_index(point):
 	return point.x + map_size.x * point.y
-
-
-func get_path_relative(world_start, world_end):
-	self.path_start_position = world_to_map(world_start)
-	self.path_end_position = world_to_map(world_end)
-	_recalculate_path()
-	var path_world = []
-	for point in _point_path:
-		var point_world = map_to_world(Vector2(point.x, point.y)) + _half_cell_size
-		path_world.append(point_world)
-	return path_world
-
-
-func _recalculate_path():
-	clear_previous_path_drawing()
-	var start_point_index = calculate_point_index(path_start_position)
-	var end_point_index = calculate_point_index(path_end_position)
-	# This method gives us an array of points. Note you need the start and end
-	# points' indices as input
-	_point_path = astar_node.get_point_path(start_point_index, end_point_index)
-	# Redraw the lines and circles from the start to the end point
-	
-	update()
-
-
-func clear_previous_path_drawing():
-	if not _point_path:
-		return
-		
-	var point_start = _point_path[0]
-	var point_end = _point_path[len(_point_path) - 1]
-		
-	#set_cell(point_start.x, point_start.y, -1)
-	#set_cell(point_end.x, point_end.y, -1)
-
-
-func _draw():
-	if not keyUsed:
-		if not _point_path:
-			return
-		var point_start = _point_path[0]
-		var point_end = _point_path[len(_point_path) - 1]
-			
-		#set_cell(point_start.x, point_start.y, 0)
-		#set_cell(point_end.x, point_end.y, 1)
-	
-		var last_point = map_to_world(Vector2(point_start.x, point_start.y)) + _half_cell_size
-		for index in range(1, len(_point_path)):
-			var current_point = map_to_world(Vector2(_point_path[index].x, _point_path[index].y)) + _half_cell_size
-			draw_line(last_point, current_point, DRAW_COLOR, BASE_LINE_WIDTH, true)
-			draw_circle(current_point, BASE_LINE_WIDTH * 2.0, DRAW_COLOR)
-			last_point = current_point
-
-# Setters for the start and end path values.
-func _set_path_start_position(value):
-	if value in obstacles:
-		return
-	if is_outside_map_bounds(value):
-		return
-
-	#set_cell(path_start_position.x, path_start_position.y, -1)
-	#set_cell(value.x, value.y, 0)
-	path_start_position = value
-	if path_end_position and path_end_position != path_start_position:
-		_recalculate_path()
-
-
-func _set_path_end_position(value):
-	if value in obstacles:
-		#adding attack if the obstacles is enemy
-		return
-	if is_outside_map_bounds(value):
-		return
-
-	#set_cell(path_start_position.x, path_start_position.y, -1)
-	#set_cell(value.x, value.y, 0)
-	path_end_position = value
-	if path_start_position != value:
-		_recalculate_path()

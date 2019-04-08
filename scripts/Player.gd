@@ -17,6 +17,7 @@ const Left = Vector2(-1,0)
 var cell_size = 64
 
 onready var grid = get_tree().get_root().get_node("Root/Map")
+onready var pathing = get_parent().get_node("Path")
 var type
 
 var dragging = false
@@ -42,7 +43,7 @@ func get_position():
 
 func _change_state(new_state):
 	if new_state == STATES.FOLLOW:
-		path = grid.get_path_relative(position, target_position)
+		path = pathing.get_path_relative(position, target_position)
 		if not path or len(path) == 1:
 			_change_state(STATES.IDLE)
 			return
@@ -51,18 +52,18 @@ func _change_state(new_state):
 		target_point_world = path[1]
 	_state = new_state
 
-
 func _process(delta):
 	if not _state == STATES.FOLLOW:
 		return
 	var arrived_to_next_point = move_to(target_point_world)
 	if arrived_to_next_point:
 		path.remove(0)
+		pathing.pop_path()
 		if len(path) == 0:
 			_change_state(STATES.IDLE)
 			return
 		target_point_world = path[0]
-		
+
 func _physics_process(delta):
 	direction = Vector2()
 	speed = 0
@@ -80,7 +81,7 @@ func _physics_process(delta):
 	if not is_moving and direction != Vector2():
 		target_dir = direction
 		if grid.is_cell_empty(position, target_dir):
-			target_pos = update_shadow()
+			target_pos = pathing.update_line()
 			is_moving = true
 	elif is_moving:
 		speed = Max_speed
@@ -101,14 +102,6 @@ func _physics_process(delta):
 			is_moving = false
 		move_and_collide(velocity)
 
-func update_shadow():
-	# Move a child to a new position in the grid Array
-	# Returns the new target world position of the child 
-	var grid_pos = grid.world_to_map(position)
-	var new_grid_pos = grid_pos + direction
-	var target_pos = grid.map_to_world(new_grid_pos) + grid.half_tile_size
-	return target_pos
-
 func move_to(world_position):
 	var MASS = 10.0
 	var ARRIVE_DISTANCE = 10.0
@@ -126,6 +119,5 @@ func _input(event):
 		if Input.is_key_pressed(KEY_SHIFT):
 			global_position = get_global_mouse_position()
 		else:
-			print("FOLLOW")
 			target_position = get_global_mouse_position()
 		_change_state(STATES.FOLLOW)

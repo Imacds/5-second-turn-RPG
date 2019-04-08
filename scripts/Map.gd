@@ -66,18 +66,6 @@ func is_cell_empty(pos, direction):
 			return true if grid[grid_pos.x][grid_pos.y] == null else false
 	return false
 
-func update_child_pos(child_node):
-	# Move a child to a new position in the grid Array
-	# Returns the new target world position of the child 
-	var grid_pos = world_to_map(child_node.position)
-	grid[grid_pos.x][grid_pos.y] = null
-	
-	var new_grid_pos = grid_pos + child_node.direction
-	grid[new_grid_pos.x][new_grid_pos.y] = child_node.type
-	
-	var target_pos = map_to_world(new_grid_pos) + half_tile_size
-	return target_pos
-
 # Loops through all cells within the map's bounds and
 # adds all points to the astar_node, except the obstacles
 func astar_add_walkable_cells(obstacles = []):
@@ -184,8 +172,8 @@ func clear_previous_path_drawing():
 	var point_start = _point_path[0]
 	var point_end = _point_path[len(_point_path) - 1]
 		
-	set_cell(point_start.x, point_start.y, -1)
-	set_cell(point_end.x, point_end.y, -1)
+	#set_cell(point_start.x, point_start.y, -1)
+	#set_cell(point_end.x, point_end.y, -1)
 
 
 func _draw():
@@ -195,8 +183,8 @@ func _draw():
 		var point_start = _point_path[0]
 		var point_end = _point_path[len(_point_path) - 1]
 			
-		set_cell(point_start.x, point_start.y, 0)
-		set_cell(point_end.x, point_end.y, 1)
+		#set_cell(point_start.x, point_start.y, 0)
+		#set_cell(point_end.x, point_end.y, 1)
 	
 		var last_point = map_to_world(Vector2(point_start.x, point_start.y)) + _half_cell_size
 		for index in range(1, len(_point_path)):
@@ -212,8 +200,8 @@ func _set_path_start_position(value):
 	if is_outside_map_bounds(value):
 		return
 
-	set_cell(path_start_position.x, path_start_position.y, -1)
-	set_cell(value.x, value.y, 0)
+	#set_cell(path_start_position.x, path_start_position.y, -1)
+	#set_cell(value.x, value.y, 0)
 	path_start_position = value
 	if path_end_position and path_end_position != path_start_position:
 		_recalculate_path()
@@ -226,8 +214,8 @@ func _set_path_end_position(value):
 	if is_outside_map_bounds(value):
 		return
 
-	set_cell(path_start_position.x, path_start_position.y, -1)
-	set_cell(value.x, value.y, 0)
+	#set_cell(path_start_position.x, path_start_position.y, -1)
+	#set_cell(value.x, value.y, 0)
 	path_end_position = value
 	if path_start_position != value:
 		_recalculate_path()

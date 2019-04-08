@@ -80,7 +80,7 @@ func _physics_process(delta):
 	if not is_moving and direction != Vector2():
 		target_dir = direction
 		if grid.is_cell_empty(position, target_dir):
-			target_pos = grid.update_child_pos(self)
+			target_pos = update_shadow()
 			is_moving = true
 	elif is_moving:
 		speed = Max_speed
@@ -100,6 +100,14 @@ func _physics_process(delta):
 			velocity.x = distance_to_target.y * target_dir.y
 			is_moving = false
 		move_and_collide(velocity)
+
+func update_shadow():
+	# Move a child to a new position in the grid Array
+	# Returns the new target world position of the child 
+	var grid_pos = grid.world_to_map(position)
+	var new_grid_pos = grid_pos + direction
+	var target_pos = grid.map_to_world(new_grid_pos) + grid.half_tile_size
+	return target_pos
 
 func move_to(world_position):
 	var MASS = 10.0

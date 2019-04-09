@@ -10,17 +10,12 @@ func _ready():
 	pass
 
 func _on_ExitButton_pressed():
-	get_tree().change_scene("res://Scene/StartMenu.tscn")
-	pass # replace with function body
-
+	get_tree().change_scene("res://scenes/StartMenu.tscn")
 
 func _on_CheckBox_toggled(button_pressed):
 	music_box = button_pressed
 	settings.musicEnable = button_pressed
-	pass # replace with function body
-
 
 func _on_SoundBox_toggled(button_pressed):
 	sound_box = button_pressed
 	settings.soundEnable = button_pressed
-	pass # replace with function body

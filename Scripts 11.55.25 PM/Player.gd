@@ -35,7 +35,8 @@ var velocity = Vector2()
 
 func _ready():
 	#calculate_movement()
-	_change_state(IDLE)
+	_state = STATES.IDLE
+	_change_state(_state)
 	set_process_input(true)
 	set_physics_process(true)
 	
@@ -48,10 +49,10 @@ func get_position():
 
 
 func _change_state(new_state):
-	if new_state == FOLLOW:
-		path = get_parent().get_node('Map').get_path(position, target_position)
+	if new_state == STATES.FOLLOW:
+		path = grid.get_path_thing(position, target_position)
 		if not path or len(path) == 1:
-			_change_state(IDLE)
+			_change_state(STATES.IDLE)
 			return
 		# The index 0 is the starting cell
 		# we don't want the character to move back to it in this example
@@ -63,13 +64,14 @@ func _change_state(new_state):
 
 
 func _process(delta):
-	if not _state == FOLLOW:
+	if not _state == STATES.FOLLOW:
 		return
 	var arrived_to_next_point = move_to(target_point_world)
 	if arrived_to_next_point:
 		path.remove(0)
 		if len(path) == 0:
-			_change_state(IDLE)
+			_state = STATES.IDLE
+			_change_state(_state)
 			return
 		target_point_world = path[0]
 		
@@ -129,4 +131,4 @@ func _input(event):
 			global_position = get_global_mouse_position()
 		else:
 			target_position = get_global_mouse_position()
-		_change_state(FOLLOW)
+		_change_state(STATES.FOLLOW)

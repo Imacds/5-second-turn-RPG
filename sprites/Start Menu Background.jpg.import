@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/Start Menu Background.jpg-125ebb13e4c17c8f45618c4c1c886979.stex"
+path="res://.import/Start Menu Background.jpg-64b2a5a92a81b40860519de8b2fdf7ad.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Start Menu Background.jpg"
-dest_files=[ "res://.import/Start Menu Background.jpg-125ebb13e4c17c8f45618c4c1c886979.stex" ]
+source_file="res://sprites/Start Menu Background.jpg"
+dest_files=[ "res://.import/Start Menu Background.jpg-64b2a5a92a81b40860519de8b2fdf7ad.stex" ]
 
 [params]
 

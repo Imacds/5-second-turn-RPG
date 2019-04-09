@@ -19,6 +19,7 @@ var cell_size = 64
 var movable_cells = []
 
 onready var grid = get_parent().get_node('Map')
+onready var enemy = get_parent().get_node('Enemy')
 var type
 
 var dragging = false
@@ -57,6 +58,7 @@ func _change_state(new_state):
 		target_point_world = path[1]
 	else:
 		grid.clear_draw()
+		enemy.player_moving = true
 	_state = new_state
 
 

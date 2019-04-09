@@ -71,6 +71,48 @@ func is_cell_empty(pos, direction):
 			return true if grid[grid_pos.x][grid_pos.y] == null else false
 	return false
 
+func _calculate_path_to_player(child_node, player_node):
+	var grid_pos = world_to_map(child_node.position)
+	var player_pos = world_to_map(player_node.position)
+	var direction_to_player = Vector2()
+	if player_pos.x > grid_pos.x:
+		grid_pos.x += 1
+		if grid_pos in obstacles:
+			if player_pos.y > grid_pos.y:
+			    direction_to_player.y = 1 
+			elif player_pos.y < grid_pos.y:
+			    direction_to_player.y = -1 
+		else:
+	    	direction_to_player.x = 1
+	elif player_pos.x < grid_pos.x:
+		grid_pos.x -= 1
+		if grid_pos in obstacles:
+			if player_pos.y > grid_pos.y:
+			    direction_to_player.y = 1 
+			elif player_pos.y < grid_pos.y:
+			    direction_to_player.y = -1 
+		else:
+	    	direction_to_player.x = -1
+	elif player_pos.y > grid_pos.y:
+		grid_pos.y += 1
+		if grid_pos in obstacles:
+			if player_pos.x > grid_pos.x:
+			    direction_to_player.x = 1 
+			elif player_pos.y < grid_pos.y:
+			    direction_to_player.x = -1 
+		else:
+	    	direction_to_player.y = 1
+	elif player_pos.y < grid_pos.y:
+		grid_pos.y -= 1
+		if grid_pos in obstacles:
+			if player_pos.x > grid_pos.x:
+			    direction_to_player.x = 1 
+			elif player_pos.y < grid_pos.y:
+			    direction_to_player.x = -1 
+		else:
+	    	direction_to_player.y = -1
+	return direction_to_player
+
 func update_child_pos(child_node):
 	# Move a child to a new position in the grid Array
 	# Returns the new target world position of the child 

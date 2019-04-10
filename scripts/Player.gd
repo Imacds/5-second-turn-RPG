@@ -8,6 +8,8 @@ var _state = null
 var path = []
 var target_point_world = Vector2()
 var target_position = Vector2()
+var attack_mode = null
+var attack_dir = Vector2()
 var direction = Vector2()
 
 const Top = Vector2(0,-1)
@@ -16,6 +18,7 @@ const Down = Vector2(0,1)
 const Left = Vector2(-1,0)
 var cell_size = 64
 
+onready var attack_template = get_tree().get_root().get_node("Root/AttackTemplate")
 onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
 onready var turn_manager = get_tree().get_root().get_node("Root/TurnManager")
 onready var grid = get_tree().get_root().get_node("Root/Map")
@@ -55,16 +58,24 @@ func _change_state(new_state):
 	_state = new_state
 
 func _process(delta):
-	if not _state == STATES.TURN:
+	if _state != STATES.TURN:
 		return
-	var arrived_to_next_point = move_to(target_point_world)
-	if arrived_to_next_point:
-		_change_state(STATES.WAIT)
-		path.remove(0)
-		if len(path) == 0:
-			_change_state(STATES.IDLE)
-			return
-		target_point_world = path[0]
+	if len(path) > 0:
+		var arrived_to_next_point = move_to(target_point_world)
+		if arrived_to_next_point:
+			_change_state(STATES.WAIT)
+			path.remove(0)
+			if len(path) == 0 and attack_mode == null:
+				_change_state(STATES.IDLE)
+				return
+			elif len(path) == 0:
+				return
+			target_point_world = path[0]
+	else:
+		execute_attack()
+
+func execute_attack():
+	pass
 
 func do_turn():
 	if _state == STATES.WAIT:
@@ -114,8 +125,13 @@ func move_to(world_position):
 func _unhandled_input(event):
 	if selection_manager.selected == get_parent() and not Input.is_key_pressed(KEY_CONTROL):
 		if event.is_action_pressed('click'):
-			if Input.is_key_pressed(KEY_SHIFT):
-				global_position = get_global_mouse_position()
+			if attack_template.click_mode == null:
+				if Input.is_key_pressed(KEY_SHIFT):
+					global_position = get_global_mouse_position()
+				else:
+					target_position = get_global_mouse_position()
 			else:
-				target_position = get_global_mouse_position()
+				attack_mode = attack_template.click_mode
+				attack_dir = $Attack.get_relative_attack_dir()
+				attack_template.click_mode = null
 			_change_state(STATES.WAIT)

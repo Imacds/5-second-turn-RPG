@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 export(float) var SPEED = 200.0
+export(int) var hp = 20
 
 enum STATES { IDLE, WAIT, TURN }
 var _state = null
@@ -40,7 +41,6 @@ func _ready():
 	_change_state(STATES.IDLE)
 	set_process_input(true)
 	set_physics_process(true)
-		
 
 func get_position():
 	return position
@@ -57,7 +57,17 @@ func _change_state(new_state):
 		target_point_world = path[1]
 	_state = new_state
 
+func do_nearby_damage():
+	var players = turn_manager.players
+	for player in players:
+		if player != get_parent():
+			var other_pos = player.get_node("Char").position
+			var diff = position.distance_to(other_pos)
+			if diff <= cell_size*1.8:
+				player.get_node("Char").hp -= 7
+
 func _process(delta):
+	$Label.text = "HP: " + str(hp)
 	if _state != STATES.TURN:
 		return
 	if attack_mode != null:
@@ -76,6 +86,8 @@ func _process(delta):
 func do_turn():
 	if _state == STATES.WAIT:
 		_state = STATES.TURN
+	else:
+		do_nearby_damage()
 
 func _physics_process(delta):
 	direction = Vector2()

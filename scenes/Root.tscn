@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/Settings.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/AttackTemplate.gd" type="Script" id=2]
@@ -12,6 +12,10 @@
 [ext_resource path="res://game-objects/GeneralCamera.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scripts/Turn Button.gd" type="Script" id=11]
 [ext_resource path="res://scripts/ControlSwitch.gd" type="Script" id=12]
+[ext_resource path="res://scripts/AttackButton.gd" type="Script" id=13]
+[ext_resource path="res://scripts/swing attack.gd" type="Script" id=14]
+[ext_resource path="res://scripts/lunge attack.gd" type="Script" id=15]
+[ext_resource path="res://scenes/undo turn.gd" type="Script" id=16]
 
 [node name="Root" type="Node"]
 
@@ -78,6 +82,7 @@ margin_top = -255.159
 margin_right = 502.164
 margin_bottom = -235.159
 text = "Slash Attack"
+script = ExtResource( 13 )
 
 [node name="swing attack" type="Button" parent="GeneralCamera"]
 margin_left = 409.439
@@ -85,6 +90,7 @@ margin_top = -225.027
 margin_right = 504.439
 margin_bottom = -205.027
 text = "Swing Attack"
+script = ExtResource( 14 )
 
 [node name="lunge attack" type="Button" parent="GeneralCamera"]
 margin_left = 409.439
@@ -92,13 +98,18 @@ margin_top = -193.536
 margin_right = 504.439
 margin_bottom = -173.536
 text = "Lunge Attack"
+script = ExtResource( 15 )
 
 [node name="undo turn" type="Button" parent="GeneralCamera"]
 margin_left = 408.0
 margin_top = -285.0
 margin_right = 498.0
 margin_bottom = -265.0
-text = "Undo Action"
+text = "Undo Attack"
+script = ExtResource( 16 )
 
 [connection signal="pressed" from="GeneralCamera/next turn" to="GeneralCamera/next turn" method="_on_Button1_pressed"]
 [connection signal="pressed" from="GeneralCamera/switch control" to="GeneralCamera/switch control" method="_on_Button2_pressed"]
+[connection signal="pressed" from="GeneralCamera/slash attack" to="GeneralCamera/slash attack" method="_on_slash_attack_pressed"]
+[connection signal="pressed" from="GeneralCamera/swing attack" to="GeneralCamera/swing attack" method="_on_swing_attack_pressed"]
+[connection signal="pressed" from="GeneralCamera/lunge attack" to="GeneralCamera/lunge attack" method="_on_lunge_attack_pressed"]

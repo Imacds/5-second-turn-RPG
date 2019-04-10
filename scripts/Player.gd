@@ -60,22 +60,18 @@ func _change_state(new_state):
 func _process(delta):
 	if _state != STATES.TURN:
 		return
-	if len(path) > 0:
+	if attack_mode != null:
+		attack_template.do_attack(position, attack_mode, attack_dir)
+		$Attack.flash_attack(attack_mode, attack_dir)
+	else:
 		var arrived_to_next_point = move_to(target_point_world)
 		if arrived_to_next_point:
 			_change_state(STATES.WAIT)
 			path.remove(0)
-			if len(path) == 0 and attack_mode == null:
+			if len(path) == 0:
 				_change_state(STATES.IDLE)
 				return
-			elif len(path) == 0:
-				return
 			target_point_world = path[0]
-	else:
-		execute_attack()
-
-func execute_attack():
-	pass
 
 func do_turn():
 	if _state == STATES.WAIT:

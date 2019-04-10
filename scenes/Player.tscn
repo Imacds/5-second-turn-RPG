@@ -19,3 +19,11 @@ shape = SubResource( 1 )
 [node name="Attack" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
+[node name="Label" type="Label" parent="."]
+margin_left = -19.9998
+margin_top = 33.9619
+margin_right = 20.0002
+margin_bottom = 47.9619
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+text = "HP: 20"
+

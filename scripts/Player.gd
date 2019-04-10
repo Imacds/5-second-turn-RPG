@@ -5,6 +5,7 @@ export(int) var hp = 20
 
 enum STATES { IDLE, WAIT, TURN }
 var _state = null
+var t = 0
 
 var path = []
 var target_point_world = Vector2()
@@ -81,6 +82,9 @@ func _process(delta):
 			if len(path) == 0:
 				_change_state(STATES.IDLE)
 				return
+			if t > 0:
+				t-=1
+				_change_state(STATES.TURN)
 			target_point_world = path[0]
 
 func do_turn():

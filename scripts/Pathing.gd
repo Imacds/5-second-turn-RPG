@@ -109,7 +109,6 @@ func _set_path_end_position(value):
 		_recalculate_path()
 
 func update_line(position, direction):
-	print("BLAH")
 	# Move a child to a new position in the grid Array
 	# Returns the new target world position of the child 
 	var grid_pos = grid.world_to_map(position)

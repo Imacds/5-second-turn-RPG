@@ -7,4 +7,4 @@ var threatened_tiles = {MODE.SLASH: [[0,-1],[1,-1],[1,0],[1,1],[0,1]], MODE.SWIN
 var click_mode = null
 
 func do_attack(position, attack_mode, attack_dir):
-	
+	pass

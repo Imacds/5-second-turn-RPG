@@ -41,6 +41,7 @@ func do_attack(position, attack_mode, attack_dir):
 
 	
 func visualize_attack(position, attack_mode, attack_dir):
+	print('atk preview')
 	# get the atk matrix
 	var atk_matrix = hitbox_matrices[int(attack_mode)]
 	

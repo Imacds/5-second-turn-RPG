@@ -14,7 +14,7 @@ func _init(elements):
 		
 
 # create an N x N matrix where N = |elements|
-# param elements: list of values of type AttackMatrix.ELEMENTS
+# param elements: list of values of type int, see mapping in var INT_TO_ELEMENTS_MAPPING
 func elements_to_matrix(elements):
 	var count = 0
 	var row_count = 1

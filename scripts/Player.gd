@@ -59,6 +59,7 @@ func _change_state(new_state):
 		target_point_world = path[1]
 	_state = new_state
 
+
 func do_nearby_damage():
 	var players = turn_manager.players
 	for player in players:
@@ -67,6 +68,7 @@ func do_nearby_damage():
 			var diff = position.distance_to(other_pos)
 			if diff <= cell_size*1.8:
 				player.get_node("Char").hp -= 7
+
 
 func _process(delta):
 	$Label.text = "HP: " + str(hp)
@@ -88,11 +90,13 @@ func _process(delta):
 				_change_state(STATES.TURN)
 			target_point_world = path[0]
 
+
 func do_turn():
 	if _state == STATES.WAIT:
 		_state = STATES.TURN
 	else:
 		do_nearby_damage()
+
 
 func _physics_process(delta):
 	direction = Vector2()
@@ -122,6 +126,7 @@ func _physics_process(delta):
 			velocity.x = distance_to_target.y * target_dir.y
 			is_moving = false
 		move_and_collide(velocity)
+
 
 func move_to(world_position):
 	var MASS = 10.0

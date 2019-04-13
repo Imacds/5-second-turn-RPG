@@ -150,3 +150,7 @@ func _unhandled_input(event):
 			_change_state(STATES.WAIT)
 		elif event is InputEventMouseMotion and attack_template.click_mode != null:
 			$Attack.draw_attack(attack_template.click_mode, $Attack.get_relative_attack_dir())
+
+
+func preview_attack(attack_template_attack_mode):
+	attack_template.visualize_attack(target_position, attack_template_attack_mode, 'right')

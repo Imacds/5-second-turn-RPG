@@ -8,7 +8,6 @@ func _ready():
 func _draw():
 	var LINE_COLOR = Color(255, 255, 255)
 	var LINE_WIDTH = 2
-	var window_size = OS.get_window_size()
 
 	for x in range(grid.map_size.x + 1):
 		var col_pos = x * grid.tile_size.x

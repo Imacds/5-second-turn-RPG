@@ -42,6 +42,7 @@ func _ready():
 	_change_state(STATES.IDLE)
 	set_process_input(true)
 	set_physics_process(true)
+	
 
 func get_position():
 	return position

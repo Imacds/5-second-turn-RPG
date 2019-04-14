@@ -2,7 +2,7 @@ extends Node
 
 enum MODE { SLASH, SWING, LUNGE }
 # the values are the change in angle (radians) to get to desired orientation
-const DIRECTIONS = { 'up': 0, 'right': -PI / 2, 'down': PI, 'left': PI / 2 } # init pos is upwards (at PI / 2)
+const DIRECTIONS = { 'up': PI, 'right': -PI / 2, 'down': 0, 'left': PI / 2 } # init pos is upwards (at PI / 2)
 
 var threatened_tiles = {MODE.SLASH: [[0,-1],[1,-1],[1,0],[1,1],[0,1]], MODE.SWING: [[1,-1],[1,0],[1,1],[2,0]], MODE.LUNGE: [[1,0],[2,0],[3,0]]}
 

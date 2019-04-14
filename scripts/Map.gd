@@ -15,7 +15,7 @@ onready var half_tile_size = tile_size / 2
 onready var obstacles = get_used_cells_by_id(3)
 onready var _half_cell_size = cell_size / 2
 
-enum OWNERS { PLAYER1, PLAYER2, ENEMY }
+enum TILES { VOID0, VOID1, VOID2, WALL, GROUND, ZONE_TO_ATTACK }
 
 class GridElement:
 	var name # attributes
@@ -132,15 +132,15 @@ func calculate_point_index(point):
 	
 	
 # override
-func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, transpose = false, autotile_coord = Vector2(0, 0)):	
+func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, transpose = false, autotile_coord = Vector2(0, 0)):
 	if is_outside_map_bounds(Vector2(x, y)):
 		print_debug("attempted to set cell outside of boundaries of grid")
 		return null
 
 	var cell = get_cell_content(Vector2(x, y))
-	if not cell.owner == owner:
+	if cell.owner and not cell.owner == owner:
 		print_debug("a diff owner tried to change a cell on the grid")
 		return null
-	
+
 	.set_cell(x, y, tile_index, flip_x, flip_y, transpose, autotile_coord) # call super.set_cell
-	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, cell.owner) 
+	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, cell) 

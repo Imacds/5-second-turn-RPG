@@ -88,7 +88,6 @@ func to_relative_coords():
 	for y in range(len(matrix)):
 		for x in range(len(matrix[y])):
 			if matrix[y][x] == ELEMENTS.HITBOX:
-				print('added')
 				coords.append([x - attacker_coords[0], y - attacker_coords[1]])
 				
 	return coords

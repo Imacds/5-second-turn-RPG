@@ -12,7 +12,8 @@ var hitbox_matrices = []
 
 var click_mode = null
 
-onready var map = $"../Map" # sibling
+onready var map = $"../Map" # sibling of this node
+onready var selection_manager = $"../SelectionManager"
 
 
 func _ready():
@@ -38,12 +39,12 @@ func _ready():
 		]),
 	]
 
+
 func do_attack(position, attack_mode, attack_dir):
 	pass
 
 	
 func visualize_attack(position, attack_mode, attack_dir):
-	print('atk preview')
 	# get the atk matrix
 	var atk_matrix = hitbox_matrices[int(attack_mode)]
 	
@@ -53,4 +54,6 @@ func visualize_attack(position, attack_mode, attack_dir):
 	# get the list of relative coords to player that'll be hitboxes
 	var hitboxes = rotated_matrix.to_world_coords(position)
 	
-	
+	var owner = selection_manager.selected.get_name()
+	for coords in hitboxes:
+		map.set_cell(coords[0], coords[1], map.TILES.ZONE_TO_ATTACK, owner) # x, y, tile_index, owner = null,

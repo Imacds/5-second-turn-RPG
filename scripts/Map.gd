@@ -14,29 +14,46 @@ onready var half_tile_size = tile_size / 2
 # here the id 0 corresponds to the grey tile, the obstacles
 onready var obstacles = get_used_cells_by_id(3)
 onready var _half_cell_size = cell_size / 2
-var nameOfObstacle = "obstacle"
+
+enum OWNERS { PLAYER1, PLAYER2, ENEMY }
+
+class GridElement:
+	var name # attributes
+	var tile_index
+	var owner
+	var previous_element # for swapping tiles in place
+	
+	func _init(ele_name, ele_tile_index, ele_owner, prev_element = null):
+		name = ele_name
+		tile_index = ele_tile_index
+		owner = ele_owner
+		previous_element = prev_element
+
 
 func _ready():
 	for x in range(map_size.x):
 		grid.append([])
 		for y in range(map_size.y):
-			grid[x].append(null)
+			grid[x].append(GridElement.new("walkable", 3, null))
 			
 	for id in obstacles:
-		grid[id.x][id.y] = nameOfObstacle
+		grid[id.x][id.y] = GridElement.new("obstacle", 4, null)
 		
 	var walkable_cells_list = astar_add_walkable_cells(obstacles)
 	astar_connect_walkable_cells(walkable_cells_list)
 
+
 func get_cell_content(pos):
 	return grid[pos.x][pos.y]
 	
+
 func is_cell_empty(pos, direction):
 	var grid_pos = world_to_map(pos) + direction
 	if grid_pos.x < map_size.x and grid_pos.x >= 0:
 		if grid_pos.y < map_size.y and grid_pos.y >= 0:
 			return true if grid[grid_pos.x][grid_pos.y] == null else false
 	return false
+
 
 # Loops through all cells within the map's bounds and
 # adds all points to the astar_node, except the obstacles
@@ -112,3 +129,18 @@ func is_outside_map_bounds(point):
 
 func calculate_point_index(point):
 	return point.x + map_size.x * point.y
+	
+	
+# override
+func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, transpose = false, autotile_coord = Vector2(0, 0)):	
+	if is_outside_map_bounds(Vector2(x, y)):
+		print_debug("attempted to set cell outside of boundaries of grid")
+		return null
+
+	var cell = get_cell_content(Vector2(x, y))
+	if not cell.owner == owner:
+		print_debug("a diff owner tried to change a cell on the grid")
+		return null
+	
+	.set_cell(x, y, tile_index, flip_x, flip_y, transpose, autotile_coord) # call super.set_cell
+	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, cell.owner) 

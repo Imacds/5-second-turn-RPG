@@ -1,11 +1,11 @@
 extends Object # only needed for get_script()
 
-enum ELEMENTS { HITBOX, ATTACKER, EMPTY } # the elements within an attack matrix
+enum ELEMENTS { EMPTY, ATTACKER, HITBOX } # the elements within an attack matrix
 const INT_TO_ELEMENTS_MAPPING = [ELEMENTS.EMPTY, ELEMENTS.ATTACKER, ELEMENTS.HITBOX] # allows for creation of matrix using list of ints instead of list of ELEMENTS values
 
 var matrix = []
 var row_len = null
-var attacker_coords = null # list of size = 2
+var attacker_coords = null # list of size = 2, map.grid indices (cell coords)
 
 
 func _init(elements):
@@ -45,7 +45,7 @@ func elements_to_matrix(elements):
 	
 
 # in-place rotation of the matrix
-func rotate(radians):
+func rotate(radians): # todo: make it so it doesn't only rotate PI / 2
 	var rotated = matrix
 	
 	# Consider all squares one by one 
@@ -71,7 +71,7 @@ func rotate(radians):
 	return get_script().new(elements) # return new instance of this class
 
 
-# flatten and make elements of type int
+# flatten and make elements of type int that rep. matrix elements
 func to_elements(matrix):
 	var elements = []
 	
@@ -88,10 +88,10 @@ func to_relative_coords():
 	for y in range(len(matrix)):
 		for x in range(len(matrix[y])):
 			if matrix[y][x] == ELEMENTS.HITBOX:
-				coords.append([x - attacker_coords[0], attacker_coords[1] - y])
+				print('added')
+				coords.append([x - attacker_coords[0], y - attacker_coords[1]])
 				
 	return coords
-	
 	
 	
 func to_world_coords(attacker_coords):

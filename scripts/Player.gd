@@ -48,6 +48,13 @@ func get_position():
 	return position
 
 
+func get_cell_coords():
+	# get world position, size of individual cell, divide & truncate
+	var x = int(position.x / grid.cell_size.x)
+	var y = int(position.y / grid.cell_size.y)
+	return Vector2(x, y)
+	
+
 func _change_state(new_state):
 	if new_state == STATES.WAIT:
 		path = pathing.get_path_relative(position, target_position)
@@ -158,4 +165,4 @@ func _unhandled_input(event):
 
 
 func preview_attack(attack_template_attack_mode):
-	attack_template.visualize_attack(target_position, attack_template_attack_mode, 'right')
+	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, 'right')

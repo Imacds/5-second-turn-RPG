@@ -5,7 +5,7 @@ const INT_TO_ELEMENTS_MAPPING = [ELEMENTS.EMPTY, ELEMENTS.ATTACKER, ELEMENTS.HIT
 
 var matrix = []
 var row_len = null
-var attacker_coords = [0, 0]
+var attacker_coords = null # list of size = 2
 
 
 func _init(elements):
@@ -29,15 +29,18 @@ func elements_to_matrix(elements):
 		row.append(tile_value)
 		
 		if tile_value == ELEMENTS.ATTACKER:
-			attacker_coords = [col_count, row_count]
+			if attacker_coords != null: print_debug("there's 2+ attackers in atk matrix")
+			attacker_coords = [col_count - 1, row_count - 1]
 		
 		if count % row_len == 0:
 			matrix.append(row)
 			row = []
 			row_count += 1
+			col_count = 1
 		else:
 			col_count += 1
-			
+	
+	if attacker_coords == null: print_debug("there was not an attacker within the atk matrix")
 	return matrix
 	
 

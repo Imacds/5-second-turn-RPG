@@ -46,8 +46,9 @@ func visualize_attack(position, attack_mode, attack_dir):
 	var atk_matrix = hitbox_matrices[int(attack_mode)]
 	
 	# rotate it to the same dir the player faces
-	var rotated_matrix = atk_matrix.rotate(DIRECTIONS[attack_dir])
-	
+	#var rotated_matrix = atk_matrix.rotate(DIRECTIONS[attack_dir])
+	var rotated_matrix = atk_matrix
+	print(rotated_matrix.to_relative_coords())
 	# get the list of relative coords to player that'll be hitboxes
 	var hitboxes = rotated_matrix.to_world_coords(position)
 	

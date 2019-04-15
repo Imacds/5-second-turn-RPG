@@ -84,6 +84,7 @@ func _process(delta):
 	if attack_mode != null:
 		attack_template.do_attack(position, attack_mode, attack_dir)
 		$Attack.flash_attack(attack_mode, attack_dir)
+		attack_mode = null
 	else:
 		var arrived_to_next_point = move_to(target_point_world)
 		if arrived_to_next_point:

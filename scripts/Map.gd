@@ -15,7 +15,7 @@ onready var half_tile_size = tile_size / 2
 onready var obstacles = get_used_cells_by_id(3)
 onready var _half_cell_size = cell_size / 2
 
-enum TILES { VOID0, VOID1, VOID2, WALL, GROUND, ZONE_TO_ATTACK }
+enum TILES { VOID0, VOID1, VOID2, WALL, GROUND, VOID3}
 
 class GridElement:
 	var name # attributes

@@ -161,8 +161,13 @@ func _unhandled_input(event):
 				attack_template.click_mode = null
 			_change_state(STATES.WAIT)
 		elif event is InputEventMouseMotion and attack_template.click_mode != null:
-			$Attack.draw_attack(attack_template.click_mode, $Attack.get_relative_attack_dir())
+			var dir_str = 'right'
+			match $Attack.get_relative_attack_dir():
+				Vector2(0,-1): dir_str = 'up'
+				Vector2(0,1): dir_str = 'down'
+				Vector2(-1,0): dir_str = 'left'
+				Vector2(1,0): dir_str = 'right'
+			preview_attack(attack_template.click_mode, dir_str)
 
-
-func preview_attack(attack_template_attack_mode):
-	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, 'right')
+func preview_attack(attack_template_attack_mode, dir_str):
+	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, dir_str)

@@ -2,17 +2,17 @@ extends Node
 
 enum MODE { SLASH, SWING, LUNGE }
 # the values are the change in angle (radians) to get to desired orientation
-const DIRECTIONS = { 'up': PI, 'right': -PI / 2, 'down': 0, 'left': PI / 2 } # init pos is upwards (at PI / 2)
+onready var DIRECTIONS = { 'up': 0, 'right': 90, 'down': 180, 'left': 270 } # init pos is upwards (at PI / 2)
 
 var threatened_tiles = {MODE.SLASH: [[0,-1],[1,-1],[1,0],[1,1],[0,1]], MODE.SWING: [[1,-1],[1,0],[1,1],[2,0]], MODE.LUNGE: [[1,0],[2,0],[3,0]]}
 
 #onready var matrix = $AttackMatrix
-var AttackMatrix = load("res://scripts/AttackMatrix.gd")
+onready var AttackMatrix = load("res://scripts/AttackMatrix.gd")
 var hitbox_matrices = []
 
 var click_mode = null
 
-onready var map = $"../Map" # sibling of this node
+onready var attack_map = $"../AttackMap" # sibling of this node
 onready var selection_manager = $"../SelectionManager"
 
 
@@ -25,17 +25,21 @@ func _ready():
 		]),
 		
 		AttackMatrix.new([ # swing
-			0, 2, 0,
-			2, 2, 2,
-			0, 1, 0
+			0, 0, 2, 0, 0,
+			0, 2, 2, 2, 0,
+			0, 0, 1, 0, 0,
+			0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0,
 		]),
 		
 		AttackMatrix.new([ # lunge
-			0, 0, 2, 0, 0,
-			0, 0, 2, 0, 0,
-			0, 0, 2, 0, 0,
-			0, 0, 1, 0, 0,
-			0, 0, 0, 0, 0
+			0, 0, 0, 2, 0, 0, 0,
+			0, 0, 0, 2, 0, 0, 0,
+			0, 0, 0, 2, 0, 0, 0,
+			0, 0, 0, 1, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0
 		]),
 	]
 
@@ -45,6 +49,8 @@ func do_attack(position, attack_mode, attack_dir):
 
 	
 func visualize_attack(position, attack_mode, attack_dir):
+	#print("position: " + str(position) + ", MODE: " + str(attack_mode) + ", DIR: " + str(attack_dir))
+	
 	# get the atk matrix
 	var atk_matrix = hitbox_matrices[int(attack_mode)]
 	
@@ -56,4 +62,4 @@ func visualize_attack(position, attack_mode, attack_dir):
 	
 	var owner = selection_manager.selected.get_name()
 	for coords in hitboxes:
-		map.set_cell(coords[0], coords[1], map.TILES.ZONE_TO_ATTACK, owner) # x, y, tile_index, owner = null,
+		attack_map.queue_set_cell(coords[0], coords[1], attack_map.TILES.ZONE_TO_ATTACK, owner) # x, y, tile_index, owner = null,

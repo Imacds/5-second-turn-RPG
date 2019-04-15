@@ -29,7 +29,7 @@ func elements_to_matrix(elements):
 		row.append(tile_value)
 		
 		if tile_value == ELEMENTS.ATTACKER:
-			if attacker_coords != null: print_debug("there's 2+ attackers in atk matrix")
+			#if attacker_coords != null: print_debug("there's 2+ attackers in atk matrix")
 			attacker_coords = [col_count - 1, row_count - 1]
 		
 		if count % row_len == 0:
@@ -40,33 +40,33 @@ func elements_to_matrix(elements):
 		else:
 			col_count += 1
 	
-	if attacker_coords == null: print_debug("there was not an attacker within the atk matrix")
+	#if attacker_coords == null: print_debug("there was not an attacker within the atk matrix")
 	return matrix
 	
 
 # in-place rotation of the matrix
-func rotate(radians): # todo: make it so it doesn't only rotate PI / 2
-	var rotated = matrix
+func rotate(rot): 
+	var rotated = matrix.duplicate(true)
+	
+	#print("BEFORE:" + str(rotated))
 	
 	# Consider all squares one by one 
-	for x in range(int(row_len / 2)): 
-		for y in range(x, row_len - x - 1): 
-		  
-			# store current cell in temp variable 
-			var temp = rotated[x][y] 
-			  
-			# move values from right to top 
-			rotated[x][y] = rotated[y][row_len-1-x] 
-			  
-			# move values from bottom to right 
-			rotated[y][row_len-1-x] = rotated[row_len-1-x][row_len-1-y] 
-			  
-			# move values from left to bottom 
-			rotated[row_len-1-x][row_len-1-y] = rotated[row_len-1-y][x] 
-			  
-			# assign temp to left 
-			rotated[row_len-1-y][x] = temp 
-
+	for x in range(0, len(rotated)): 
+		for y in range(0, len(rotated[0])): 
+			if rot == 0:
+				rotated[x][y] = matrix[x][y]
+			elif rot == 90:
+				rotated[x][y] = matrix[len(rotated[0])-y-1][x]
+			elif rot == 180:
+				rotated[x][y] = matrix[len(rotated)-x-1][len(rotated[0])-y-1]
+			elif rot == 270:
+				rotated[x][y] = matrix[y][len(rotated)-x-1]
+			else:
+				#Throw error
+				print("An illegal value has been given to AttackMatrix.rotate(): " + rot)
+		
+	#print("AFTER: " + str(rotated))
+	
 	var elements = to_elements(rotated)
 	return get_script().new(elements) # return new instance of this class
 
@@ -85,15 +85,19 @@ func to_elements(matrix):
 func to_relative_coords():
 	var coords = []
 	
+	#center it around the char
+	var size = int(len(matrix)/2)
+	
 	for y in range(len(matrix)):
 		for x in range(len(matrix[y])):
 			if matrix[y][x] == ELEMENTS.HITBOX:
-				coords.append([x - attacker_coords[0], y - attacker_coords[1]])
+				coords.append([x - size, y - size])
 				
 	return coords
 	
 	
-func to_world_coords(attacker_coords):
+func to_world_coords(attack_coords):
+	attacker_coords = attack_coords
 	var relative_coords = to_relative_coords()
 	
 	for coords in relative_coords:

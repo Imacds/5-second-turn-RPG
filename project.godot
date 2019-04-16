@@ -25,6 +25,10 @@ window/energy_saving/keep_screen_on=false
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "SMRT" )
+
 [input]
 
 move_up={

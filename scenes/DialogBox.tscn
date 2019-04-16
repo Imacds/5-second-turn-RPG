@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scripts/DialogBox.gd" type="Script" id=1]
+
+[node name="DialogBox" type="Polygon2D"]
+color = Color( 0.117647, 0.117647, 0.117647, 1 )
+polygon = PoolVector2Array( 48, 480, 48, 576, 976, 576, 976, 480 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_left = 64.0
+margin_top = 496.0
+margin_right = 960.0
+margin_bottom = 560.0
+script = ExtResource( 1 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[connection signal="timeout" from="Timer" to="RichTextLabel" method="_on_Timer_timeout"]

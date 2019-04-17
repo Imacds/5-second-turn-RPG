@@ -15,6 +15,15 @@ func get_relative_attack_dir():
 			return Vector2(0,1)
 		else:
 			return Vector2(0,-1)
+
+func get_attack_dir_str(vector2):
+	var dir_str = 'right'
+	match vector2:
+		Vector2(0,-1): dir_str = 'up'
+		Vector2(0,1): dir_str = 'down'
+		Vector2(-1,0): dir_str = 'left'
+		Vector2(1,0): dir_str = 'right'
+	return dir_str
 			
 func draw_attack(mode, dir):
 	draw_circle(position, BASE_LINE_WIDTH * 2.0, Color(1,0,0,0.5))

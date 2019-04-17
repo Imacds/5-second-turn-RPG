@@ -1,7 +1,7 @@
 extends RichTextLabel
 
 # Declare member variables here. Examples:
-var dialog = ["This is 6 second RPG created by Gridventure", "Enjoy the game!"]
+var dialog = ["This is 6 second RPG created by Gridventure", "This dialog will serve as a little tutorial", "There are 2 player controlled characters on the map. You can switch control between them sung the Switch Control button in the top left.","A turn is comprised of 3 stages. You may end a turn using the End Turn button in the top left.", "There are two types of actions one may do: move and attack. Movement is done via clicking anywhere on the map. Attacking is done by clicking on one of the three attack type buttons and selecting a direction.", "There are three stages to each turn:\n 1. Move\n2. Move or Attack\n3.Move", "Each player can take 5 hits before dying. Take turns inputing input for both characters to see who wins!", "Enjoy the game!"]
 var page = 0
 var isDone = false
 onready var DialogBox = get_parent()

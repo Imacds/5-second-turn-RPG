@@ -1,12 +1,12 @@
 extends KinematicBody2D
 
 export(float) var SPEED = 200.0
-export(int) var hp = 20
+export(int) var hp = 4
 
 enum STATES { IDLE, WAIT, TURN }
 var _state = null
-var t = 0
 
+var is_attack_turn = false
 var path = []
 var target_point_world = Vector2()
 var target_position = Vector2()
@@ -67,25 +67,32 @@ func _change_state(new_state):
 		target_point_world = path[1]
 	_state = new_state
 
+func take_damage():
+	hp = hp - 1
 
-func do_nearby_damage():
-	var players = turn_manager.players
-	for player in players:
-		if player != get_parent():
-			var other_pos = player.get_node("Char").position
-			var diff = position.distance_to(other_pos)
-			if diff <= cell_size*1.8:
-				player.get_node("Char").hp -= 7
-			
+func render_hp():
+	if hp >= 0:
+		$Label.text = "HP: "
+		for i in range(0, hp):
+			$Label.text+= "O "
+		for i in range(0, 4-hp):
+			$Label.text+= "X "
+	else:
+		$Label.text = "DEAD"
 
 func _process(delta):
-	$Label.text = "HP: " + str(hp)
+	render_hp()
+	
+	if attack_mode != null and (attack_template.click_mode == null or selection_manager.selected == get_parent()):
+		preview_attack(attack_mode, attack_dir, attack_map.TILES.GREEN_ZONE_TO_ATTACK)
+	
 	if _state != STATES.TURN:
 		return
-	if attack_mode != null:
-		attack_template.do_attack(position, attack_mode, attack_dir)
-		$Attack.flash_attack(attack_mode, attack_dir)
+		
+	if attack_mode != null and is_attack_turn:
+		attack_template.do_attack(get_cell_coords(), attack_mode, attack_dir, self)
 		attack_mode = null
+		_change_state(STATES.WAIT)
 	else:
 		var arrived_to_next_point = move_to(target_point_world)
 		if arrived_to_next_point:
@@ -94,19 +101,15 @@ func _process(delta):
 			if len(path) == 0:
 				_change_state(STATES.IDLE)
 				return
-			if t > 0:
-				t-=1
-				_change_state(STATES.TURN)
 			target_point_world = path[0]
 
 
-func do_turn():
-	if _state == STATES.WAIT:
+func do_turn(is_attack_turn):
+	self.is_attack_turn = is_attack_turn
+	if _state == STATES.WAIT or attack_mode != null:
 		_state = STATES.TURN
 	else:
-		do_nearby_damage()
 		attack_map.clear()
-
 
 func _physics_process(delta):
 	direction = Vector2()
@@ -160,17 +163,12 @@ func _unhandled_input(event):
 					target_position = get_global_mouse_position()
 			else:
 				attack_mode = attack_template.click_mode
-				attack_dir = $Attack.get_relative_attack_dir()
+				attack_dir = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
 				attack_template.click_mode = null
 			_change_state(STATES.WAIT)
 		elif event is InputEventMouseMotion and attack_template.click_mode != null:
-			var dir_str = 'right'
-			match $Attack.get_relative_attack_dir():
-				Vector2(0,-1): dir_str = 'up'
-				Vector2(0,1): dir_str = 'down'
-				Vector2(-1,0): dir_str = 'left'
-				Vector2(1,0): dir_str = 'right'
-			preview_attack(attack_template.click_mode, dir_str)
+			var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
+			preview_attack(attack_template.click_mode, dir_str, attack_map.TILES.YELLOW_ZONE_TO_ATTACK)
 
-func preview_attack(attack_template_attack_mode, dir_str):
-	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, dir_str)
+func preview_attack(attack_template_attack_mode, dir_str, tile_type):
+	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, dir_str, self, tile_type)

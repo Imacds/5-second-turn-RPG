@@ -10,7 +10,7 @@ var click_mode = null
 
 onready var attack_map = $"../AttackMap" # sibling of this node
 onready var selection_manager = $"../SelectionManager"
-
+onready var turn_manager = $"../TurnManager"
 
 func _ready():
 	hitbox_matrices = [ # 0: blank, 1: player, 2: hitbox, ... (see AttackMatrix.gd)
@@ -40,11 +40,27 @@ func _ready():
 	]
 
 
-func do_attack(position, attack_mode, attack_dir):
-	pass
+func do_attack(position, attack_mode, attack_dir, owner):
+	visualize_attack(position, attack_mode, attack_dir, owner, attack_map.TILES.ZONE_TO_ATTACK)
+	damage_in_attack_radius(position, attack_mode, attack_dir, owner)
 
+func damage_in_attack_radius(position, attack_mode, attack_dir, owner):
+	# get the atk matrix
+	var atk_matrix = hitbox_matrices[int(attack_mode)]
 	
-func visualize_attack(position, attack_mode, attack_dir):
+	# rotate it to the same dir the player faces
+	var rotated_matrix = atk_matrix.rotate(DIRECTIONS[attack_dir])
+
+	# get the list of relative coords to player that'll be hitboxes
+	var hitboxes = rotated_matrix.to_world_coords(position)
+	
+	for coords in hitboxes:
+		for player in turn_manager.players:
+			if player.get_node("Char").get_cell_coords() == Vector2(coords[0], coords[1]):
+				player.get_node("Char").take_damage()
+	
+
+func visualize_attack(position, attack_mode, attack_dir, owner, tile_type):
 	#print("position: " + str(position) + ", MODE: " + str(attack_mode) + ", DIR: " + str(attack_dir))
 	
 	# get the atk matrix
@@ -56,6 +72,5 @@ func visualize_attack(position, attack_mode, attack_dir):
 	# get the list of relative coords to player that'll be hitboxes
 	var hitboxes = rotated_matrix.to_world_coords(position)
 	
-	var owner = selection_manager.selected.get_name()
 	for coords in hitboxes:
-		attack_map.queue_set_cell(coords[0], coords[1], int(attack_map.TILES.ZONE_TO_ATTACK), owner) # x, y, tile_index, owner = null,
+		attack_map.queue_set_cell(coords[0], coords[1], int(tile_type), owner) # x, y, tile_index, owner = null,

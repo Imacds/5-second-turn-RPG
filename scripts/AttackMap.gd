@@ -1,7 +1,7 @@
 extends TileMap
 
 # Declare member variables here. Examples:
-enum TILES { ZONE_TO_ATTACK, VOID }
+enum TILES { ZONE_TO_ATTACK, YELLOW_ZONE_TO_ATTACK, GREEN_ZONE_TO_ATTACK, VOID }
 
 var grid = []
 
@@ -40,11 +40,11 @@ func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, tr
 	if is_outside_map_bounds(Vector2(x, y)):
 		print_debug("out of bounds set_cell in atk map")
 		return null
-
+	
 	var cell = get_cell_content(Vector2(x, y))
-	if cell.owner and not cell.owner == owner:
-		print_debug("a diff owner tried to change a cell on the grid")
-		return null
-
+	#if cell.owner and not cell.owner == owner:
+	#	print_debug("a diff owner tried to change a cell on the grid")
+	#	return null
+	
 	.set_cell(x, y, tile_index, flip_x, flip_y, transpose, autotile_coord) # call super.set_cell
 	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, cell) 

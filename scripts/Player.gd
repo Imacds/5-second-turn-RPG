@@ -24,6 +24,7 @@ onready var attack_template = get_tree().get_root().get_node("Root/AttackTemplat
 onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
 onready var turn_manager = get_tree().get_root().get_node("Root/TurnManager")
 onready var map = get_tree().get_root().get_node("Root/Map")
+onready var attack_map = $"../../AttackMap"
 onready var pathing = get_parent().get_node("Path")
 var type
 
@@ -104,6 +105,7 @@ func do_turn():
 		_state = STATES.TURN
 	else:
 		do_nearby_damage()
+		attack_map.clear()
 
 
 func _physics_process(delta):

@@ -1,12 +1,8 @@
 extends Node
 
 enum MODE { SLASH, SWING, LUNGE }
-# the values are the change in angle (radians) to get to desired orientation
 onready var DIRECTIONS = { 'up': 0, 'right': 90, 'down': 180, 'left': 270 } # init pos is upwards (at PI / 2)
 
-var threatened_tiles = {MODE.SLASH: [[0,-1],[1,-1],[1,0],[1,1],[0,1]], MODE.SWING: [[1,-1],[1,0],[1,1],[2,0]], MODE.LUNGE: [[1,0],[2,0],[3,0]]}
-
-#onready var matrix = $AttackMatrix
 onready var AttackMatrix = load("res://scripts/AttackMatrix.gd")
 var hitbox_matrices = []
 
@@ -62,4 +58,4 @@ func visualize_attack(position, attack_mode, attack_dir):
 	
 	var owner = selection_manager.selected.get_name()
 	for coords in hitboxes:
-		attack_map.queue_set_cell(coords[0], coords[1], attack_map.TILES.ZONE_TO_ATTACK, owner) # x, y, tile_index, owner = null,
+		attack_map.queue_set_cell(coords[0], coords[1], int(attack_map.TILES.ZONE_TO_ATTACK), owner) # x, y, tile_index, owner = null,

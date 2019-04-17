@@ -7,6 +7,8 @@ export(Vector2) var map_size = Vector2(16, 16)
 
 var grid = []
 
+var GridElement = load("res://scripts/GridElement.gd")
+
 onready var tile_size = cell_size
 onready var half_tile_size = tile_size / 2
 
@@ -15,36 +17,24 @@ onready var half_tile_size = tile_size / 2
 onready var obstacles = get_used_cells_by_id(3)
 onready var _half_cell_size = cell_size / 2
 
-enum TILES { VOID0, VOID1, VOID2, WALL, GROUND, VOID3}
-
-class GridElement:
-	var name # attributes
-	var tile_index
-	var owner
-	var previous_element # for swapping tiles in place
-	
-	func _init(ele_name, ele_tile_index, ele_owner, prev_element = null):
-		name = ele_name
-		tile_index = ele_tile_index
-		owner = ele_owner
-		previous_element = prev_element
+enum TILES { VOID0, VOID1, VOID2, WALL, GROUND, VOID5 }
 
 
 func _ready():
 	for x in range(map_size.x):
 		grid.append([])
 		for y in range(map_size.y):
-			grid[x].append(GridElement.new("walkable", 3, null))
+			grid[x].append(GridElement.new("walkable", 3, null, [x, y]))
 			
 	for id in obstacles:
-		grid[id.x][id.y] = GridElement.new("obstacle", 4, null)
+		grid[id.x][id.y] = GridElement.new("obstacle", 4, null, [id.x, id.y])
 		
 	var walkable_cells_list = astar_add_walkable_cells(obstacles)
 	astar_connect_walkable_cells(walkable_cells_list)
-
+	
 
 func get_cell_content(pos):
-	return grid[pos.x][pos.y]
+	return grid[pos[0]][pos[1]]
 	
 
 func is_cell_empty(pos, direction):
@@ -134,7 +124,6 @@ func calculate_point_index(point):
 # override
 func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, transpose = false, autotile_coord = Vector2(0, 0)):
 	if is_outside_map_bounds(Vector2(x, y)):
-		print_debug("attempted to set cell outside of boundaries of grid")
 		return null
 
 	var cell = get_cell_content(Vector2(x, y))
@@ -144,3 +133,18 @@ func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, tr
 
 	.set_cell(x, y, tile_index, flip_x, flip_y, transpose, autotile_coord) # call super.set_cell
 	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, cell) 
+
+
+# revert each cell owned by owner to its previous GridElement
+# param owners: type: str or list<str>. name of the object that ownes the tile(s)
+func clear_cells(owners):
+	if typeof(owners) == TYPE_STRING:
+		owners = [owners]
+	
+	for y in range(len(grid)):
+		for x in range(len(grid[y])):
+			var element = grid[y][x]
+			if element.owner in owners:
+				print('cleared')
+				grid[y][x] = element.set_cell_to_previous() # swap prev element and current element for the given cell
+				.set_cell(element.grid_coords[0], element.grid_coords[1], element.tile_index)

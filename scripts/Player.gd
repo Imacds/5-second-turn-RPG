@@ -23,7 +23,7 @@ var cell_size = 64
 onready var attack_template = get_tree().get_root().get_node("Root/AttackTemplate")
 onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
 onready var turn_manager = get_tree().get_root().get_node("Root/TurnManager")
-onready var grid = get_tree().get_root().get_node("Root/Map")
+onready var map = get_tree().get_root().get_node("Root/Map")
 onready var pathing = get_parent().get_node("Path")
 var type
 
@@ -50,8 +50,8 @@ func get_position():
 
 func get_cell_coords():
 	# get world position, size of individual cell, divide & truncate
-	var x = int(position.x / grid.cell_size.x)
-	var y = int(position.y / grid.cell_size.y)
+	var x = int(position.x / map.cell_size.x)
+	var y = int(position.y / map.cell_size.y)
 	return Vector2(x, y)
 	
 
@@ -75,6 +75,7 @@ func do_nearby_damage():
 			var diff = position.distance_to(other_pos)
 			if diff <= cell_size*1.8:
 				player.get_node("Char").hp -= 7
+			
 
 
 func _process(delta):
@@ -113,7 +114,7 @@ func _physics_process(delta):
 	
 	if not is_moving and direction != Vector2():
 		target_dir = direction
-		if grid.is_cell_empty(position, target_dir):
+		if map.is_cell_empty(position, target_dir):
 			target_pos = pathing.update_line()
 			is_moving = true
 	elif is_moving:

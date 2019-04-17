@@ -91,8 +91,7 @@ script = ExtResource( 12 )
 DRAW_COLOR = Color( 0.415686, 0.984314, 0.396078, 1 )
 
 [node name="GeneralCamera" parent="." instance=ExtResource( 13 )]
-editor/display_folded = true
-position = Vector2( 505.352, 305.54 )
+position = Vector2( 510, 300 )
 
 [node name="next turn" type="Button" parent="GeneralCamera"]
 material = SubResource( 2 )

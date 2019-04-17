@@ -8,3 +8,6 @@ func pass_turn():
 		player.get_node("Char").t = 2
 		player.get_node("Char").do_turn()
 		
+		
+func get_player_names():
+	return [players[0].get_name(), players[1].get_name()]

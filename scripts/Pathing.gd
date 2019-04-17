@@ -14,21 +14,6 @@ onready var grid = get_tree().get_root().get_node("Root/Map")
 const BASE_LINE_WIDTH = 3.0
 export(Color) var DRAW_COLOR = Color('#fff')
 
-# Click and Shift force the start and end position of the path to update
-# and the node to redraw everything
-func _unhandled_input(event):
-	if selection_manager.selected == get_parent() and not Input.is_key_pressed(KEY_CONTROL):
-		if event.is_action_pressed('click') and Input.is_key_pressed(KEY_SHIFT):
-			# To call the setter method from this script we have to use the explicit self.
-			keyUsed = false
-			self.path_start_position = grid.world_to_map(get_global_mouse_position())
-		elif event.is_action_pressed('click'):
-			keyUsed = false
-			self.path_end_position = grid.world_to_map(get_global_mouse_position())
-		elif event.is_action_pressed('move_up') or event.is_action_pressed('move_down') or event.is_action_pressed('move_left') or event.is_action_pressed('move_right'):
-			clear_previous_path_drawing()
-			keyUsed = true
-			update()
 
 func get_path_relative(world_start, world_end):
 	self.path_start_position = grid.world_to_map(world_start)
@@ -108,6 +93,7 @@ func _set_path_end_position(value):
 	if path_start_position != value:
 		_recalculate_path()
 
+
 func update_line(position, direction):
 	# Move a child to a new position in the grid Array
 	# Returns the new target world position of the child 
@@ -116,6 +102,7 @@ func update_line(position, direction):
 	var target_pos = grid.map_to_world(new_grid_pos) + grid.half_tile_size
 	_set_path_end_position(new_grid_pos)
 	return target_pos
+	
 	
 func pop_path():
 	_point_path.remove(0)

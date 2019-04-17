@@ -63,7 +63,7 @@ func rotate(rot):
 				rotated[x][y] = matrix[y][len(rotated)-x-1]
 			else:
 				#Throw error
-				print("An illegal value has been given to AttackMatrix.rotate(): " + rot)
+				print_debug("An illegal value has been given to AttackMatrix.rotate(): " + rot)
 		
 	#print("AFTER: " + str(rotated))
 	

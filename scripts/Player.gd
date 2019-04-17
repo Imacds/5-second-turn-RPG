@@ -77,7 +77,6 @@ func do_nearby_damage():
 				player.get_node("Char").hp -= 7
 			
 
-
 func _process(delta):
 	$Label.text = "HP: " + str(hp)
 	if _state != STATES.TURN:

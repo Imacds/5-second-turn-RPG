@@ -134,17 +134,3 @@ func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, tr
 	.set_cell(x, y, tile_index, flip_x, flip_y, transpose, autotile_coord) # call super.set_cell
 	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, cell) 
 
-
-# revert each cell owned by owner to its previous GridElement
-# param owners: type: str or list<str>. name of the object that ownes the tile(s)
-func clear_cells(owners):
-	if typeof(owners) == TYPE_STRING:
-		owners = [owners]
-	
-	for y in range(len(grid)):
-		for x in range(len(grid[y])):
-			var element = grid[y][x]
-			if element.owner in owners:
-				print('cleared')
-				grid[y][x] = element.set_cell_to_previous() # swap prev element and current element for the given cell
-				.set_cell(element.grid_coords[0], element.grid_coords[1], element.tile_index)

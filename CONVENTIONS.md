@@ -21,7 +21,9 @@ note: Godot will generate `.import` files and they need to be in same $PWD as it
 
 ## File Names
 
-?? snake_case, PascalCase, Pascal Spaced, ??
+PascalCase (tscn, Nodes, others) or snake_case
+
+If attaching a script to a Node, give it the same name as the node (eg: `PlayerController`, `PlayerController.gd`)
 
 ## Naming Conventions in GDScript
 

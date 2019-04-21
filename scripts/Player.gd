@@ -3,7 +3,8 @@ extends KinematicBody2D
 export(float) var SPEED = 200.0
 export(int) var hp = 4
 
-enum STATES { IDLE, WAIT, TURN }
+# idle is waiting for player input, wait is waiting for turn to end or player to complete action ?, turn indicates it's this player reads inputs & not the other
+enum STATES { IDLE, WAIT, TURN } 
 var _state = null
 
 var is_attack_turn = false

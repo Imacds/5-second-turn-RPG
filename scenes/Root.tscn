@@ -109,3 +109,4 @@ position = Vector2( 510, 300 )
 
 [node name="CombatUI" parent="GeneralCamera" instance=ExtResource( 15 )]
 
+[connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]

@@ -1,5 +1,7 @@
 extends Node
 
+signal click_mode_changed(new_mode)
+
 enum MODE { SLASH, SWING, LUNGE }
 onready var DIRECTIONS = { 'up': 0, 'right': 90, 'down': 180, 'left': 270 } # init pos is upwards (at PI / 2)
 
@@ -40,9 +42,15 @@ func _ready():
 	]
 
 
+func set_click_mode(mode):
+	click_mode = mode
+	emit_signal("click_mode_changed", mode)
+
+
 func do_attack(position, attack_mode, attack_dir, owner):
 	visualize_attack(position, attack_mode, attack_dir, owner, attack_map.TILES.ZONE_TO_ATTACK)
 	damage_in_attack_radius(position, attack_mode, attack_dir, owner)
+
 
 func damage_in_attack_radius(position, attack_mode, attack_dir, owner):
 	# get the atk matrix
@@ -62,6 +70,8 @@ func damage_in_attack_radius(position, attack_mode, attack_dir, owner):
 
 func visualize_attack(position, attack_mode, attack_dir, owner, tile_type):
 	#print("position: " + str(position) + ", MODE: " + str(attack_mode) + ", DIR: " + str(attack_dir))
+	if (not position or not attack_mode): 
+		return
 	
 	# get the atk matrix
 	var atk_matrix = hitbox_matrices[int(attack_mode)]

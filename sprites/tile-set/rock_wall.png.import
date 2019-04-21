@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/zone_to_attack.png-9a927af5e4edccc01f7889112bb0660f.stex"
+path="res://.import/rock_wall.png-a0e191becfbab9647e0339085f4e0327.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/zone_to_attack.png"
-dest_files=[ "res://.import/zone_to_attack.png-9a927af5e4edccc01f7889112bb0660f.stex" ]
+source_file="res://sprites/tile-set/rock_wall.png"
+dest_files=[ "res://.import/rock_wall.png-a0e191becfbab9647e0339085f4e0327.stex" ]
 
 [params]
 

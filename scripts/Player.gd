@@ -2,17 +2,26 @@ extends KinematicBody2D
 
 export(float) var SPEED = 200.0
 export(int) var hp = 4
+export(int) var walk_distance = 3
+export(int) var action_points_per_turn = 3
+
+signal agent_enters_walk_mode(cell_coords)
+signal agent_exits_walk_mode(cell_coords)
 
 # idle is waiting for player input, wait is waiting for turn to end or player to complete action ?, turn indicates it's this player reads inputs & not the other
 enum STATES { IDLE, WAIT, TURN } 
-var _state = null
+# null: read no input from this player, move: allow reading and queue for move action, attack: allow reading queue of attack action
+enum COMMAND_MODES { NULL, MOVE, ATTACK }
 
+var _state = null
+var action_points = 3
 var is_attack_turn = false
 var path = []
 var target_point_world = Vector2()
 var target_position = Vector2()
-var attack_mode = null
-var attack_dir = Vector2()
+var attack_mode = null # describes the type of attack if any. value from enum from AttackTemplate.gd
+var command_mode = COMMAND_MODES.MOVE # indicates allowed input reading for this player controlled character
+var attack_dir = Vector2(0, -1)
 var direction = Vector2()
 
 const Top = Vector2(0,-1)
@@ -42,6 +51,7 @@ var velocity = Vector2()
 
 func _ready():
 	_change_state(STATES.IDLE)
+	_change_command_mode(COMMAND_MODES.MOVE)
 	set_process_input(true)
 	set_physics_process(true)
 	
@@ -67,6 +77,15 @@ func _change_state(new_state):
 		# we don't want the character to move back to it in this example
 		target_point_world = path[1]
 	_state = new_state
+	
+func _change_command_mode(new_mode):
+	if action_points > 0:
+		command_mode = new_mode
+		
+		if command_mode == COMMAND_MODES.MOVE:
+			$PlayerControlledPath.draw_walkable(get_cell_coords())
+	else:
+		command_mode = COMMAND_MODES.NULL
 
 func take_damage():
 	hp = hp - 1
@@ -84,8 +103,10 @@ func render_hp():
 func _process(delta):
 	render_hp()
 	
-	if attack_mode != null and (attack_template.click_mode == null or selection_manager.selected == get_parent()):
-		preview_attack(attack_mode, attack_dir, attack_map.TILES.GREEN_ZONE_TO_ATTACK)
+#	if attack_mode != null and (attack_template.click_mode == null or selection_manager.selected == get_parent()):
+	if can_attack():
+		var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
+		preview_attack(attack_mode, dir_str, attack_map.TILES.GREEN_ZONE_TO_ATTACK) # attack_template_attack_mode, dir_str, tile_type
 	
 	if _state != STATES.TURN:
 		return
@@ -154,22 +175,49 @@ func move_to(world_position):
 	return position.distance_to(world_position) < ARRIVE_DISTANCE
 
 
+func move_one_cell(direction):
+	# get pos (cells)
+	var coords = get_cell_coords()
+	
+	# get destination (cells)
+	coords += direction
+	
+	# calc world destination
+	var world_destination = map.cell_coords_to_world_position(coords)
+	move_to(world_destination)
+	
+
 func _unhandled_input(event):
-	if selection_manager.selected == get_parent() and not Input.is_key_pressed(KEY_CONTROL):
-		if event.is_action_pressed('click'):
-			if attack_template.click_mode == null:
-				if Input.is_key_pressed(KEY_SHIFT):
-					global_position = get_global_mouse_position()
-				else:
-					target_position = get_global_mouse_position()
+	if event.is_action_pressed("click"):
+		if can_move(): 
+			if Input.is_key_pressed(KEY_SHIFT):
+				global_position = get_global_mouse_position()
 			else:
-				attack_mode = attack_template.click_mode
-				attack_dir = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
-				attack_template.click_mode = null
+				target_position = get_global_mouse_position()
+
 			_change_state(STATES.WAIT)
-		elif event is InputEventMouseMotion and attack_template.click_mode != null:
+			_change_command_mode(COMMAND_MODES.MOVE)
+			action_points -= 1
+		elif can_attack():
 			var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
 			preview_attack(attack_template.click_mode, dir_str, attack_map.TILES.YELLOW_ZONE_TO_ATTACK)
+			attack_template.set_click_mode(null)
+			_change_state(STATES.WAIT)
+			_change_command_mode(COMMAND_MODES.MOVE)
+			action_points -= 1
 
 func preview_attack(attack_template_attack_mode, dir_str, tile_type):
-	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, dir_str, self, tile_type)
+	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, dir_str, self, tile_type) # position, attack_mode, attack_dir, owner, tile_type
+	
+func can_do_action():
+	return action_points > 0 and selection_manager.selected == get_parent() and _state != STATES.TURN
+	
+func can_attack():
+	return can_do_action() and command_mode == COMMAND_MODES.ATTACK
+	
+func can_move():
+	return can_do_action() and command_mode == COMMAND_MODES.MOVE
+
+func _on_AttackTemplate_click_mode_changed(new_mode): # listener
+	attack_mode = new_mode
+	_change_command_mode(COMMAND_MODES.ATTACK)

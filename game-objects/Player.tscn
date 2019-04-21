@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://sprites/icon.png" type="Texture" id=2]
 [ext_resource path="res://scripts/AttackPlayer.gd" type="Script" id=3]
+[ext_resource path="res://scripts/PlayerControlledPath.gd" type="Script" id=4]
+[ext_resource path="res://scripts/AgentActionSystem/ActionQueue.gd" type="Script" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32.4706, 31.8495 )
 
-[node name="PlayerChar" type="KinematicBody2D"]
+[node name="Char" type="KinematicBody2D"]
 script = ExtResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
@@ -27,3 +29,10 @@ margin_bottom = 47.9619
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "HP: 20"
 
+[node name="PlayerControlledPath" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="ActionQueue" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[connection signal="agent_enters_walk_mode" from="." to="PlayerControlledPath" method="_on_PlayerChar_agent_enters_walk_mode"]

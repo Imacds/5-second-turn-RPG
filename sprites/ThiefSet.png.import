@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/rock_wall.png-e5da1d658678860ff853dcbb14339a9a.stex"
+path="res://.import/ThiefSet.png-ae1c80b6367da3d5fed074cfc12b5279.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/rock_wall.png"
-dest_files=[ "res://.import/rock_wall.png-e5da1d658678860ff853dcbb14339a9a.stex" ]
+source_file="res://sprites/ThiefSet.png"
+dest_files=[ "res://.import/ThiefSet.png-ae1c80b6367da3d5fed074cfc12b5279.stex" ]
 
 [params]
 

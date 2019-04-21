@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/dirt_floor.png-c0bed35bbebd7aab86a53b619449f5ae.stex"
+path="res://.import/ThiefSet - Boots2.png-5802fbfc8b39eca406561d17d15757d5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/dirt_floor.png"
-dest_files=[ "res://.import/dirt_floor.png-c0bed35bbebd7aab86a53b619449f5ae.stex" ]
+source_file="res://sprites/tile-set/ThiefSet - Boots2.png"
+dest_files=[ "res://.import/ThiefSet - Boots2.png-5802fbfc8b39eca406561d17d15757d5.stex" ]
 
 [params]
 

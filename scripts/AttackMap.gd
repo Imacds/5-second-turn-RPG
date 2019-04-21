@@ -1,7 +1,6 @@
 extends TileMap
 
-# Declare member variables here. Examples:
-enum TILES { ZONE_TO_ATTACK, YELLOW_ZONE_TO_ATTACK, GREEN_ZONE_TO_ATTACK, VOID }
+enum TILES { ZONE_TO_ATTACK, YELLOW_ZONE_TO_ATTACK, GREEN_ZONE_TO_ATTACK, AGENT_CAN_MOVE_HERE, VOID }
 
 var grid = []
 
@@ -20,7 +19,7 @@ func get_cell_content(pos):
 
 func _process(delta):
 	if not cell_set_queue.empty():
-		clear()
+		.clear() # remove all tiles from tile map
 		for c in cell_set_queue:
 			set_cell(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7])
 		cell_set_queue.clear()

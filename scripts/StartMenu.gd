@@ -14,8 +14,8 @@ func _on_ExitButton_pressed():
 	get_tree().quit()
 
 func _on_Help_pressed():
-	get_tree().change_scene("res://scenes/HelpMenu.tscn")
+	get_tree().change_scene("res://game-objects/UI/Menu/HelpMenu.tscn")
 
 func _on_Settings_pressed():
-	get_tree().change_scene("res://scenes/SettingsMenu.tscn")
+	get_tree().change_scene("res://game-objects/UI/Menu/SettingsMenu.tscn")
 

@@ -51,7 +51,7 @@
 3/name = "ThiefSet - Boots2.png 3"
 3/texture = ExtResource( 11 )
 3/tex_offset = Vector2( 0, 0 )
-3/modulate = Color( 1, 1, 1, 1 )
+3/modulate = Color( 1, 1, 1, 0.392157 )
 3/region = Rect2( 0, 0, 64, 64 )
 3/tile_mode = 0
 3/occluder_offset = Vector2( 0, 0 )
@@ -95,13 +95,15 @@ script = ExtResource( 12 )
 [node name="Player1" type="Node" parent="."]
 
 [node name="Char" parent="Player1" instance=ExtResource( 13 )]
-position = Vector2( 161.031, 101.986 )
+position = Vector2( 160, 96 )
 z_index = 1
 z_as_relative = false
 
 [node name="Path" type="Node2D" parent="Player1"]
 script = ExtResource( 14 )
 DRAW_COLOR = Color( 0.0823529, 0.568627, 1, 1 )
+
+[node name="StartPosition" type="Node2D" parent="Player1"]
 
 [node name="Player2" type="Node" parent="."]
 
@@ -114,6 +116,8 @@ z_as_relative = false
 [node name="Path" type="Node2D" parent="Player2"]
 script = ExtResource( 14 )
 DRAW_COLOR = Color( 0.415686, 0.984314, 0.396078, 1 )
+
+[node name="StartPosition" type="Node2D" parent="Player2"]
 
 [node name="GeneralCamera" parent="." instance=ExtResource( 15 )]
 position = Vector2( 510, 300 )

@@ -1,15 +1,16 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/CombatUI.gd" type="Script" id=1]
-[ext_resource path="res://assets/fonts/lunchds.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/fonts/lunchds.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://scripts/UI/UndoTurnButton.gd" type="Script" id=3]
-[ext_resource path="res://assets/fonts/lunchds_size_18.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Assets/fonts/lunchds_size_18.tres" type="DynamicFont" id=4]
 [ext_resource path="res://scripts/UI/SlashAttackButton.gd" type="Script" id=5]
 [ext_resource path="res://scripts/UI/SwingAttackButton.gd" type="Script" id=6]
 [ext_resource path="res://scripts/UI/LungeAttackButton.gd" type="Script" id=7]
 [ext_resource path="res://scripts/UI/TurnButton.gd" type="Script" id=8]
 [ext_resource path="res://scripts/UI/ControlSwitch.gd" type="Script" id=9]
-[ext_resource path="res://scripts/CharacterSelectedLabel.gd" type="Script" id=10]
+[ext_resource path="res://Assets/fonts/lunchds_size_20.tres" type="DynamicFont" id=10]
+[ext_resource path="res://scripts/CharacterSelectedLabel.gd" type="Script" id=11]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -94,9 +95,9 @@ rect_scale = Vector2( 0.75, 0.75 )
 
 [node name="TurnButton" type="Button" parent="ColorRect/TurnControl"]
 material = SubResource( 4 )
-margin_left = 20.0
+margin_left = 200.0
 margin_top = 10.0
-margin_right = 180.0
+margin_right = 360.0
 margin_bottom = 60.0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -105,9 +106,9 @@ script = ExtResource( 8 )
 
 [node name="ControlSwitch" type="Button" parent="ColorRect/TurnControl"]
 material = SubResource( 4 )
-margin_left = 200.0
+margin_left = 16.6947
 margin_top = 10.0
-margin_right = 360.0
+margin_right = 178.695
 margin_bottom = 60.0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
@@ -122,11 +123,11 @@ margin_bottom = 78.0
 rect_scale = Vector2( 0.75, 0.75 )
 
 [node name="CharacterSelection" type="Label" parent="ColorRect/CharacterSelectionRect"]
-margin_left = 10.0
+margin_left = 2.75262
 margin_top = 3.0
-margin_right = 200.0
+margin_right = 211.753
 margin_bottom = 70.0
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 10 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Character Selected:"
 
@@ -134,12 +135,12 @@ text = "Character Selected:"
 margin_top = 27.0
 margin_right = 190.0
 margin_bottom = 67.0
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 10 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Player1"
 align = 1
 valign = 1
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 
 [node name="CommandRect" type="ColorRect" parent="ColorRect"]
 margin_left = 857.479
@@ -152,7 +153,7 @@ rect_scale = Vector2( 0.75, 0.75 )
 margin_top = 3.0
 margin_right = 213.0
 margin_bottom = 70.0
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 10 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Mode:"
 align = 1
@@ -162,7 +163,7 @@ margin_left = -4.36792
 margin_top = 26.3333
 margin_right = 208.632
 margin_bottom = 66.3333
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 10 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Move"
 align = 1

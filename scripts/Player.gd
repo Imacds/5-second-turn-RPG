@@ -58,7 +58,7 @@ var type
 var dragging = false
 
 var is_moving = false
-var target_pos = Vector2()
+var target_pos = position
 var target_dir = Vector2()
 
 var speed = 0
@@ -74,28 +74,26 @@ func _ready():
 	_change_command_mode(COMMAND_MODES.MOVE)
 	set_process_input(true)
 	set_physics_process(true)
+	print(Vector2.RIGHT)
 	
 
-func get_position():
-	return position
-
-
 func get_cell_coords():
+	return map.world_to_map(position)
 	# get world position, size of individual cell, divide & truncate
-	var x = int(position.x / map.cell_size.x)
-	var y = int(position.y / map.cell_size.y)
-	return Vector2(x, y)
+#	var x = int(position.x / map.cell_size.x)
+#	var y = int(position.y / map.cell_size.y)
+#	return Vector2(x, y)
 	
 
 func _change_state(new_state):
-	if new_state == STATES.WAIT:
-		path = pathing.get_path_relative(position, target_position)
-		if not path:
-			_change_state(STATES.IDLE)
-			return
+#	if new_state == STATES.WAIT:
+#		path = pathing.get_path_relative(position, target_position)
+#		if not path:
+#			_change_state(STATES.IDLE)
+#			return
 		# The index 0 is the starting cell
 		# we don't want the character to move back to it in this example
-		target_point_world = path[1]
+#		target_point_world = path[1]
 	_state = new_state
 	
 func _change_command_mode(new_mode):
@@ -123,32 +121,33 @@ func render_hp():
 func _process(delta):
 	render_hp()
 	
+	if _state != STATES.TURN:
+		return
+	
 #	if attack_mode != null and (attack_template.click_mode == null or selection_manager.selected == get_parent()):
 	if can_attack():
 		var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
 		preview_attack(attack_mode, dir_str, attack_map.TILES.GREEN_ZONE_TO_ATTACK) # attack_template_attack_mode, dir_str, tile_type
-	
-	if _state != STATES.TURN:
-		return
 		
 	if attack_mode != null and is_attack_turn:
 		attack_template.do_attack(get_cell_coords(), attack_mode, attack_dir, self)
 		attack_mode = null
 		_change_state(STATES.WAIT)
-	else:
-		var arrived_to_next_point = move_to(target_point_world)
-		if arrived_to_next_point:
-			_change_state(STATES.WAIT)
-			path.remove(0)
-			if len(path) == 0:
-				_change_state(STATES.IDLE)
-				return
-			target_point_world = path[0]
+#	else:
+#		var arrived_to_next_point = move_to(target_point_world)
+#		if arrived_to_next_point:
+#			_change_state(STATES.WAIT)
+#			path.remove(0)
+#			if len(path) == 0:
+#				_change_state(STATES.IDLE)
+#				return
+#			target_point_world = path[0]
 
 
 func _physics_process(delta):
-	if target_pos != position:
-		move_to(target_pos)
+	pass
+#	if target_pos != position:
+#		move_to(target_pos)
 
 func do_turn(is_attack_turn):
 	self.is_attack_turn = is_attack_turn
@@ -165,7 +164,8 @@ func move_to(world_position):
 	var desired_velocity = (world_position - position).normalized() * SPEED
 	var steering = desired_velocity - velocity
 	velocity += steering / MASS
-	position += velocity * get_process_delta_time()
+#	position += velocity * get_process_delta_time()
+	position += velocity
 #	move_and_slide(velocity)
 	#rotation = velocity.angle()
 	return position.distance_to(world_position) <= ARRIVE_DISTANCE
@@ -179,9 +179,9 @@ func move_one_cell(direction):
 	coords += direction
 	
 	# calc world destination
-	var world_destination = map.cell_coords_to_world_position(coords)
-	target_pos = world_destination
-#	move_to(world_destination)
+	var world_destination = map.map_to_world(coords, true)
+#	target_pos = world_destination
+	move_to(world_destination)
 	
 
 func _unhandled_input(event):

@@ -81,6 +81,8 @@ func get_cell_coords():
 	
 
 func _change_state(new_state):
+	if  new_state == STATES.IDLE:
+		emit_signal("agent_exits_walk_mode", get_cell_coords())
 #	if new_state == STATES.WAIT:
 #		path = pathing.get_path_relative(position, target_position)
 #		if not path or len(path) == 1:
@@ -157,7 +159,7 @@ func _physics_process(delta):
 
 
 func move():
-	if _state != STATES.TURN and _state != STATES.IDLE:
+	if _state != STATES.TURN and _state != STATES.IDLE: # if we're not waiting for the other player to make their move and we're not in "not moving" state waiting for command input
 		var arrived_to_next_point = move_to(target_point_world)
 		if arrived_to_next_point:
 			path.remove(0)
@@ -192,35 +194,24 @@ func move_to(world_position):
 
 
 func move_one_cell(direction):
-	
 	_change_state(STATES.WAIT)
-	
 	# get pos (cells)
 	var coords = get_cell_coords()
-	print("current pos " + str(coords))
 	
 	# get destination (cells)
 	coords += direction
-	print("next pos " + str(coords))
 	
 	# calc world destination
 	var world_destination = map.map_to_world(coords, false) + map._half_cell_size# todo: why is this method giving the wrong world coords?
 	target_point_world = world_destination
 	path = [position, world_destination]
-	print("move to " + str(world_destination))
-#	target_pos = world_destination
+
 	var arrived = move_to(world_destination)
 	
 
 func _unhandled_input(event):
 	if event.is_action_pressed("click"):
 		if can_move(): 
-#			if Input.is_key_pressed(KEY_SHIFT):
-#				global_position = get_global_mouse_position() # only here for debugging
-#			else:
-#				target_position = get_global_mouse_position()
-
-#			_change_state(STATES.WAIT)
 			_change_command_mode(COMMAND_MODES.MOVE)
 			action_points -= 1
 			$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT]))

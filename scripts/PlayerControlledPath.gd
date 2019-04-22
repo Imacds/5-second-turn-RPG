@@ -41,11 +41,12 @@ func draw_path():
 #		draw_circle(current_point, BASE_LINE_WIDTH * 2.0, DRAW_COLOR)
 #		last_point = current_point
 
+# returns: list of Vector2: world coordinates the agent can travel to sequentially to get to world_end
+func get_path_relative(start, end):
+	pass
 
 func _on_PlayerChar_agent_enters_walk_mode(origin_cell_coords):
 	draw_walkable(origin_cell_coords)
 
-
-# returns: list of Vector2: world coordinates the agent can travel to sequentially to get to world_end
-func get_path_relative(start, end):
-	pass
+func _on_Char_agent_exits_walk_mode(cell_coords):
+	attack_map.clear_cells(get_parent().get_name())

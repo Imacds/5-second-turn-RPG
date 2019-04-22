@@ -15,9 +15,13 @@ _global_script_class_icons={
 
 [application]
 
-config/name="6 second RPG"
-run/main_scene="res://scenes/StartMenu.tscn"
+config/name="6 Second RPG"
+run/main_scene="res://scenes/Root.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+utils="*res://scripts/globals/Utils.gd"
 
 [display]
 

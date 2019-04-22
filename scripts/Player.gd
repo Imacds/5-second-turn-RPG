@@ -33,18 +33,12 @@ var _state = null
 var action_points = 3
 var is_attack_turn = false
 var path = []
-var target_point_world = Vector2()
+var target_point_world = position
 var target_position = Vector2()
 var attack_mode = null # describes the type of attack if any. value from enum from AttackTemplate.gd
 var command_mode = COMMAND_MODES.MOVE # indicates allowed input reading for this player controlled character
 var attack_dir = Vector2.LEFT
 var direction = Vector2()
-
-const Top = Vector2(0,-1)
-const Right = Vector2(1,0)
-const Down = Vector2(0,1)
-const Left = Vector2(-1,0)
-var cell_size = 64
 
 onready var attack_template = get_tree().get_root().get_node("Root/AttackTemplate")
 onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
@@ -53,12 +47,12 @@ onready var map = get_tree().get_root().get_node("Root/Map")
 onready var attack_map = $"../../AttackMap"
 onready var pathing = get_parent().get_node("Path")
 onready var action_queue = $ActionQueue
-var type
 
 var dragging = false
 
 var is_moving = false
 var target_pos = position
+var character_target_position = position
 var target_dir = Vector2()
 
 var speed = 0
@@ -74,7 +68,6 @@ func _ready():
 	_change_command_mode(COMMAND_MODES.MOVE)
 	set_process_input(true)
 	set_physics_process(true)
-	print(Vector2.RIGHT)
 	
 
 func get_cell_coords():
@@ -86,14 +79,14 @@ func get_cell_coords():
 	
 
 func _change_state(new_state):
-#	if new_state == STATES.WAIT:
-#		path = pathing.get_path_relative(position, target_position)
-#		if not path:
-#			_change_state(STATES.IDLE)
-#			return
+	if new_state == STATES.WAIT:
+		path = pathing.get_path_relative(position, target_position)
+		if not path:
+			_change_state(STATES.IDLE)
+			return
 		# The index 0 is the starting cell
 		# we don't want the character to move back to it in this example
-#		target_point_world = path[1]
+		target_point_world = path[1]
 	_state = new_state
 	
 func _change_command_mode(new_mode):
@@ -133,7 +126,7 @@ func _process(delta):
 		attack_template.do_attack(get_cell_coords(), attack_mode, attack_dir, self)
 		attack_mode = null
 		_change_state(STATES.WAIT)
-#	else:
+	else:
 #		var arrived_to_next_point = move_to(target_point_world)
 #		if arrived_to_next_point:
 #			_change_state(STATES.WAIT)
@@ -142,12 +135,20 @@ func _process(delta):
 #				_change_state(STATES.IDLE)
 #				return
 #			target_point_world = path[0]
+		pass
 
 
 func _physics_process(delta):
-	pass
-#	if target_pos != position:
+#	if character_target_position != position:
 #		move_to(target_pos)
+	var arrived_to_next_point = move_to(target_point_world)
+	if arrived_to_next_point:
+		_change_state(STATES.WAIT)
+		path.remove(0)
+		if len(path) == 0:
+			_change_state(STATES.IDLE)
+			return
+		target_point_world = path[0]
 
 func do_turn(is_attack_turn):
 	self.is_attack_turn = is_attack_turn
@@ -164,8 +165,8 @@ func move_to(world_position):
 	var desired_velocity = (world_position - position).normalized() * SPEED
 	var steering = desired_velocity - velocity
 	velocity += steering / MASS
-#	position += velocity * get_process_delta_time()
-	position += velocity
+	position += velocity * get_process_delta_time()
+#	position += velocity
 #	move_and_slide(velocity)
 	#rotation = velocity.angle()
 	return position.distance_to(world_position) <= ARRIVE_DISTANCE
@@ -174,12 +175,16 @@ func move_to(world_position):
 func move_one_cell(direction):
 	# get pos (cells)
 	var coords = get_cell_coords()
+	print("current pos " + str(coords))
 	
 	# get destination (cells)
 	coords += direction
+	print("next pos " + str(coords))
 	
 	# calc world destination
-	var world_destination = map.map_to_world(coords, true)
+	var world_destination = map.map_to_world(coords, false) + Vector2(0, map._half_cell_size.y) # todo: why is this method giving the wrong world coords?
+	target_point_world = world_destination
+	print("move to " + str(world_destination))
 #	target_pos = world_destination
 	move_to(world_destination)
 	

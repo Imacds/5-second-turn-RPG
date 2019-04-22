@@ -136,7 +136,7 @@ func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, tr
 
 
 func cell_coords_to_world_position(cell_coords):
-	var x = cell_coords[0] * cell_size.x + _half_cell_size
-	var y = cell_coords[0] * cell_size.x + _half_cell_size
+	var x = cell_coords[0] * cell_size.x + _half_cell_size.x
+	var y = cell_coords[0] * cell_size.y + _half_cell_size.y
 	
 	return Vector2(x, y)

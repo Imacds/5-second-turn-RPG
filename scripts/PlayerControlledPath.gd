@@ -44,3 +44,8 @@ func draw_path():
 
 func _on_PlayerChar_agent_enters_walk_mode(origin_cell_coords):
 	draw_walkable(origin_cell_coords)
+
+
+# returns: list of Vector2: world coordinates the agent can travel to sequentially to get to world_end
+func get_path_relative(start, end):
+	pass

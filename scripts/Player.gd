@@ -1,17 +1,33 @@
 extends KinematicBody2D
 
+###################
+# editor vars #
+###################
 export(float) var SPEED = 200.0
 export(int) var hp = 4
 export(int) var walk_distance = 3
 export(int) var action_points_per_turn = 3
 
+###################
+# signals #
+###################
 signal agent_enters_walk_mode(cell_coords)
 signal agent_exits_walk_mode(cell_coords)
 
+signal action_queue_finished_executing(agent_name)
+
+###################
+# enums #
+###################
 # idle is waiting for player input, wait is waiting for turn to end or player to complete action ?, turn indicates it's this player reads inputs & not the other
 enum STATES { IDLE, WAIT, TURN } 
 # null: read no input from this player, move: allow reading and queue for move action, attack: allow reading queue of attack action
 enum COMMAND_MODES { NULL, MOVE, ATTACK }
+
+###################
+# attributes #
+###################
+var MoveAction = load("res://scripts/AgentActionSystem/MoveAction.gd")
 
 var _state = null
 var action_points = 3
@@ -21,7 +37,7 @@ var target_point_world = Vector2()
 var target_position = Vector2()
 var attack_mode = null # describes the type of attack if any. value from enum from AttackTemplate.gd
 var command_mode = COMMAND_MODES.MOVE # indicates allowed input reading for this player controlled character
-var attack_dir = Vector2(0, -1)
+var attack_dir = Vector2.LEFT
 var direction = Vector2()
 
 const Top = Vector2(0,-1)
@@ -36,6 +52,7 @@ onready var turn_manager = get_tree().get_root().get_node("Root/TurnManager")
 onready var map = get_tree().get_root().get_node("Root/Map")
 onready var attack_map = $"../../AttackMap"
 onready var pathing = get_parent().get_node("Path")
+onready var action_queue = $ActionQueue
 var type
 
 var dragging = false
@@ -49,6 +66,9 @@ const Max_speed = 400
 
 var velocity = Vector2()
 
+###################
+# methods #
+###################
 func _ready():
 	_change_state(STATES.IDLE)
 	_change_command_mode(COMMAND_MODES.MOVE)
@@ -70,7 +90,7 @@ func get_cell_coords():
 func _change_state(new_state):
 	if new_state == STATES.WAIT:
 		path = pathing.get_path_relative(position, target_position)
-		if not path or len(path) == 1:
+		if not path:
 			_change_state(STATES.IDLE)
 			return
 		# The index 0 is the starting cell
@@ -82,7 +102,7 @@ func _change_command_mode(new_mode):
 	if action_points > 0:
 		command_mode = new_mode
 		
-		if command_mode == COMMAND_MODES.MOVE:
+		if can_move():
 			$PlayerControlledPath.draw_walkable(get_cell_coords())
 	else:
 		command_mode = COMMAND_MODES.NULL
@@ -126,6 +146,10 @@ func _process(delta):
 			target_point_world = path[0]
 
 
+func _physics_process(delta):
+	if target_pos != position:
+		move_to(target_pos)
+
 func do_turn(is_attack_turn):
 	self.is_attack_turn = is_attack_turn
 	if _state == STATES.WAIT or attack_mode != null:
@@ -133,46 +157,18 @@ func do_turn(is_attack_turn):
 	else:
 		attack_map.clear()
 
-func _physics_process(delta):
-	direction = Vector2()
-	speed = 0
-	#move_and_slide(target_pos - position)
-	
-	if not is_moving and direction != Vector2():
-		target_dir = direction
-		if map.is_cell_empty(position, target_dir):
-			target_pos = pathing.update_line()
-			is_moving = true
-	elif is_moving:
-		speed = Max_speed
-		velocity = speed * target_dir * delta
-		var pos = position
-		
-		var distance_to_target = pos.distance_to(target_pos)
-		var move_distance = velocity.length()
-		if move_distance > distance_to_target:
-			velocity = target_dir * distance_to_target
-			is_moving = false
-		distance_to_target = Vector2(abs(target_pos.x - pos.x) , abs(target_pos.y - pos.y))
-		if abs(velocity.x) > distance_to_target.x:
-			velocity.x = distance_to_target.x * target_dir.x
-			is_moving = false
-		if abs(velocity.y) > distance_to_target.y:
-			velocity.x = distance_to_target.y * target_dir.y
-			is_moving = false
-		move_and_collide(velocity)
-
 
 func move_to(world_position):
 	var MASS = 10.0
-	var ARRIVE_DISTANCE = 10.0
+	var ARRIVE_DISTANCE = 0
 
 	var desired_velocity = (world_position - position).normalized() * SPEED
 	var steering = desired_velocity - velocity
 	velocity += steering / MASS
 	position += velocity * get_process_delta_time()
+#	move_and_slide(velocity)
 	#rotation = velocity.angle()
-	return position.distance_to(world_position) < ARRIVE_DISTANCE
+	return position.distance_to(world_position) <= ARRIVE_DISTANCE
 
 
 func move_one_cell(direction):
@@ -184,20 +180,22 @@ func move_one_cell(direction):
 	
 	# calc world destination
 	var world_destination = map.cell_coords_to_world_position(coords)
-	move_to(world_destination)
+	target_pos = world_destination
+#	move_to(world_destination)
 	
 
 func _unhandled_input(event):
 	if event.is_action_pressed("click"):
 		if can_move(): 
 			if Input.is_key_pressed(KEY_SHIFT):
-				global_position = get_global_mouse_position()
+				global_position = get_global_mouse_position() # only here for debugging
 			else:
 				target_position = get_global_mouse_position()
 
 			_change_state(STATES.WAIT)
 			_change_command_mode(COMMAND_MODES.MOVE)
 			action_points -= 1
+			$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT]))
 		elif can_attack():
 			var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
 			preview_attack(attack_template.click_mode, dir_str, attack_map.TILES.YELLOW_ZONE_TO_ATTACK)
@@ -221,3 +219,9 @@ func can_move():
 func _on_AttackTemplate_click_mode_changed(new_mode): # listener
 	attack_mode = new_mode
 	_change_command_mode(COMMAND_MODES.ATTACK)
+	
+func push_move_action(direction_vector):
+	$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT]))
+
+func _on_ActionQueue_finished_executing_actions(agent_name):
+	emit_signal("action_queue_finished_executing", agent_name)

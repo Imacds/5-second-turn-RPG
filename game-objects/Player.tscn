@@ -35,4 +35,9 @@ script = ExtResource( 4 )
 [node name="ActionQueue" type="Node" parent="."]
 script = ExtResource( 5 )
 
+[node name="Timer" type="Timer" parent="ActionQueue"]
+wait_time = 0.15
+
 [connection signal="agent_enters_walk_mode" from="." to="PlayerControlledPath" method="_on_PlayerChar_agent_enters_walk_mode"]
+[connection signal="finished_executing_actions" from="ActionQueue" to="." method="_on_ActionQueue_finished_executing_actions"]
+[connection signal="timeout" from="ActionQueue/Timer" to="ActionQueue" method="_on_Timer_timeout"]

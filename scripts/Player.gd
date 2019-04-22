@@ -3,7 +3,7 @@ extends KinematicBody2D
 ###################
 # editor vars #
 ###################
-export(float) var SPEED = 200.0
+export(float) var SPEED = 300.0
 export(int) var hp = 4
 export(int) var walk_distance = 3
 export(int) var action_points_per_turn = 3
@@ -14,13 +14,15 @@ export(int) var action_points_per_turn = 3
 signal agent_enters_walk_mode(cell_coords)
 signal agent_exits_walk_mode(cell_coords)
 
+signal single_action_finished(action_name)
 signal action_queue_finished_executing(agent_name)
 
 ###################
 # enums #
 ###################
 # idle is waiting for player input, wait is waiting for turn to end or player to complete action ?, turn indicates it's this player reads inputs & not the other
-enum STATES { IDLE, WAIT, TURN } 
+# waiting_for_all_actions is the current player does not read input, but is waiting for all queued actions of all actions to complete 
+enum STATES { IDLE, WAIT, TURN, WAITING_FOR_ALL_ACTIONS } 
 # null: read no input from this player, move: allow reading and queue for move action, attack: allow reading queue of attack action
 enum COMMAND_MODES { NULL, MOVE, ATTACK }
 
@@ -29,7 +31,7 @@ enum COMMAND_MODES { NULL, MOVE, ATTACK }
 ###################
 var MoveAction = load("res://scripts/AgentActionSystem/MoveAction.gd")
 
-var _state = null
+var _state = STATES.TURN
 var action_points = 3
 var is_attack_turn = false
 var path = []
@@ -64,7 +66,7 @@ var velocity = Vector2()
 # methods #
 ###################
 func _ready():
-	_change_state(STATES.IDLE)
+	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
 	_change_command_mode(COMMAND_MODES.MOVE)
 	set_process_input(true)
 	set_physics_process(true)
@@ -79,14 +81,14 @@ func get_cell_coords():
 	
 
 func _change_state(new_state):
-	if new_state == STATES.WAIT:
-		path = pathing.get_path_relative(position, target_position)
-		if not path:
-			_change_state(STATES.IDLE)
-			return
-		# The index 0 is the starting cell
-		# we don't want the character to move back to it in this example
-		target_point_world = path[1]
+#	if new_state == STATES.WAIT:
+#		path = pathing.get_path_relative(position, target_position)
+#		if not path or len(path) == 1:
+#			_change_state(STATES.IDLE)
+#			return
+#		# The index 0 is the starting cell
+#		# we don't want the character to move back to it in this example
+#		target_point_world = path[1]
 	_state = new_state
 	
 func _change_command_mode(new_mode):
@@ -139,16 +141,35 @@ func _process(delta):
 
 
 func _physics_process(delta):
+	move()
 #	if character_target_position != position:
 #		move_to(target_pos)
-	var arrived_to_next_point = move_to(target_point_world)
-	if arrived_to_next_point:
-		_change_state(STATES.WAIT)
-		path.remove(0)
-		if len(path) == 0:
-			_change_state(STATES.IDLE)
-			return
-		target_point_world = path[0]
+#	if _state != STATES.TURN and _state != STATES.IDLE:
+		
+#		var arrived_to_next_point = move_to(target_point_world)
+#		if arrived_to_next_point:
+#			_change_state(STATES.WAIT)
+#			path.remove(0)
+#			if len(path) == 0:
+#				_change_state(STATES.IDLE)
+#				return
+#			target_point_world = path[0]
+
+
+func move():
+	if _state != STATES.TURN and _state != STATES.IDLE:
+		var arrived_to_next_point = move_to(target_point_world)
+		if arrived_to_next_point:
+			path.remove(0)
+			print("moving to " + str(target_point_world))
+			position = target_point_world
+			if len(path) == 0:
+				_change_state(STATES.IDLE)
+				return
+			_change_state(STATES.WAIT)
+			target_point_world = path[0]
+			emit_signal("single_action_finished", MoveAction.get_name())
+		
 
 func do_turn(is_attack_turn):
 	self.is_attack_turn = is_attack_turn
@@ -158,7 +179,7 @@ func do_turn(is_attack_turn):
 		attack_map.clear()
 
 
-func move_to(world_position):
+func move_to(world_position):	
 	var MASS = 10.0
 	var ARRIVE_DISTANCE = 0
 
@@ -166,13 +187,14 @@ func move_to(world_position):
 	var steering = desired_velocity - velocity
 	velocity += steering / MASS
 	position += velocity * get_process_delta_time()
-#	position += velocity
-#	move_and_slide(velocity)
-	#rotation = velocity.angle()
+	
 	return position.distance_to(world_position) <= ARRIVE_DISTANCE
 
 
 func move_one_cell(direction):
+	
+	_change_state(STATES.WAIT)
+	
 	# get pos (cells)
 	var coords = get_cell_coords()
 	print("current pos " + str(coords))
@@ -182,22 +204,23 @@ func move_one_cell(direction):
 	print("next pos " + str(coords))
 	
 	# calc world destination
-	var world_destination = map.map_to_world(coords, false) + Vector2(0, map._half_cell_size.y) # todo: why is this method giving the wrong world coords?
+	var world_destination = map.map_to_world(coords, false) + map._half_cell_size# todo: why is this method giving the wrong world coords?
 	target_point_world = world_destination
+	path = [position, world_destination]
 	print("move to " + str(world_destination))
 #	target_pos = world_destination
-	move_to(world_destination)
+	var arrived = move_to(world_destination)
 	
 
 func _unhandled_input(event):
 	if event.is_action_pressed("click"):
 		if can_move(): 
-			if Input.is_key_pressed(KEY_SHIFT):
-				global_position = get_global_mouse_position() # only here for debugging
-			else:
-				target_position = get_global_mouse_position()
+#			if Input.is_key_pressed(KEY_SHIFT):
+#				global_position = get_global_mouse_position() # only here for debugging
+#			else:
+#				target_position = get_global_mouse_position()
 
-			_change_state(STATES.WAIT)
+#			_change_state(STATES.WAIT)
 			_change_command_mode(COMMAND_MODES.MOVE)
 			action_points -= 1
 			$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT]))
@@ -212,8 +235,11 @@ func _unhandled_input(event):
 func preview_attack(attack_template_attack_mode, dir_str, tile_type):
 	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, dir_str, self, tile_type) # position, attack_mode, attack_dir, owner, tile_type
 	
+func is_selected():
+	return get_parent() == selection_manager.selected
+	
 func can_do_action():
-	return action_points > 0 and selection_manager.selected == get_parent() and _state != STATES.TURN
+	return action_points > 0 and is_selected() and _state != STATES.TURN
 	
 func can_attack():
 	return can_do_action() and command_mode == COMMAND_MODES.ATTACK
@@ -229,4 +255,6 @@ func push_move_action(direction_vector):
 	$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT]))
 
 func _on_ActionQueue_finished_executing_actions(agent_name):
+	action_points = action_points_per_turn
+	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
 	emit_signal("action_queue_finished_executing", agent_name)

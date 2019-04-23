@@ -24,12 +24,12 @@ func _ready():
 		0, 0, 2, 2, 2, 0, 0,
 		0, 0, 0, 2, 0, 0, 0
 	])
-	
 
-# color the tiles that can be walked to 
+
+# color the tiles that can be walked to
 func draw_walkable(agent_cell_coords):
 	var cell_coords = get_agent_walkable_cell_coords(agent_cell_coords)
-	
+
 	for coords in cell_coords:
 		attack_map.set_cell(coords[0], coords[1], attack_map.TILES.AGENT_CAN_MOVE_HERE, owner_name) # x, y, tile_index, owner = null,
 
@@ -48,7 +48,7 @@ func draw_path():
 # returns: list of Vector2: world coordinates the agent can travel to sequentially to get to world_end
 func get_path_relative(start, end):
 	pass
-	
+
 func _on_Char_agent_enters_walk_mode(cell_coords):
 	draw_walkable(cell_coords)
 	$TileSelectorSprite.set_enabled(true)

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/zone_to_attack.png-9a927af5e4edccc01f7889112bb0660f.stex"
+path="res://.import/ThiefSet.png-ae1c80b6367da3d5fed074cfc12b5279.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/zone_to_attack.png"
-dest_files=[ "res://.import/zone_to_attack.png-9a927af5e4edccc01f7889112bb0660f.stex" ]
+source_file="res://sprites/ThiefSet.png"
+dest_files=[ "res://.import/ThiefSet.png-ae1c80b6367da3d5fed074cfc12b5279.stex" ]
 
 [params]
 

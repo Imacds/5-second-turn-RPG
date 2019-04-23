@@ -133,4 +133,3 @@ func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, tr
 
 	.set_cell(x, y, tile_index, flip_x, flip_y, transpose, autotile_coord) # call super.set_cell
 	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, cell) 
-

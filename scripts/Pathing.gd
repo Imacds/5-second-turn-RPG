@@ -14,7 +14,7 @@ onready var grid = get_tree().get_root().get_node("Root/Map")
 const BASE_LINE_WIDTH = 3.0
 export(Color) var DRAW_COLOR = Color('#fff')
 
-
+# returns: list of Vector2: world coordinates the agent can travel to sequentially to get to world_end
 func get_path_relative(world_start, world_end):
 	self.path_start_position = grid.world_to_map(world_start)
 	self.path_end_position = grid.world_to_map(world_end)

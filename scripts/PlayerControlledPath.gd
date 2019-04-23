@@ -1,3 +1,6 @@
+#
+# TODO: pass map and constraint_func objs into methods to then filter walkable tiles
+#
 extends Node
 
 var AttackMatrix = load("res://scripts/AttackMatrix.gd")
@@ -25,7 +28,7 @@ func _ready():
 
 # color the tiles that can be walked to 
 func draw_walkable(agent_cell_coords):
-	var cell_coords = walk_matrix.to_world_coords(agent_cell_coords)
+	var cell_coords = get_agent_walkable_cell_coords(agent_cell_coords)
 	
 	for coords in cell_coords:
 		attack_map.set_cell(coords[0], coords[1], attack_map.TILES.AGENT_CAN_MOVE_HERE, owner_name) # x, y, tile_index, owner = null,
@@ -45,12 +48,14 @@ func draw_path():
 # returns: list of Vector2: world coordinates the agent can travel to sequentially to get to world_end
 func get_path_relative(start, end):
 	pass
-
-func _on_PlayerChar_agent_enters_walk_mode(origin_cell_coords):
-	draw_walkable(origin_cell_coords)
+	
+func _on_Char_agent_enters_walk_mode(cell_coords):
+	draw_walkable(cell_coords)
+	$TileSelectorSprite.set_enabled(true)
 
 func _on_Char_agent_exits_walk_mode(cell_coords):
 	attack_map.clear_cells(get_parent().get_name(), attack_map.TILES.AGENT_CAN_MOVE_HERE)
+	$TileSelectorSprite.set_enabled(false)
 
-func get_agent_walkable_cell_coords(): # get the list of cell coords (lists) that the agent can walk to
-	return walk_matrix.to_world_coords(agent.get_cell_coords())
+func get_agent_walkable_cell_coords(agent_cell = null): # get the list of cell coords (lists) that the agent can walk to
+	return walk_matrix.to_world_coords(agent_cell if agent_cell else agent.get_cell_coords(), attack_map, attack_map.reachable_cell_constraint)

@@ -21,7 +21,8 @@ config/icon="res://icon.png"
 
 [autoload]
 
-utils="*res://scripts/globals/Utils.gd"
+Utils="*res://scripts/globals/Utils.gd"
+ObjectFinder="*res://scripts/globals/ObjectFinder.gd"
 
 [display]
 

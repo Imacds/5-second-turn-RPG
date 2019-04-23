@@ -38,7 +38,7 @@ var path = []
 var target_point_world = position
 var target_position = Vector2()
 var attack_mode = null # describes the type of attack if any. value from enum from AttackTemplate.gd
-var command_mode = COMMAND_MODES.MOVE # indicates allowed input reading for this player controlled character
+var command_mode = COMMAND_MODES.NULL # indicates allowed input reading for this player controlled character
 var attack_dir = Vector2.LEFT
 var direction = Vector2()
 
@@ -81,8 +81,8 @@ func get_cell_coords():
 	
 
 func _change_state(new_state):
-	if  new_state == STATES.IDLE:
-		emit_signal("agent_exits_walk_mode", get_cell_coords())
+#	if  new_state == STATES.IDLE:
+#		emit_signal("agent_exits_walk_mode", get_cell_coords())
 #	if new_state == STATES.WAIT:
 #		path = pathing.get_path_relative(position, target_position)
 #		if not path or len(path) == 1:
@@ -94,11 +94,14 @@ func _change_state(new_state):
 	_state = new_state
 	
 func _change_command_mode(new_mode):
+	if command_mode == COMMAND_MODES.MOVE:
+		emit_signal("agent_exits_walk_mode", get_cell_coords())
+	
 	if action_points > 0:
 		command_mode = new_mode
 		
 		if can_move():
-			$PlayerControlledPath.draw_walkable(get_cell_coords())
+			emit_signal("agent_enters_walk_mode", get_cell_coords())
 	else:
 		command_mode = COMMAND_MODES.NULL
 
@@ -243,9 +246,9 @@ func _on_AttackTemplate_click_mode_changed(new_mode): # listener
 	_change_command_mode(COMMAND_MODES.ATTACK)
 	
 func push_move_action(direction_vector):
-	$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT]))
+	$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT])) # todo update this
 
-func _on_ActionQueue_finished_executing_actions(agent_name):
+func _on_ActionQueue_finished_executing_actions(agent_name): # signal forwarding and turn end
 	action_points = action_points_per_turn
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
 	emit_signal("action_queue_finished_executing", agent_name)

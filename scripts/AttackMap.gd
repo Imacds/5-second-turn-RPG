@@ -2,13 +2,14 @@ extends TileMap
 
 enum TILES { ZONE_TO_ATTACK, YELLOW_ZONE_TO_ATTACK, GREEN_ZONE_TO_ATTACK, AGENT_CAN_MOVE_HERE, VOID }
 
+export(Vector2) var map_size = Vector2(16, 16)
+
 var grid = []
 var cell_set_queue = []
 
+onready var reachable_cell_constraint = funcref(self, "reachable_cell_constraint_func")
 onready var Utils = get_node("/root/Utils/")
 var GridElement = load("res://scripts/GridElement.gd")
-
-export(Vector2) var map_size = Vector2(16, 16)
 
 
 func _ready():
@@ -18,7 +19,7 @@ func _ready():
 			grid[x].append(GridElement.new("void", int(TILES.VOID), null, [x, y]))
 
 func is_outside_map_bounds(point):
-	return point.x < 0 or point.y < 0 or point.x >= map_size.x or point.y >= map_size.y
+	return point[0] < 0 or point[1] < 0 or point[0] >= map_size.x or point[1] >= map_size.y
 
 # param pos: type: Vector2 or list<int> of size 2. grid coordinates in range [0, map.size = 16)
 func get_cell_content(pos):
@@ -44,7 +45,6 @@ func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, tr
 	.set_cell(x, y, tile_index, flip_x, flip_y, transpose, autotile_coord) # call super.set_cell
 	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, cell) 
 	
-
 # clear (remove) tiles/cells from map where the cell owner or/and tile_index matches
 func clear_cells(owner = null, tile_index = null):
 	if not owner and tile_index == null: # nothing to clear
@@ -61,3 +61,8 @@ func clear_cells(owner = null, tile_index = null):
 				 set_cell(x, y, int(TILES.VOID), null)
 			elif cell.tile_index == tile_index: # only cells of tile_index to be cleared
 				 set_cell(x, y, int(TILES.VOID), null)
+
+# filter func - remove falsey values later down the pipe
+func reachable_cell_constraint_func(map: TileMap, cell_coord: Array) -> bool:
+	# todo: do a* pathing and check to see if cell is on wall/obstacle or walks through a wall
+	return not is_outside_map_bounds(cell_coord)

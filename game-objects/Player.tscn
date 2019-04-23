@@ -32,7 +32,7 @@ custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "HP: 20"
 align = 1
 
-[node name="PlayerControlledPath" type="Node" parent="."]
+[node name="PlayerControlledPath" type="Node2D" parent="."]
 script = ExtResource( 4 )
 
 [node name="TileSelectorSprite" type="Sprite" parent="PlayerControlledPath"]
@@ -45,8 +45,7 @@ script = ExtResource( 7 )
 [node name="Timer" type="Timer" parent="ActionQueue"]
 one_shot = true
 
-[connection signal="agent_enters_walk_mode" from="." to="PlayerControlledPath" method="_on_PlayerChar_agent_enters_walk_mode"]
-[connection signal="agent_exits_walk_mode" from="." to="PlayerControlledPath" method="_on_Char_agent_exits_walk_mode"]
+[connection signal="agent_enters_walk_mode" from="." to="PlayerControlledPath" method="_on_Char_agent_enters_walk_mode"]
 [connection signal="single_action_finished" from="." to="ActionQueue" method="_on_Char_single_action_finished"]
 [connection signal="finished_executing_actions" from="ActionQueue" to="." method="_on_ActionQueue_finished_executing_actions"]
 [connection signal="timeout" from="ActionQueue/Timer" to="ActionQueue" method="_on_Timer_timeout"]

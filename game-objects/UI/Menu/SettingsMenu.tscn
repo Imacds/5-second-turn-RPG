@@ -18,38 +18,38 @@ margin_right = 320.0
 margin_bottom = 180.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 278.0
+margin_left = 286.0
 margin_top = 142.0
-margin_right = 361.0
+margin_right = 353.0
 margin_bottom = 218.0
 
 [node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer"]
-margin_right = 83.0
+margin_right = 67.0
 margin_bottom = 76.0
 
 [node name="VButtonContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer/CenterContainer"]
-margin_right = 83.0
+margin_right = 67.0
 margin_bottom = 76.0
 
-[node name="ExitButton" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer"]
-margin_right = 83.0
-margin_bottom = 20.0
-text = "Main Menu"
-
 [node name="MusicBox" type="CheckBox" parent="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer"]
-margin_top = 24.0
-margin_right = 83.0
-margin_bottom = 48.0
+margin_right = 67.0
+margin_bottom = 24.0
 pressed = true
 text = "Music"
 
 [node name="SoundBox" type="CheckBox" parent="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer"]
-margin_top = 52.0
-margin_right = 83.0
-margin_bottom = 76.0
+margin_top = 28.0
+margin_right = 67.0
+margin_bottom = 52.0
 pressed = true
 text = "Sound"
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
+[node name="ExitButton" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer"]
+margin_top = 56.0
+margin_right = 67.0
+margin_bottom = 76.0
+text = "Return"
+
 [connection signal="toggled" from="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer/MusicBox" to="." method="_on_CheckBox_toggled"]
 [connection signal="toggled" from="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer/SoundBox" to="." method="_on_SoundBox_toggled"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer/ExitButton" to="." method="_on_ExitButton_pressed"]

@@ -2,6 +2,7 @@ extends Control
 
 var menu = false
 var open = false
+var visibile = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -10,6 +11,9 @@ func _ready():
 	
 
 func _process(delta):
+	if get_node("SettingsMenu").settingsVisibile == false:
+		get_node("PauseContainer").show()
+		
 	if open:
 		if menu:
 			hide()
@@ -32,7 +36,8 @@ func _on_Resume_pressed():
 
 
 func _on_Settings_pressed():
-	get_tree().change_scene("res://game-objects/UI/Menu/SettingsMenu.tscn")
+	get_node("PauseContainer").hide()
+	get_node("SettingsMenu").show()
 	pass # Replace with function body.
 
 

@@ -30,6 +30,7 @@ margin_right = 367.0
 margin_bottom = 237.0
 
 [node name="TitleContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer"]
+editor/display_folded = true
 margin_right = 95.0
 
 [node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer/TitleContainer"]
@@ -45,6 +46,7 @@ margin_right = 95.0
 margin_bottom = 96.0
 
 [node name="VButtonContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer/CenterContainer"]
+editor/display_folded = true
 margin_left = 4.0
 margin_right = 91.0
 margin_bottom = 92.0

@@ -1,4 +1,4 @@
-func get_name(obj_or_str):
+static func get_name(obj_or_str):
 	match typeof(obj_or_str):
 		TYPE_STRING: 
 			return obj_or_str

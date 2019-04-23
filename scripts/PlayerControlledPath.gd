@@ -4,10 +4,11 @@ var AttackMatrix = load("res://scripts/AttackMatrix.gd")
 
 onready var agent = get_parent()
 onready var owner_name = agent.get_name()
-onready var walk_distance = agent.walk_distance
+onready var walk_distance: int = agent.walk_distance
 onready var attack_map = $"../../../AttackMap"
+onready var map = agent.map
 
-var walk_matrix
+var walk_matrix # AttackMatrix
 
 func _ready():
 	# todo: dont hard code this, generate it from agent walk distance
@@ -27,7 +28,7 @@ func draw_walkable(agent_cell_coords):
 	var cell_coords = walk_matrix.to_world_coords(agent_cell_coords)
 	
 	for coords in cell_coords:
-		attack_map.set_cell(coords[0], coords[1], attack_map.TILES.AGENT_CAN_MOVE_HERE, owner_name)# x, y, tile_index, owner = null,
+		attack_map.set_cell(coords[0], coords[1], attack_map.TILES.AGENT_CAN_MOVE_HERE, owner_name) # x, y, tile_index, owner = null,
 
 func draw_path():
 	pass
@@ -49,4 +50,7 @@ func _on_PlayerChar_agent_enters_walk_mode(origin_cell_coords):
 	draw_walkable(origin_cell_coords)
 
 func _on_Char_agent_exits_walk_mode(cell_coords):
-	attack_map.clear_cells(get_parent().get_name())
+	attack_map.clear_cells(get_parent().get_name(), attack_map.TILES.AGENT_CAN_MOVE_HERE)
+
+func get_agent_walkable_cell_coords(): # get the list of cell coords (lists) that the agent can walk to
+	return walk_matrix.to_world_coords(agent.get_cell_coords())

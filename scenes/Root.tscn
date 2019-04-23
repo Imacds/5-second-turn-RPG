@@ -94,7 +94,6 @@ format = 1
 script = ExtResource( 12 )
 
 [node name="Player1" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="Char" parent="Player1" instance=ExtResource( 13 )]
 position = Vector2( 160, 96 )

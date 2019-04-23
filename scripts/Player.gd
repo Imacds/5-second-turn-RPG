@@ -15,7 +15,7 @@ signal agent_enters_walk_mode(cell_coords)
 signal agent_exits_walk_mode(cell_coords)
 
 signal single_action_finished(action_name)
-signal action_queue_finished_executing(agent_name)
+signal action_queue_finished_executing(agent_name) # only here to forward the signal from ActionQueue
 
 ###################
 # enums #

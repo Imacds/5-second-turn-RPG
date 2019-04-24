@@ -244,11 +244,15 @@ func can_move():
 func _on_AttackTemplate_click_mode_changed(new_mode): # listener
 	attack_mode = new_mode
 	_change_command_mode(COMMAND_MODES.ATTACK)
-	
-func push_move_action(direction_vector):
-	$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT])) # todo update this
 
 func _on_ActionQueue_finished_executing_actions(agent_name): # signal forwarding and turn end
 	action_points = action_points_per_turn
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
 	emit_signal("action_queue_finished_executing", agent_name)
+
+func queue_move_action(direction: Vector2):
+	var action = MoveAction.new([self, direction])
+	$ActionQueue.push(action)
+	
+	$PlayerControlledPath.push_draw_path(direction)
+	action_points -= action.get_cost()

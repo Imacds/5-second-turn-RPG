@@ -3,7 +3,6 @@ extends Sprite
 var MoveAction = load("res://scripts/AgentActionSystem/MoveAction.gd")
 
 var enabled = false
-var inputs_queue = []
 
 onready var Finder = get_node("/root/ObjectFinder") # Finder global
 onready var agent = $"../../../Char"
@@ -31,10 +30,10 @@ func reset_position():
 
 # param dir: unit vector for direction (Vector2.RIGHT, Vector2.LEFT, etc)
 func move_one_cell(direction: Vector2):
-	var next_pos = agent.position + position + direction * map.cell_size
+	var next_pos = agent.position + position + direction * map.cell_size # position where agent would move
 	if is_walkable(next_pos):
-		position = next_pos - agent.position
-		agent.queue_move_action(direction)
+		position = next_pos - agent.position # position of this sprite (relative to where agent currently is)
+		agent.queue_move_action(direction) # add to action queue
 
 # set visibility and reset position
 func set_enabled(enabled):

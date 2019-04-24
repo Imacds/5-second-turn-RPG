@@ -104,6 +104,7 @@ DRAW_COLOR = Color( 0.0823529, 0.568627, 1, 1 )
 [node name="StartPosition" type="Node2D" parent="Player1"]
 
 [node name="Player2" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="Char" parent="Player2" instance=ExtResource( 12 )]
 modulate = Color( 0.615686, 1, 0, 1 )

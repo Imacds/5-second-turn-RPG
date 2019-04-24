@@ -6,3 +6,6 @@ func execute():
 	
 func get_cost():
 	print_debug("not implemented in abc")
+	
+static func can_do_action(action, action_points_available: int) -> bool:
+	return action_points_available - action.get_cost() >= 0

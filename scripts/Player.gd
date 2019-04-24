@@ -42,11 +42,13 @@ var command_mode = COMMAND_MODES.NULL # indicates allowed input reading for this
 var attack_dir = Vector2.LEFT
 var direction = Vector2()
 
+onready var Finder = get_node("/root/ObjectFinder")
+
 onready var attack_template = get_tree().get_root().get_node("Root/AttackTemplate")
 onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
 onready var turn_manager = get_tree().get_root().get_node("Root/TurnManager")
 onready var map = get_tree().get_root().get_node("Root/Map")
-onready var attack_map = $"../../AttackMap"
+onready var attack_map = Finder.get_node_from_root("Root/AttackMap")
 onready var pathing = get_parent().get_node("Path")
 onready var action_queue = $ActionQueue
 
@@ -176,7 +178,7 @@ func move():
 			emit_signal("single_action_finished", MoveAction.get_name())
 		
 
-func do_turn(is_attack_turn):
+func do_turn(is_attack_turn):	
 	self.is_attack_turn = is_attack_turn
 	if _state == STATES.WAIT or attack_mode != null:
 		_state = STATES.TURN
@@ -245,14 +247,30 @@ func _on_AttackTemplate_click_mode_changed(new_mode): # listener
 	attack_mode = new_mode
 	_change_command_mode(COMMAND_MODES.ATTACK)
 
+func _on_ActionQueue_begin_executing_actions(agent_name): # begin the action execution of actions from queue
+	$PlayerControlledPath/TileSelectorSprite.set_enabled(false)
+	attack_map.clear_cells(get_name())
+	attack_map.clear_cells(get_name())
+
 func _on_ActionQueue_finished_executing_actions(agent_name): # signal forwarding and turn end
 	action_points = action_points_per_turn
+	
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
+	_change_command_mode(COMMAND_MODES.MOVE)
+	attack_map.clear_cells(get_name())
+	
 	emit_signal("action_queue_finished_executing", agent_name)
 
 func queue_move_action(direction: Vector2):
 	var action = MoveAction.new([self, direction])
-	$ActionQueue.push(action)
-	
-	$PlayerControlledPath.push_draw_path(direction)
-	action_points -= action.get_cost()
+	if MoveAction.can_do_action(action, action_points) and $ActionQueue.push(action):
+		$PlayerControlledPath.push_draw_path(direction)
+		action_points -= action.get_cost()
+	else: # not enough AP or queue is full
+		_change_command_mode(COMMAND_MODES.NULL)
+		
+# override
+func get_name():
+	return get_parent().get_name()
+
+

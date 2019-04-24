@@ -63,6 +63,6 @@ func clear_cells(owner = null, tile_index = null):
 				 set_cell(x, y, int(TILES.VOID), null)
 
 # filter func - remove falsey values later down the pipe
-func reachable_cell_constraint_func(map: TileMap, cell_coord: Array) -> bool:
+func reachable_cell_constraint_func(cell_coord: Array) -> bool:
 	# todo: do a* pathing and check to see if cell is on wall/obstacle or walks through a wall
 	return not is_outside_map_bounds(cell_coord)

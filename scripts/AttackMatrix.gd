@@ -91,17 +91,17 @@ func to_relative_coords():
 	return coords
 	
 
-func to_world_coords(attack_coords, map: TileMap = null, constraint: FuncRef = null):
+func to_world_coords(attack_coords, constraint: FuncRef = null):
 	attacker_coords = attack_coords
 	var relative_coords = to_relative_coords()
 	var cell_coords = []
-	var enable_filter = map and constraint
+	var enable_filter = constraint
 	
 	for coords in relative_coords:
 		coords[0] += attacker_coords[0]
 		coords[1] += attacker_coords[1]
 		
-		if not enable_filter or (enable_filter and constraint.call_func(map, coords)):
+		if not enable_filter or (enable_filter and constraint.call_func(coords)):
 			cell_coords.append(coords)
 			
 	return cell_coords

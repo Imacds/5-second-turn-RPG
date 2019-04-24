@@ -1,7 +1,10 @@
 extends Sprite
 
+export(float) var velocity = 3
+
 var enabled = false
 var inputs_queue = []
+var target_position = Vector2()
 
 onready var Finder = get_node("/root/ObjectFinder") # Finder global
 onready var agent = $"../../../Char"
@@ -14,23 +17,24 @@ func _ready():
 
 func _input(event):
 	if enabled:
-		if event.is_action("move_up"):
+		if event.is_action_pressed("move_up"):
 			move_one_cell(Vector2.UP)
-		if event.is_action("move_right"):
+		elif event.is_action_pressed("move_right"):
 			move_one_cell(Vector2.RIGHT)
-		if event.is_action("move_down"):
+		elif event.is_action_pressed("move_down"):
 			move_one_cell(Vector2.DOWN)
-		if event.is_action("move_left"):
+		elif event.is_action_pressed("move_left"):
 			move_one_cell(Vector2.LEFT)
 
 func reset_position():
 	position = Vector2() # position is relative; (0, 0) is on parent
+	target_position = Vector2()
 
 # param dir: unit vector for direction (Vector2.RIGHT, Vector2.LEFT, etc)
 func move_one_cell(direction: Vector2):
-	var next_pos = agent.position + position + direction * map._half_cell_size
+	var next_pos = agent.position + position + direction * map.cell_size
 	if is_walkable(next_pos):
-		position = next_pos - agent.position # position is relative to this
+		position = next_pos - agent.position
 
 # set visibility and reset position
 func set_enabled(enabled):

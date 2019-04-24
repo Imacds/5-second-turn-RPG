@@ -207,7 +207,7 @@ func move_one_cell(direction):
 	coords += direction
 	
 	# calc world destination
-	var world_destination = map.map_to_world(coords, false) + map._half_cell_size# todo: why is this method giving the wrong world coords?
+	var world_destination = map.map_to_world(coords, false) + map._half_cell_size # todo: why is this method giving the wrong world coords?
 	target_point_world = world_destination
 	path = [position, world_destination]
 
@@ -216,11 +216,11 @@ func move_one_cell(direction):
 
 func _unhandled_input(event):
 	if event.is_action_pressed("click"):
-		if can_move(): 
-			_change_command_mode(COMMAND_MODES.MOVE)
-			action_points -= 1
-			$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT]))
-		elif can_attack():
+#		if can_move(): 
+#			_change_command_mode(COMMAND_MODES.MOVE)
+#			action_points -= 1
+#			$ActionQueue.push(MoveAction.new(self, Vector2.RIGHT))
+		if can_attack():
 			var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
 			preview_attack(attack_template.click_mode, dir_str, attack_map.TILES.YELLOW_ZONE_TO_ATTACK)
 			attack_template.set_click_mode(null)
@@ -244,12 +244,14 @@ func can_move():
 	return can_do_action() and command_mode == COMMAND_MODES.MOVE
 
 func _on_AttackTemplate_click_mode_changed(new_mode): # listener
-	attack_mode = new_mode
-	_change_command_mode(COMMAND_MODES.ATTACK)
+	if is_selected():
+		attack_mode = new_mode
+		_change_command_mode(COMMAND_MODES.ATTACK)
+		_change_state(STATES.TURN)
+		attack_map.clear_cells(get_name(), attack_map.TILES.AGENT_CAN_MOVE_HERE)
 
 func _on_ActionQueue_begin_executing_actions(agent_name): # begin the action execution of actions from queue
 	$PlayerControlledPath/TileSelectorSprite.set_enabled(false)
-	attack_map.clear_cells(get_name())
 	attack_map.clear_cells(get_name())
 
 func _on_ActionQueue_finished_executing_actions(agent_name): # signal forwarding and turn end
@@ -262,7 +264,7 @@ func _on_ActionQueue_finished_executing_actions(agent_name): # signal forwarding
 	emit_signal("action_queue_finished_executing", agent_name)
 
 func queue_move_action(direction: Vector2):
-	var action = MoveAction.new([self, direction])
+	var action = MoveAction.new(self, direction)
 	if MoveAction.can_do_action(action, action_points) and $ActionQueue.push(action):
 		$PlayerControlledPath.push_draw_path(direction)
 		action_points -= action.get_cost()

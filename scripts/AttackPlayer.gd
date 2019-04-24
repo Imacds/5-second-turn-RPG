@@ -35,4 +35,3 @@ func flash_attack(mode, dir):
 	draw_attack(mode, dir)
 	OS.delay_msec(1000)
 	clear_attack()	
-       

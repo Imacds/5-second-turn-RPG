@@ -1,15 +1,16 @@
 extends TileMap
 
+export(Vector2) var map_size = Vector2(16, 16)
+
 enum TILES { ZONE_TO_ATTACK, YELLOW_ZONE_TO_ATTACK, GREEN_ZONE_TO_ATTACK, AGENT_CAN_MOVE_HERE, VOID }
 
-export(Vector2) var map_size = Vector2(16, 16)
+onready var Utils = get_node("/root/Utils/")
+var GridElement = load("res://scripts/GridElement.gd")
 
 var grid = []
 var cell_set_queue = []
 
 onready var reachable_cell_constraint = funcref(self, "reachable_cell_constraint_func")
-onready var Utils = get_node("/root/Utils/")
-var GridElement = load("res://scripts/GridElement.gd")
 
 
 func _ready():

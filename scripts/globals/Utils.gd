@@ -1,4 +1,6 @@
 static func get_name(obj_or_str):
+	if obj_or_str == null: return "null"
+	
 	match typeof(obj_or_str):
 		TYPE_STRING: 
 			return obj_or_str
@@ -7,7 +9,8 @@ static func get_name(obj_or_str):
 			
 	print_debug("unknown obj type")
 
-static func vector2_clamp(vector: Vector2, min_value: Vector2, max_value: Vector2):
+# element-wise clamp
+static func vector2_clamp(vector: Vector2, min_value: Vector2, max_value: Vector2): 
 	var new_vector = vector
 	
 	if vector.x < min_value.x:

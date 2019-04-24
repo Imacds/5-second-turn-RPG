@@ -127,7 +127,7 @@ position = Vector2( 510, 300 )
 visible = false
 
 [connection signal="click_mode_changed" from="AttackTemplate" to="Player1/Char" method="_on_AttackTemplate_click_mode_changed"]
+[connection signal="selected_player_changed" from="SelectionManager" to="Player1/Char" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="selected_player_changed" from="SelectionManager" to="Player2/Char" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
-[connection signal="selected_player_changed" from="SelectionManager" to="Player1/Char" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="action_queue_finished_executing" from="Player1/Char" to="TurnManager" method="_on_Char_action_queue_finished_executing"]

@@ -45,7 +45,9 @@ script = ExtResource( 7 )
 [node name="Timer" type="Timer" parent="ActionQueue"]
 one_shot = true
 
+[connection signal="agent_enters_attack_mode" from="." to="Attack" method="_on_Char_agent_enters_attack_mode"]
 [connection signal="agent_enters_walk_mode" from="." to="PlayerControlledPath" method="_on_Char_agent_enters_walk_mode"]
+[connection signal="agent_exits_attack_mode" from="." to="Attack" method="_on_Char_agent_exits_attack_mode"]
 [connection signal="agent_exits_walk_mode" from="." to="PlayerControlledPath" method="_on_Char_agent_exits_walk_mode"]
 [connection signal="single_action_finished" from="." to="ActionQueue" method="_on_Char_single_action_finished"]
 [connection signal="begin_executing_actions" from="ActionQueue" to="." method="_on_ActionQueue_begin_executing_actions"]

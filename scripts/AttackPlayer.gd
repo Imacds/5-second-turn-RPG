@@ -7,6 +7,21 @@ signal attack_selected(direction, attack_mode)
 const BASE_LINE_WIDTH = 3.0
 export(Color) var DRAW_COLOR = Color('#fff')
 
+var direction_str
+
+onready var agent = get_parent()
+onready var attack_map = $"../../../AttackMap"
+
+
+func _process(delta):
+	if agent.can_attack() and agent.attack_mode == null:
+		direction_str = get_attack_dir_str(get_relative_attack_dir())
+		agent.preview_attack(agent.attack_mode, direction_str, attack_map.TILES.GREEN_ZONE_TO_ATTACK) # attack_template_attack_mode, dir_str, tile_type
+
+func _unhandled_input(event):
+	if agent.can_attack() and event.is_action_pressed("click"):
+		agent.queue_attack_action(direction_str)
+
 func get_relative_attack_dir():
 	var difference = get_global_mouse_position() - global_position
 	if abs(difference.x) > abs(difference.y):
@@ -39,3 +54,11 @@ func flash_attack(mode, dir):
 	draw_attack(mode, dir)
 	OS.delay_msec(1000)
 	clear_attack()	
+
+
+func _on_Char_agent_enters_attack_mode(cell_coords):
+	pass # Replace with function body.
+
+
+func _on_Char_agent_exits_attack_mode(cell_coords):
+	pass # Replace with function body.

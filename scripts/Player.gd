@@ -14,6 +14,9 @@ export(int) var action_points_per_turn = 3
 signal agent_enters_walk_mode(cell_coords)
 signal agent_exits_walk_mode(cell_coords)
 
+signal agent_enters_attack_mode(cell_coords)
+signal agent_exits_attack_mode(cell_coords)
+
 signal single_action_finished(action_name)
 signal action_queue_finished_executing(agent_name) # only here to forward the signal from ActionQueue
 
@@ -30,6 +33,7 @@ enum COMMAND_MODES { NULL, MOVE, ATTACK }
 # attributes #
 ###################
 var MoveAction = load("res://scripts/AgentActionSystem/MoveAction.gd")
+var AttackAction = load("res://scripts/AgentActionSystem/AttackAction.gd")
 
 var _state = STATES.TURN
 var action_points = 3
@@ -98,12 +102,16 @@ func _change_state(new_state):
 func _change_command_mode(new_mode):
 	if command_mode == COMMAND_MODES.MOVE:
 		emit_signal("agent_exits_walk_mode", get_cell_coords())
+	elif command_mode == COMMAND_MODES.ATTACK:
+		emit_signal("agent_exits_attack_mode", get_cell_coords())
 	
 	if action_points > 0:
 		command_mode = new_mode
 		
 		if can_move():
 			emit_signal("agent_enters_walk_mode", get_cell_coords())
+		elif can_attack():
+			emit_signal("agent_enters_attack_mode", get_cell_coords())
 	else:
 		command_mode = COMMAND_MODES.NULL
 
@@ -128,15 +136,15 @@ func _process(delta):
 	
 #	if attack_mode != null and (attack_template.click_mode == null or selection_manager.selected == get_parent()):
 	if can_attack():
-		var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
-		preview_attack(attack_mode, dir_str, attack_map.TILES.GREEN_ZONE_TO_ATTACK) # attack_template_attack_mode, dir_str, tile_type
+		pass
 		
 	if attack_mode != null and can_attack():
-		var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
-		attack_template.do_attack(get_cell_coords(), attack_mode, dir_str, self)
-		attack_mode = null
-		_change_state(STATES.IDLE)
-		_change_command_mode(COMMAND_MODES.MOVE)
+		pass
+#		var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
+#		attack_template.do_attack(get_cell_coords(), attack_mode, dir_str, self)
+#		attack_mode = null
+#		_change_state(STATES.IDLE)
+#		_change_command_mode(COMMAND_MODES.MOVE)
 	else:
 #		var arrived_to_next_point = move_to(target_point_world)
 #		if arrived_to_next_point:
@@ -216,19 +224,12 @@ func move_one_cell(direction):
 	var arrived = move_to(world_destination)
 	
 
-func _unhandled_input(event):
-	if event.is_action_pressed("click"):
+#func _unhandled_input(event):
+#	if event.is_action_pressed("click"):
 #		if can_move(): 
 #			_change_command_mode(COMMAND_MODES.MOVE)
 #			action_points -= 1
 #			$ActionQueue.push(MoveAction.new(self, Vector2.RIGHT))
-		if can_attack():
-			var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
-			preview_attack(attack_template.click_mode, dir_str, attack_map.TILES.YELLOW_ZONE_TO_ATTACK)
-			attack_template.set_click_mode(null)
-			_change_state(STATES.WAIT)
-			_change_command_mode(COMMAND_MODES.MOVE)
-			action_points -= 1
 
 func preview_attack(attack_template_attack_mode, dir_str, tile_type):
 	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, dir_str, self, tile_type) # position, attack_mode, attack_dir, owner, tile_type
@@ -251,6 +252,19 @@ func queue_move_action(direction: Vector2):
 		$PlayerControlledPath.push_draw_path(direction)
 		action_points -= action.get_cost()
 	else: # not enough AP or queue is full
+		_change_state(STATES.TURN)
+		_change_command_mode(COMMAND_MODES.NULL)
+		
+func queue_attack_action(attack_matrix):
+	var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
+	attack_template.set_click_mode(null)
+	
+	var action = AttackAction.new(self, dir_str, attack_template, attack_mode) # agent, direction_str, attack_template, attack_mode, execution_cost = 1
+	
+	if AttackAction.can_do_action(action, action_points) and $ActionQueue.push(action):
+		action_points -= action.get_cost()
+	else: # not enough AP or queue is full
+		_change_state(STATES.TURN)
 		_change_command_mode(COMMAND_MODES.NULL)
 		
 # override

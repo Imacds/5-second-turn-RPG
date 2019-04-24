@@ -36,7 +36,6 @@ func _draw():
 	draw_path()
 
 func draw_path():
-	print(path)
 	var point_start = path[0]
 	var point_end = path[-1]
 

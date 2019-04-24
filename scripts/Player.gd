@@ -123,18 +123,20 @@ func render_hp():
 func _process(delta):
 	render_hp()
 	
-	if _state != STATES.TURN:
-		return
+#	if _state != STATES.TURN:
+#		return
 	
 #	if attack_mode != null and (attack_template.click_mode == null or selection_manager.selected == get_parent()):
 	if can_attack():
 		var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
 		preview_attack(attack_mode, dir_str, attack_map.TILES.GREEN_ZONE_TO_ATTACK) # attack_template_attack_mode, dir_str, tile_type
 		
-	if attack_mode != null and is_attack_turn:
-		attack_template.do_attack(get_cell_coords(), attack_mode, attack_dir, self)
+	if attack_mode != null and can_attack():
+		var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
+		attack_template.do_attack(get_cell_coords(), attack_mode, dir_str, self)
 		attack_mode = null
-		_change_state(STATES.WAIT)
+		_change_state(STATES.IDLE)
+		_change_command_mode(COMMAND_MODES.MOVE)
 	else:
 #		var arrived_to_next_point = move_to(target_point_world)
 #		if arrived_to_next_point:
@@ -168,7 +170,7 @@ func move():
 		var arrived_to_next_point = move_to(target_point_world)
 		if arrived_to_next_point:
 			path.remove(0)
-			print("moving to " + str(target_point_world))
+
 			position = target_point_world
 			if len(path) == 0:
 				_change_state(STATES.IDLE)
@@ -186,7 +188,7 @@ func do_turn(is_attack_turn):
 		attack_map.clear()
 
 
-func move_to(world_position):	
+func move_to(world_position):
 	var MASS = 10.0
 	var ARRIVE_DISTANCE = 0
 
@@ -243,26 +245,6 @@ func can_attack():
 func can_move():
 	return can_do_action() and command_mode == COMMAND_MODES.MOVE
 
-func _on_AttackTemplate_click_mode_changed(new_mode): # listener
-	if is_selected():
-		attack_mode = new_mode
-		_change_command_mode(COMMAND_MODES.ATTACK)
-		_change_state(STATES.TURN)
-		attack_map.clear_cells(get_name(), attack_map.TILES.AGENT_CAN_MOVE_HERE)
-
-func _on_ActionQueue_begin_executing_actions(agent_name): # begin the action execution of actions from queue
-	$PlayerControlledPath/TileSelectorSprite.set_enabled(false)
-	attack_map.clear_cells(get_name())
-
-func _on_ActionQueue_finished_executing_actions(agent_name): # signal forwarding and turn end
-	action_points = action_points_per_turn
-	
-	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
-	_change_command_mode(COMMAND_MODES.MOVE)
-	attack_map.clear_cells(get_name())
-	
-	emit_signal("action_queue_finished_executing", agent_name)
-
 func queue_move_action(direction: Vector2):
 	var action = MoveAction.new(self, direction)
 	if MoveAction.can_do_action(action, action_points) and $ActionQueue.push(action):
@@ -275,4 +257,32 @@ func queue_move_action(direction: Vector2):
 func get_name():
 	return get_parent().get_name()
 
+###################
+# event listeners #
+###################
+func _on_SelectionManager_selected_player_changed(player):
+	if is_selected(): # switched to this player
+		_change_state(STATES.IDLE)
+		_change_command_mode(COMMAND_MODES.MOVE)
+	else:
+		_change_state(STATES.TURN)
+		_change_command_mode(COMMAND_MODES.NULL)
 
+func _on_AttackTemplate_click_mode_changed(new_mode): # listener
+	if is_selected():
+		attack_mode = new_mode
+		_change_state(STATES.IDLE)
+		_change_command_mode(COMMAND_MODES.ATTACK)
+
+func _on_ActionQueue_begin_executing_actions(agent_name): # begin the action execution of actions from queue
+	_change_state(STATES.TURN)
+	_change_command_mode(COMMAND_MODES.NULL)
+
+func _on_ActionQueue_finished_executing_actions(agent_name): # signal forwarding and turn end
+	action_points = action_points_per_turn
+	
+	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
+	_change_command_mode(COMMAND_MODES.MOVE if is_selected() else COMMAND_MODES.NULL)
+	attack_map.clear_cells(get_name())
+	
+	emit_signal("action_queue_finished_executing", agent_name) # forward the signal

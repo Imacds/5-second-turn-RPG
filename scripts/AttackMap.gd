@@ -51,6 +51,8 @@ func clear_cells(owner = null, tile_index = null):
 	if not owner and tile_index == null: # nothing to clear
 		print("warning: you called clear_cells without any owner or tile_index, do you mean to call clear() ?")
 		return
+		
+	var cleared_count = 0
 	
 	for y in range(map_size.y):
 		for x in range(map_size.x):
@@ -58,10 +60,13 @@ func clear_cells(owner = null, tile_index = null):
 			if owner and tile_index != null: # owner and tile_index specified to be cleared
 				if cell.owner == owner and cell.tile_index == tile_index:
 					set_cell(x, y, int(TILES.VOID), null)
+					cleared_count += 1
 			elif owner and cell.owner == owner: # only cells of owner to be cleared
 				 set_cell(x, y, int(TILES.VOID), null)
+				 cleared_count += 1
 			elif cell.tile_index == tile_index: # only cells of tile_index to be cleared
 				 set_cell(x, y, int(TILES.VOID), null)
+				 cleared_count += 1
 
 # filter func - remove falsey values later down the pipe
 func reachable_cell_constraint_func(cell_coord: Array) -> bool:

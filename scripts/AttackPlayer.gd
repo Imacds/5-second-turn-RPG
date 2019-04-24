@@ -1,5 +1,9 @@
 extends Node2D
 
+# param direction: Vector2
+# param attack_mode: AttackTemplate.MODE
+signal attack_selected(direction, attack_mode)
+
 const BASE_LINE_WIDTH = 3.0
 export(Color) var DRAW_COLOR = Color('#fff')
 

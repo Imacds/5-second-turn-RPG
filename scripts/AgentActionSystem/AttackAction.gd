@@ -5,7 +5,7 @@ var direction_str
 var attack_template
 var attack_mode
 var execution_cost
-var wait_time
+var wait_time # deprecate
 
 var timer = null
 
@@ -19,14 +19,7 @@ func _init(agent, direction_str, attack_template, attack_mode, execution_cost = 
 	
 # override
 func execute():
-#	timer = Timer.new()
-#	timer.connect("timerout", self, "_execute_attack")
-#	timer.set_wait_time(0)
-#	timer.set_one_shot(true)
-#
-#	add_child(timer)
-#	timer.start()
-	_execute_attack()
+	_execute_attack() 
 	
 func _execute_attack():
 	attack_template.do_attack(
@@ -35,8 +28,6 @@ func _execute_attack():
 		direction_str, 
 		agent
 	) # position, attack_mode, attack_dir, owner 
-	
-#	timer.queue_free()
 	
 # override
 func get_cost():

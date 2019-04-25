@@ -1,4 +1,3 @@
-#onready var Utils = get_node("/root/Utils") # Utils global
 var Utils = load("res://scripts/globals/Utils.gd") # Utils global
 
 var name # attributes

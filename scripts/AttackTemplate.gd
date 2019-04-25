@@ -46,12 +46,12 @@ func set_click_mode(mode):
 	click_mode = mode
 	emit_signal("click_mode_changed", mode)
 
-
+# param position: cell coords
 func do_attack(position, attack_mode, attack_dir, owner):
 	visualize_attack(position, attack_mode, attack_dir, owner, attack_map.TILES.ZONE_TO_ATTACK)
 	damage_in_attack_radius(position, attack_mode, attack_dir, owner)
 
-
+# param position: cell coords
 func damage_in_attack_radius(position, attack_mode, attack_dir, owner):
 	# get the atk matrix
 	var atk_matrix = hitbox_matrices[int(attack_mode)]
@@ -69,9 +69,8 @@ func damage_in_attack_radius(position, attack_mode, attack_dir, owner):
 	
 
 func visualize_attack(position, attack_mode, attack_dir, owner, tile_type):
-	#print("position: " + str(position) + ", MODE: " + str(attack_mode) + ", DIR: " + str(attack_dir))
-	if (not position or not attack_mode): 
-		return
+#	if not position or not attack_mode: 
+#		return
 	
 	# get the atk matrix
 	var atk_matrix = hitbox_matrices[int(attack_mode)]

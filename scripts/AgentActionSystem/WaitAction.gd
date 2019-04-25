@@ -1,17 +1,13 @@
 extends "res://scripts/AgentActionSystem/Action.gd"
 
-var agent
-var direction
 var execution_cost
 
-func _init(agent, direction, execution_cost = 1):
-	self.agent = agent
-	self.direction = direction
+func _init(execution_cost = 0):
 	self.execution_cost = execution_cost
 	
 # override
 func execute():
-	agent.move_one_cell(direction)
+	return
 	
 # override
 func get_cost():

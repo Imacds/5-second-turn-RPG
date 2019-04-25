@@ -48,8 +48,6 @@ func elements_to_matrix(elements):
 func rotate(rot): 
 	var rotated = matrix.duplicate(true)
 	
-	#print("BEFORE:" + str(rotated))
-	
 	# Consider all squares one by one 
 	for x in range(0, len(rotated)): 
 		for y in range(0, len(rotated[0])): 
@@ -62,10 +60,7 @@ func rotate(rot):
 			elif rot == 270:
 				rotated[x][y] = matrix[y][len(rotated)-x-1]
 			else:
-				#Throw error
 				print_debug("An illegal value has been given to AttackMatrix.rotate(): " + rot)
-		
-	#print("AFTER: " + str(rotated))
 	
 	var elements = to_elements(rotated)
 	return get_script().new(elements) # return new instance of this class
@@ -95,13 +90,19 @@ func to_relative_coords():
 				
 	return coords
 	
-	
-func to_world_coords(attack_coords):
+
+func to_world_coords(attack_coords, constraint: FuncRef = null):
 	attacker_coords = attack_coords
 	var relative_coords = to_relative_coords()
+	var cell_coords = []
+	var enable_filter = constraint
 	
 	for coords in relative_coords:
 		coords[0] += attacker_coords[0]
 		coords[1] += attacker_coords[1]
 		
-	return relative_coords
+		if not enable_filter or (enable_filter and constraint.call_func(coords)):
+			cell_coords.append(coords)
+			
+	return cell_coords
+	

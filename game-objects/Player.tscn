@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://sprites/icon.png" type="Texture" id=2]
 [ext_resource path="res://scripts/AttackPlayer.gd" type="Script" id=3]
 [ext_resource path="res://scripts/PlayerControlledPath.gd" type="Script" id=4]
 [ext_resource path="res://sprites/tile_selector.png" type="Texture" id=5]
-[ext_resource path="res://scripts/AgentActionSystem/ActionQueue.gd" type="Script" id=6]
+[ext_resource path="res://scripts/TileSelectorSprite.gd" type="Script" id=6]
+[ext_resource path="res://scripts/AgentActionSystem/ActionQueue.gd" type="Script" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32.4706, 31.8495 )
@@ -31,21 +32,24 @@ custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "HP: 20"
 align = 1
 
-[node name="PlayerControlledPath" type="Node" parent="."]
+[node name="PlayerControlledPath" type="Node2D" parent="."]
 script = ExtResource( 4 )
 
-[node name="SelectorSprite" type="Sprite" parent="PlayerControlledPath"]
-visible = false
+[node name="TileSelectorSprite" type="Sprite" parent="PlayerControlledPath"]
 texture = ExtResource( 5 )
+script = ExtResource( 6 )
 
 [node name="ActionQueue" type="Node" parent="."]
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
 [node name="Timer" type="Timer" parent="ActionQueue"]
 one_shot = true
 
-[connection signal="agent_enters_walk_mode" from="." to="PlayerControlledPath" method="_on_PlayerChar_agent_enters_walk_mode"]
+[connection signal="agent_enters_attack_mode" from="." to="Attack" method="_on_Char_agent_enters_attack_mode"]
+[connection signal="agent_enters_walk_mode" from="." to="PlayerControlledPath" method="_on_Char_agent_enters_walk_mode"]
+[connection signal="agent_exits_attack_mode" from="." to="Attack" method="_on_Char_agent_exits_attack_mode"]
 [connection signal="agent_exits_walk_mode" from="." to="PlayerControlledPath" method="_on_Char_agent_exits_walk_mode"]
 [connection signal="single_action_finished" from="." to="ActionQueue" method="_on_Char_single_action_finished"]
+[connection signal="begin_executing_actions" from="ActionQueue" to="." method="_on_ActionQueue_begin_executing_actions"]
 [connection signal="finished_executing_actions" from="ActionQueue" to="." method="_on_ActionQueue_finished_executing_actions"]
 [connection signal="timeout" from="ActionQueue/Timer" to="ActionQueue" method="_on_Timer_timeout"]

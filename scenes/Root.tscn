@@ -91,7 +91,6 @@ format = 1
 script = ExtResource( 11 )
 
 [node name="Player1" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="Char" parent="Player1" instance=ExtResource( 12 )]
 position = Vector2( 160, 96 )
@@ -105,7 +104,6 @@ DRAW_COLOR = Color( 0.0823529, 0.568627, 1, 1 )
 [node name="StartPosition" type="Node2D" parent="Player1"]
 
 [node name="Player2" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="Char" parent="Player2" instance=ExtResource( 12 )]
 modulate = Color( 0.615686, 1, 0, 1 )
@@ -120,7 +118,6 @@ DRAW_COLOR = Color( 0.415686, 0.984314, 0.396078, 1 )
 [node name="StartPosition" type="Node2D" parent="Player2"]
 
 [node name="GeneralCamera" parent="." instance=ExtResource( 14 )]
-editor/display_folded = true
 position = Vector2( 510, 300 )
 
 [node name="CombatUI" parent="GeneralCamera" instance=ExtResource( 15 )]
@@ -129,5 +126,7 @@ position = Vector2( 510, 300 )
 visible = false
 
 [connection signal="click_mode_changed" from="AttackTemplate" to="Player1/Char" method="_on_AttackTemplate_click_mode_changed"]
+[connection signal="selected_player_changed" from="SelectionManager" to="Player1/Char" method="_on_SelectionManager_selected_player_changed"]
+[connection signal="selected_player_changed" from="SelectionManager" to="Player2/Char" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="action_queue_finished_executing" from="Player1/Char" to="TurnManager" method="_on_Char_action_queue_finished_executing"]

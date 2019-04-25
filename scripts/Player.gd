@@ -14,8 +14,11 @@ export(int) var action_points_per_turn = 3
 signal agent_enters_walk_mode(cell_coords)
 signal agent_exits_walk_mode(cell_coords)
 
+signal agent_enters_attack_mode(cell_coords)
+signal agent_exits_attack_mode(cell_coords)
+
 signal single_action_finished(action_name)
-signal action_queue_finished_executing(agent_name)
+signal action_queue_finished_executing(agent_name) # only here to forward the signal from ActionQueue
 
 ###################
 # enums #
@@ -30,6 +33,8 @@ enum COMMAND_MODES { NULL, MOVE, ATTACK }
 # attributes #
 ###################
 var MoveAction = load("res://scripts/AgentActionSystem/MoveAction.gd")
+var AttackAction = load("res://scripts/AgentActionSystem/AttackAction.gd")
+var WaitAction = load("res://scripts/AgentActionSystem/WaitAction.gd")
 
 var _state = STATES.TURN
 var action_points = 3
@@ -38,15 +43,17 @@ var path = []
 var target_point_world = position
 var target_position = Vector2()
 var attack_mode = null # describes the type of attack if any. value from enum from AttackTemplate.gd
-var command_mode = COMMAND_MODES.MOVE # indicates allowed input reading for this player controlled character
+var command_mode = COMMAND_MODES.NULL # indicates allowed input reading for this player controlled character
 var attack_dir = Vector2.LEFT
 var direction = Vector2()
+
+onready var Finder = get_node("/root/ObjectFinder")
 
 onready var attack_template = get_tree().get_root().get_node("Root/AttackTemplate")
 onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
 onready var turn_manager = get_tree().get_root().get_node("Root/TurnManager")
 onready var map = get_tree().get_root().get_node("Root/Map")
-onready var attack_map = $"../../AttackMap"
+onready var attack_map = Finder.get_node_from_root("Root/AttackMap")
 onready var pathing = get_parent().get_node("Path")
 onready var action_queue = $ActionQueue
 
@@ -58,7 +65,7 @@ var character_target_position = position
 var target_dir = Vector2()
 
 var speed = 0
-const Max_speed = 400
+const max_speed = 400
 
 var velocity = Vector2()
 
@@ -81,8 +88,8 @@ func get_cell_coords():
 	
 
 func _change_state(new_state):
-	if  new_state == STATES.IDLE:
-		emit_signal("agent_exits_walk_mode", get_cell_coords())
+#	if  new_state == STATES.IDLE:
+#		emit_signal("agent_exits_walk_mode", get_cell_coords())
 #	if new_state == STATES.WAIT:
 #		path = pathing.get_path_relative(position, target_position)
 #		if not path or len(path) == 1:
@@ -94,11 +101,18 @@ func _change_state(new_state):
 	_state = new_state
 	
 func _change_command_mode(new_mode):
+	if command_mode == COMMAND_MODES.MOVE:
+		emit_signal("agent_exits_walk_mode", get_cell_coords())
+	elif command_mode == COMMAND_MODES.ATTACK:
+		emit_signal("agent_exits_attack_mode", get_cell_coords())
+	
 	if action_points > 0:
 		command_mode = new_mode
 		
 		if can_move():
-			$PlayerControlledPath.draw_walkable(get_cell_coords())
+			emit_signal("agent_enters_walk_mode", get_cell_coords())
+		elif can_attack():
+			emit_signal("agent_enters_attack_mode", get_cell_coords())
 	else:
 		command_mode = COMMAND_MODES.NULL
 
@@ -118,18 +132,20 @@ func render_hp():
 func _process(delta):
 	render_hp()
 	
-	if _state != STATES.TURN:
-		return
+#	if _state != STATES.TURN:
+#		return
 	
 #	if attack_mode != null and (attack_template.click_mode == null or selection_manager.selected == get_parent()):
 	if can_attack():
-		var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
-		preview_attack(attack_mode, dir_str, attack_map.TILES.GREEN_ZONE_TO_ATTACK) # attack_template_attack_mode, dir_str, tile_type
+		pass
 		
-	if attack_mode != null and is_attack_turn:
-		attack_template.do_attack(get_cell_coords(), attack_mode, attack_dir, self)
-		attack_mode = null
-		_change_state(STATES.WAIT)
+	if attack_mode != null and can_attack():
+		pass
+#		var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
+#		attack_template.do_attack(get_cell_coords(), attack_mode, dir_str, self)
+#		attack_mode = null
+#		_change_state(STATES.IDLE)
+#		_change_command_mode(COMMAND_MODES.MOVE)
 	else:
 #		var arrived_to_next_point = move_to(target_point_world)
 #		if arrived_to_next_point:
@@ -163,7 +179,7 @@ func move():
 		var arrived_to_next_point = move_to(target_point_world)
 		if arrived_to_next_point:
 			path.remove(0)
-			print("moving to " + str(target_point_world))
+
 			position = target_point_world
 			if len(path) == 0:
 				_change_state(STATES.IDLE)
@@ -173,7 +189,7 @@ func move():
 			emit_signal("single_action_finished", MoveAction.get_name())
 		
 
-func do_turn(is_attack_turn):
+func do_turn(is_attack_turn):	
 	self.is_attack_turn = is_attack_turn
 	if _state == STATES.WAIT or attack_mode != null:
 		_state = STATES.TURN
@@ -181,7 +197,7 @@ func do_turn(is_attack_turn):
 		attack_map.clear()
 
 
-func move_to(world_position):	
+func move_to(world_position):
 	var MASS = 10.0
 	var ARRIVE_DISTANCE = 0
 
@@ -202,26 +218,19 @@ func move_one_cell(direction):
 	coords += direction
 	
 	# calc world destination
-	var world_destination = map.map_to_world(coords, false) + map._half_cell_size# todo: why is this method giving the wrong world coords?
+	var world_destination = map.map_to_world(coords, false) + map._half_cell_size # todo: why is this method giving the wrong world coords?
 	target_point_world = world_destination
 	path = [position, world_destination]
 
 	var arrived = move_to(world_destination)
 	
 
-func _unhandled_input(event):
-	if event.is_action_pressed("click"):
-		if can_move(): 
-			_change_command_mode(COMMAND_MODES.MOVE)
-			action_points -= 1
-			$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT]))
-		elif can_attack():
-			var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
-			preview_attack(attack_template.click_mode, dir_str, attack_map.TILES.YELLOW_ZONE_TO_ATTACK)
-			attack_template.set_click_mode(null)
-			_change_state(STATES.WAIT)
-			_change_command_mode(COMMAND_MODES.MOVE)
-			action_points -= 1
+#func _unhandled_input(event):
+#	if event.is_action_pressed("click"):
+#		if can_move(): 
+#			_change_command_mode(COMMAND_MODES.MOVE)
+#			action_points -= 1
+#			$ActionQueue.push(MoveAction.new(self, Vector2.RIGHT))
 
 func preview_attack(attack_template_attack_mode, dir_str, tile_type):
 	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, dir_str, self, tile_type) # position, attack_mode, attack_dir, owner, tile_type
@@ -238,14 +247,59 @@ func can_attack():
 func can_move():
 	return can_do_action() and command_mode == COMMAND_MODES.MOVE
 
-func _on_AttackTemplate_click_mode_changed(new_mode): # listener
-	attack_mode = new_mode
-	_change_command_mode(COMMAND_MODES.ATTACK)
+func queue_move_action(direction: Vector2):
+	var action = MoveAction.new(self, direction)
+	if MoveAction.can_do_action(action, action_points) and $ActionQueue.push(action):
+		$PlayerControlledPath.push_draw_path(direction)
+		action_points -= action.get_cost()
+	else: # not enough AP or queue is full
+		_change_state(STATES.TURN)
+		_change_command_mode(COMMAND_MODES.NULL)
+		
+func queue_attack_action(attack_matrix):
+	var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
+	var action = AttackAction.new(self, dir_str, attack_template, attack_mode) # agent, direction_str, attack_template, attack_mode, execution_cost = 1
+	attack_template.visualize_attack(get_cell_coords(), attack_mode, dir_str, self, attack_map.TILES.YELLOW_ZONE_TO_ATTACK) # position, attack_mode, attack_dir, owner, tile_type
 	
-func push_move_action(direction_vector):
-	$ActionQueue.push(MoveAction.new([self, Vector2.RIGHT]))
+	attack_template.set_click_mode(null)
+	
+	var queue_had_room = $ActionQueue.push(WaitAction.new()) and $ActionQueue.push(action)
+	if AttackAction.can_do_action(action, action_points) and queue_had_room:
+		action_points -= action.get_cost()
+	else: # not enough AP or queue is full
+		_change_state(STATES.TURN)
+		_change_command_mode(COMMAND_MODES.NULL)
+		
+# override
+func get_name():
+	return get_parent().get_name()
 
-func _on_ActionQueue_finished_executing_actions(agent_name):
+###################
+# event listeners #
+###################
+func _on_SelectionManager_selected_player_changed(player):
+	if is_selected(): # switched to this player
+		_change_state(STATES.IDLE)
+		_change_command_mode(COMMAND_MODES.MOVE)
+	else:
+		_change_state(STATES.TURN)
+		_change_command_mode(COMMAND_MODES.NULL)
+
+func _on_AttackTemplate_click_mode_changed(new_mode): # enter attack command mode
+	if is_selected():
+		attack_mode = new_mode
+		_change_state(STATES.IDLE)
+		_change_command_mode(COMMAND_MODES.ATTACK)
+
+func _on_ActionQueue_begin_executing_actions(agent_name): # begin the action execution of actions from queue
+	_change_state(STATES.TURN)
+	_change_command_mode(COMMAND_MODES.NULL)
+
+func _on_ActionQueue_finished_executing_actions(agent_name): # turn end and signal forwarding
 	action_points = action_points_per_turn
+	
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
-	emit_signal("action_queue_finished_executing", agent_name)
+	_change_command_mode(COMMAND_MODES.MOVE if is_selected() else COMMAND_MODES.NULL)
+	attack_map.clear_cells(get_name())
+	
+	emit_signal("action_queue_finished_executing", agent_name) # forward the signal

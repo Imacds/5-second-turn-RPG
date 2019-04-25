@@ -14,9 +14,12 @@ onready var attack_map = $"../../../AttackMap"
 
 
 func _process(delta):
-	if agent.can_attack() and agent.attack_mode == null:
-		direction_str = get_attack_dir_str(get_relative_attack_dir())
-		agent.preview_attack(agent.attack_mode, direction_str, attack_map.TILES.GREEN_ZONE_TO_ATTACK) # attack_template_attack_mode, dir_str, tile_type
+	if agent.can_attack(): # agent selected, can do action, and in attack command mode
+		if agent.attack_mode == null:
+			pass
+		else:
+			direction_str = get_attack_dir_str(get_relative_attack_dir())
+			agent.preview_attack(agent.attack_mode, direction_str, attack_map.TILES.GREEN_ZONE_TO_ATTACK) # attack_template_attack_mode, dir_str, tile_type
 
 func _unhandled_input(event):
 	if agent.can_attack() and event.is_action_pressed("click"):

@@ -69,9 +69,8 @@ func damage_in_attack_radius(position, attack_mode, attack_dir, owner):
 	
 
 func visualize_attack(position, attack_mode, attack_dir, owner, tile_type):
-	#print("position: " + str(position) + ", MODE: " + str(attack_mode) + ", DIR: " + str(attack_dir))
-	if (not position or not attack_mode): 
-		return
+#	if not position or not attack_mode: 
+#		return
 	
 	# get the atk matrix
 	var atk_matrix = hitbox_matrices[int(attack_mode)]

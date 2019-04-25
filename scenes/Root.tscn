@@ -118,7 +118,6 @@ DRAW_COLOR = Color( 0.415686, 0.984314, 0.396078, 1 )
 [node name="StartPosition" type="Node2D" parent="Player2"]
 
 [node name="GeneralCamera" parent="." instance=ExtResource( 14 )]
-editor/display_folded = true
 position = Vector2( 510, 300 )
 
 [node name="CombatUI" parent="GeneralCamera" instance=ExtResource( 15 )]

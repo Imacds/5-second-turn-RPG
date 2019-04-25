@@ -64,7 +64,7 @@ var character_target_position = position
 var target_dir = Vector2()
 
 var speed = 0
-const Max_speed = 400
+const max_speed = 400
 
 var velocity = Vector2()
 
@@ -257,9 +257,10 @@ func queue_move_action(direction: Vector2):
 		
 func queue_attack_action(attack_matrix):
 	var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
-	attack_template.set_click_mode(null)
-	
 	var action = AttackAction.new(self, dir_str, attack_template, attack_mode) # agent, direction_str, attack_template, attack_mode, execution_cost = 1
+	attack_template.visualize_attack(get_cell_coords(), attack_mode, dir_str, self, attack_map.TILES.YELLOW_ZONE_TO_ATTACK) # position, attack_mode, attack_dir, owner, tile_type
+	
+	attack_template.set_click_mode(null)
 	
 	if AttackAction.can_do_action(action, action_points) and $ActionQueue.push(action):
 		action_points -= action.get_cost()
@@ -282,7 +283,7 @@ func _on_SelectionManager_selected_player_changed(player):
 		_change_state(STATES.TURN)
 		_change_command_mode(COMMAND_MODES.NULL)
 
-func _on_AttackTemplate_click_mode_changed(new_mode): # listener
+func _on_AttackTemplate_click_mode_changed(new_mode): # enter attack command mode
 	if is_selected():
 		attack_mode = new_mode
 		_change_state(STATES.IDLE)
@@ -292,7 +293,7 @@ func _on_ActionQueue_begin_executing_actions(agent_name): # begin the action exe
 	_change_state(STATES.TURN)
 	_change_command_mode(COMMAND_MODES.NULL)
 
-func _on_ActionQueue_finished_executing_actions(agent_name): # signal forwarding and turn end
+func _on_ActionQueue_finished_executing_actions(agent_name): # turn end and signal forwarding
 	action_points = action_points_per_turn
 	
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)

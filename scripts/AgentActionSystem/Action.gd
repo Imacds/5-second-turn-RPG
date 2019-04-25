@@ -1,3 +1,4 @@
+extends Node
 # abstract class
 
 # game_context is the root node of the scene

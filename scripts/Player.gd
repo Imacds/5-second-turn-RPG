@@ -34,6 +34,7 @@ enum COMMAND_MODES { NULL, MOVE, ATTACK }
 ###################
 var MoveAction = load("res://scripts/AgentActionSystem/MoveAction.gd")
 var AttackAction = load("res://scripts/AgentActionSystem/AttackAction.gd")
+var WaitAction = load("res://scripts/AgentActionSystem/WaitAction.gd")
 
 var _state = STATES.TURN
 var action_points = 3
@@ -262,7 +263,8 @@ func queue_attack_action(attack_matrix):
 	
 	attack_template.set_click_mode(null)
 	
-	if AttackAction.can_do_action(action, action_points) and $ActionQueue.push(action):
+	var queue_had_room = $ActionQueue.push(WaitAction.new()) and $ActionQueue.push(action)
+	if AttackAction.can_do_action(action, action_points) and queue_had_room:
 		action_points -= action.get_cost()
 	else: # not enough AP or queue is full
 		_change_state(STATES.TURN)

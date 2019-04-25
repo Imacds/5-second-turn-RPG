@@ -8,7 +8,7 @@ var queue = []
 
 onready var parent_name = get_parent().get_name()
 
-func _init(max_queue_size = 3):
+func _init(max_queue_size = 6):
 	max_size = max_queue_size
 
 	

@@ -41,6 +41,8 @@ func _ready():
 		]),
 	]
 
+func get_click_mode():
+	return click_mode
 
 func set_click_mode(mode):
 	click_mode = mode

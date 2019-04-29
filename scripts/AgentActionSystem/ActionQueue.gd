@@ -20,6 +20,11 @@ func push(action):
 	queue.append(action)
 	return true
 
+func pop():
+	if len(queue) > 0:
+		queue.pop_back()
+	else:
+		print_debug("error: attempted to pop an empty ActionQueue")
 
 func execute_all(wait_time_between_actions = 0.15):
 	emit_signal("begin_executing_actions", parent_name)

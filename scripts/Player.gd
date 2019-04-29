@@ -42,8 +42,6 @@ var _state = STATES.TURN
 var command_mode = COMMAND_MODES.NULL # indicates allowed input reading for this player controlled character
 var action_points = 3
 var target_point_world = position
-var attack_mode = null # describes the type of attack if any. value from enum from AttackTemplate.gd
-var attack_dir = Vector2.LEFT
 
 onready var Finder = get_node("/root/ObjectFinder")
 
@@ -159,9 +157,11 @@ func queue_move_action(direction: Vector2):
 	else: # not enough AP or queue is full
 		_change_state(STATES.TURN)
 		_change_command_mode(COMMAND_MODES.NULL)
+
+func undo_last_action():
+	pass
 		
-func queue_attack_action(attack_matrix):
-	var dir_str = $Attack.get_attack_dir_str($Attack.get_relative_attack_dir())
+func queue_attack_action(attack_mode, dir_str):
 	var action = AttackAction.new(self, dir_str, attack_template, attack_mode) # agent, direction_str, attack_template, attack_mode, execution_cost = 1
 	attack_template.visualize_attack(get_cell_coords(), attack_mode, dir_str, self, attack_map.TILES.YELLOW_ZONE_TO_ATTACK) # position, attack_mode, attack_dir, owner, tile_type
 	
@@ -191,7 +191,6 @@ func _on_SelectionManager_selected_player_changed(player):
 
 func _on_AttackTemplate_click_mode_changed(new_mode): # enter attack command mode
 	if is_selected():
-		attack_mode = new_mode
 		_change_state(STATES.IDLE)
 		_change_command_mode(COMMAND_MODES.ATTACK)
 

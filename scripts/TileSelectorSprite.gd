@@ -5,9 +5,9 @@ var MoveAction = load("res://scripts/AgentActionSystem/MoveAction.gd")
 var enabled = false
 
 onready var Finder = get_node("/root/ObjectFinder") # Finder global
-onready var agent = $"../../Char"
+onready var agent = $"../../"
 onready var map = Finder.get_node_from_root("Root/Map")
-onready var path = $"../PlayerControlledPath"
+onready var path = $"../"
 onready var action_queue = $"../ActionQueue"
 
 

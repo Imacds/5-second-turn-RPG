@@ -3,8 +3,8 @@
 #
 extends Node2D
 
-export(Color) var line_color = Color.white
-export(Color) var dot_color = Color.white
+export(Color) var line_color = Color.green
+export(Color) var dot_color = Color.green
 export(float) var line_scaling = 1
 
 var AttackMatrix = load("res://scripts/AttackMatrix.gd")
@@ -16,9 +16,13 @@ onready var attack_map = $"../../../AttackMap"
 onready var Finder = get_node("/root/ObjectFinder") # Finder global
 onready var map = Finder.get_node_from_root("Root/Map")
 
-onready var path = [agent.position]
+onready var path = [Vector2.ZERO]
+onready var old_center = agent.target_point_world
 
 var walk_matrix # AttackMatrix
+
+func _process(delta):
+	position = agent.target_point_world - old_center
 
 func _ready():
 	# todo: dont hard code this, generate it from agent walk distance
@@ -58,7 +62,9 @@ func push_draw_path(direction: Vector2):
 	update() # calls _draw to draw on canvas
 	
 func clear_draw_path():
-	path = [agent.positon]
+	path = [Vector2.ZERO]
+	old_center = agent.target_point_world
+	update()
 
 # returns: list of Vector2: world coordinates the agent can travel to sequentially to get to world_end
 func get_path_relative(start, end):
@@ -66,11 +72,13 @@ func get_path_relative(start, end):
 
 func _on_Char_agent_enters_walk_mode(cell_coords):
 	draw_walkable(cell_coords)
-	$TileSelectorSprite.set_enabled(true)
+	$"../TileSelectorSprite".set_enabled(true)
 
 func _on_Char_agent_exits_walk_mode(cell_coords):
 	attack_map.clear_cells(get_parent().get_name(), attack_map.TILES.AGENT_CAN_MOVE_HERE)
-	$TileSelectorSprite.set_enabled(false)
+	$"../TileSelectorSprite".set_enabled(false)
+	clear_draw_path()
+	
 
 func get_agent_walkable_cell_coords(agent_cell = null): # get the list of cell coords (lists) that the agent can walk to
 	return walk_matrix.to_world_coords(agent_cell if agent_cell else agent.get_cell_coords(), attack_map.reachable_cell_constraint)

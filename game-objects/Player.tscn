@@ -35,7 +35,7 @@ align = 1
 [node name="PlayerControlledPath" type="Node2D" parent="."]
 script = ExtResource( 4 )
 
-[node name="TileSelectorSprite" type="Sprite" parent="PlayerControlledPath"]
+[node name="TileSelectorSprite" type="Sprite" parent="."]
 texture = ExtResource( 5 )
 script = ExtResource( 6 )
 

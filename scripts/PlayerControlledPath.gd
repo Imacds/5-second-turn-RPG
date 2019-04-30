@@ -53,13 +53,17 @@ func draw_path():
 # color the tiles that can be walked to
 func draw_walkable(agent_cell_coords):
 	var cell_coords = get_agent_walkable_cell_coords(agent_cell_coords)
-
+	
 	for coords in cell_coords:
 		attack_map.set_cell(coords[0], coords[1], attack_map.TILES.AGENT_CAN_MOVE_HERE, owner_name) # x, y, tile_index, owner = null,
 
 func push_draw_path(direction: Vector2):
 	path.append(path[-1] + direction * map.cell_size)
 	update() # calls _draw to draw on canvas
+
+func undo_last():
+	path.pop_back()
+	update()
 	
 func clear_draw_path():
 	path = [Vector2.ZERO]

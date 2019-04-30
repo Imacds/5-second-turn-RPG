@@ -20,7 +20,13 @@ func push(action):
 	queue.append(action)
 	return true
 
-func pop():
+func peek_back():
+	if len(queue) > 0:
+		return queue[-1]
+	else:
+		return null
+
+func pop_back():
 	if len(queue) > 0:
 		queue.pop_back()
 	else:

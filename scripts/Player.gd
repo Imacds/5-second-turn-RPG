@@ -161,8 +161,21 @@ func queue_move_action(direction: Vector2):
 		_change_command_mode(COMMAND_MODES.NULL)
 
 func undo_last_action():
-	pass
-		
+	var last = action_queue.peek_back()
+	if last != null:
+		if last is AttackAction:
+			action_queue.pop_back()
+			action_queue.pop_back()
+		elif last is MoveAction:
+			action_queue.pop_back()
+			$TileSelectorSprite.undo_one_move(last.direction)
+			$PlayerControlledPath.undo_last()
+		else:
+			print_debug("A wierd state is being undone...")
+			action_queue.pop_back()
+			
+		action_points += last.get_cost()
+	
 func queue_attack_action(attack_mode, dir_str):
 	var action = AttackAction.new(self, dir_str, attack_template, attack_mode) # agent, direction_str, attack_template, attack_mode, execution_cost = 1
 	attack_template.visualize_attack(get_cell_coords(), attack_mode, dir_str, self, attack_map.TILES.YELLOW_ZONE_TO_ATTACK) # position, attack_mode, attack_dir, owner, tile_type

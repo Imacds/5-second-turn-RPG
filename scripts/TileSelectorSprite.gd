@@ -15,7 +15,7 @@ func _ready():
 	set_enabled(false)
 
 func _input(event):
-	if enabled:
+	if enabled and agent.can_move():
 		if event.is_action_pressed("move_up"):
 			move_one_cell(Vector2.UP)
 		elif event.is_action_pressed("move_right"):
@@ -35,6 +35,10 @@ func move_one_cell(direction: Vector2):
 		position = next_pos - agent.position # position of this sprite (relative to where agent currently is)
 		agent.queue_move_action(direction) # add to action queue
 
+func undo_one_move(direction: Vector2):
+	var next_pos = agent.position + position - direction * map.cell_size # position where agent would move
+	position = next_pos - agent.position # position of this sprite (relative to where agent currently is)
+	
 # set visibility and reset position
 func set_enabled(enabled):
 	reset_position()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/CombatUI.gd" type="Script" id=1]
 [ext_resource path="res://Assets/fonts/lunchds.ttf" type="DynamicFontData" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://scripts/UI/ControlSwitch.gd" type="Script" id=9]
 [ext_resource path="res://Assets/fonts/lunchds_size_20.tres" type="DynamicFont" id=10]
 [ext_resource path="res://scripts/CharacterSelectedLabel.gd" type="Script" id=11]
+[ext_resource path="res://scripts/UI/CommandSelectedLabel.gd" type="Script" id=12]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -168,7 +169,7 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Move"
 align = 1
 valign = 1
-
+script = ExtResource( 12 )
 [connection signal="pressed" from="ColorRect/Attacks/UndoTurnButton" to="ColorRect/Attacks/UndoTurnButton" method="_on_Undo_pressed"]
 [connection signal="pressed" from="ColorRect/Attacks/SlashAttackButtonButton" to="ColorRect/Attacks/SlashAttackButtonButton" method="_on_SlashAttackButton_pressed"]
 [connection signal="pressed" from="ColorRect/Attacks/SwingAttackButton" to="ColorRect/Attacks/SwingAttackButton" method="_on_SwingAttackButton_pressed"]

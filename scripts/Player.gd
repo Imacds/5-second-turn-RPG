@@ -62,6 +62,8 @@ func _ready():
 	set_process_input(true)
 	set_physics_process(true)
 	
+func get_position():
+	return position
 
 func get_cell_coords():
 	return map.world_to_map(position)
@@ -204,5 +206,6 @@ func _on_ActionQueue_finished_executing_actions(agent_name): # turn end and sign
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
 	_change_command_mode(COMMAND_MODES.MOVE if is_selected() else COMMAND_MODES.NULL)
 	attack_map.clear_cells(get_name())
+	$PlayerControlledPath.clear_draw_path()
 	
 	emit_signal("action_queue_finished_executing", agent_name) # forward the signal

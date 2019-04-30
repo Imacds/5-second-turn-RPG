@@ -1,7 +1,7 @@
 extends Object # only needed for get_script()
 
-enum ELEMENTS { EMPTY, ATTACKER, HITBOX } # the elements within an attack matrix
-const INT_TO_ELEMENTS_MAPPING = [ELEMENTS.EMPTY, ELEMENTS.ATTACKER, ELEMENTS.HITBOX] # allows for creation of matrix using list of ints instead of list of ELEMENTS values
+enum ELEMENTS { EMPTY, ATTACKER, HITBOX, ATTACKER_AND_HITBOX } # the elements within an attack matrix
+const INT_TO_ELEMENTS_MAPPING = [ELEMENTS.EMPTY, ELEMENTS.ATTACKER, ELEMENTS.HITBOX, ELEMENTS.ATTACKER_AND_HITBOX] # allows for creation of matrix using list of ints instead of list of ELEMENTS values
 
 var matrix = []
 var row_len = null
@@ -28,7 +28,7 @@ func elements_to_matrix(elements):
 		var tile_value = INT_TO_ELEMENTS_MAPPING[element]
 		row.append(tile_value)
 		
-		if tile_value == ELEMENTS.ATTACKER:
+		if tile_value == ELEMENTS.ATTACKER || ELEMENTS.ATTACKER_AND_HITBOX:
 			#if attacker_coords != null: print_debug("there's 2+ attackers in atk matrix")
 			attacker_coords = [col_count - 1, row_count - 1]
 		
@@ -85,24 +85,23 @@ func to_relative_coords():
 	
 	for y in range(len(matrix)):
 		for x in range(len(matrix[y])):
-			if matrix[y][x] == ELEMENTS.HITBOX:
+			if matrix[y][x] == ELEMENTS.HITBOX || ELEMENTS.ATTACKER_AND_HITBOX:
 				coords.append([x - size, y - size])
 				
 	return coords
 	
 
 func to_world_coords(attack_coords, constraint: FuncRef = null):
-	attacker_coords = attack_coords
 	var relative_coords = to_relative_coords()
 	var cell_coords = []
 	var enable_filter = constraint
-	
+    
 	for coords in relative_coords:
-		coords[0] += attacker_coords[0]
-		coords[1] += attacker_coords[1]
-		
+		coords[0] += attack_coords[0]
+		coords[1] += attack_coords[1]
+        
 		if not enable_filter or (enable_filter and constraint.call_func(coords)):
 			cell_coords.append(coords)
-			
+            
 	return cell_coords
 	

@@ -6,7 +6,7 @@ onready var attack_map  = get_tree().get_root().get_node("Root/AttackMap")
 
 
 func _on_Undo_pressed():
-	if selection_manager.get_click_mode != null:
+	if attack_template.get_click_mode() != null:
 		attack_template.set_click_mode(null)
 		attack_map.clear()
 	else:

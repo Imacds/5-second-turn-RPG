@@ -22,7 +22,7 @@ func _process(delta):
 			agent.preview_attack(attack_template.get_click_mode(), direction_str, attack_map.TILES.GREEN_ZONE_TO_ATTACK) # attack_template_attack_mode, dir_str, tile_type
 
 func _unhandled_input(event):
-	if agent.can_attack() and event.is_action_pressed("click"):
+	if attack_template.get_click_mode() != null and agent.can_attack() and event.is_action_pressed("click"):
 		agent.queue_attack_action(attack_template.get_click_mode(), direction_str)
 
 func get_relative_attack_dir():

@@ -28,7 +28,7 @@ func elements_to_matrix(elements):
 		var tile_value = INT_TO_ELEMENTS_MAPPING[element]
 		row.append(tile_value)
 		
-		if tile_value == ELEMENTS.ATTACKER || ELEMENTS.ATTACKER_AND_HITBOX:
+		if tile_value == ELEMENTS.ATTACKER || tile_value == ELEMENTS.ATTACKER_AND_HITBOX:
 			#if attacker_coords != null: print_debug("there's 2+ attackers in atk matrix")
 			attacker_coords = [col_count - 1, row_count - 1]
 		
@@ -85,7 +85,7 @@ func to_relative_coords():
 	
 	for y in range(len(matrix)):
 		for x in range(len(matrix[y])):
-			if matrix[y][x] == ELEMENTS.HITBOX || ELEMENTS.ATTACKER_AND_HITBOX:
+			if matrix[y][x] == ELEMENTS.HITBOX || matrix[y][x] == ELEMENTS.ATTACKER_AND_HITBOX:
 				coords.append([x - size, y - size])
 				
 	return coords

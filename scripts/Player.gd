@@ -224,11 +224,12 @@ func _on_ActionQueue_begin_executing_actions(agent_name): # begin the action exe
 	$PlayerControlledPath.clear_draw_path()
 
 func _on_ActionQueue_finished_executing_actions(agent_name): # turn end and signal forwarding
+	emit_signal("action_queue_finished_executing", agent_name) # forward the signal
+
+func _on_ActionQueueManager_all_action_queues_finished_executing():
 	action_points = action_points_per_turn
 	attack_map.clear()
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
 	_change_command_mode(COMMAND_MODES.MOVE if is_selected() else COMMAND_MODES.NULL)
 	$TileSelectorSprite.reset_position()
 	$PlayerControlledPath.clear_draw_path()
-
-	emit_signal("action_queue_finished_executing", agent_name) # forward the signal

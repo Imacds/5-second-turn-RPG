@@ -170,6 +170,7 @@ text = "Move"
 align = 1
 valign = 1
 script = ExtResource( 12 )
+
 [connection signal="pressed" from="ColorRect/Attacks/UndoTurnButton" to="ColorRect/Attacks/UndoTurnButton" method="_on_Undo_pressed"]
 [connection signal="pressed" from="ColorRect/Attacks/SlashAttackButtonButton" to="ColorRect/Attacks/SlashAttackButtonButton" method="_on_SlashAttackButton_pressed"]
 [connection signal="pressed" from="ColorRect/Attacks/SwingAttackButton" to="ColorRect/Attacks/SwingAttackButton" method="_on_SwingAttackButton_pressed"]

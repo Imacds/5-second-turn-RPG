@@ -185,6 +185,8 @@ func queue_attack_action(attack_mode, dir_str):
 	
 	if AttackAction.can_do_action(action, action_points) and queue_had_room:
 		action_points -= action.get_cost()
+		_change_state(STATES.IDLE)
+		_change_command_mode(COMMAND_MODES.MOVE)
 	else: # not enough AP or queue is full
 		_change_state(STATES.TURN)
 		_change_command_mode(COMMAND_MODES.NULL)

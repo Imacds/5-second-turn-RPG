@@ -205,8 +205,6 @@ func _on_SelectionManager_selected_player_changed(player):
 		_change_state(STATES.TURN)
 		_change_command_mode(COMMAND_MODES.NULL)
 		$TileSelectorSprite.set_enabled(false)
-		attack_map.clear_cells(null, attack_map.TILES.AGENT_CAN_MOVE_HERE)
-#		$PlayerControlledPath.clear_draw_path()
 
 func _on_AttackTemplate_click_mode_changed(new_mode): # enter attack command mode
 	if is_selected():
@@ -222,10 +220,10 @@ func _on_ActionQueue_begin_executing_actions(agent_name): # begin the action exe
 
 func _on_ActionQueue_finished_executing_actions(agent_name): # turn end and signal forwarding
 	action_points = action_points_per_turn
+	attack_map.clear()
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
 	_change_command_mode(COMMAND_MODES.MOVE if is_selected() else COMMAND_MODES.NULL)
 	$TileSelectorSprite.reset_position()
-	attack_map.clear()
 	$PlayerControlledPath.clear_draw_path()
 
 	emit_signal("action_queue_finished_executing", agent_name) # forward the signal

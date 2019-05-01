@@ -21,10 +21,6 @@ func _process(delta):
 			direction_str = get_attack_dir_str(get_relative_attack_dir())
 			agent.preview_attack(attack_template.get_click_mode(), direction_str, attack_map.TILES.GREEN_ZONE_TO_ATTACK) # attack_template_attack_mode, dir_str, tile_type
 
-func _unhandled_input(event):
-	if attack_template.get_click_mode() != null and agent.can_attack() and event.is_action_pressed("click"):
-		agent.queue_attack_action(attack_template.get_click_mode(), direction_str)
-
 func get_relative_attack_dir():
 	var difference = get_global_mouse_position() - global_position
 	if abs(difference.x) > abs(difference.y):

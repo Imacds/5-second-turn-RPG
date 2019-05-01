@@ -14,20 +14,9 @@ onready var action_queue = $"../ActionQueue"
 func _ready():
 	set_enabled(false)
 
-func _input(event):
-	if enabled and agent.can_move():
-		if event.is_action_pressed("move_up"):
-			move_one_cell(Vector2.UP)
-			path.draw_walkable(path.get_target_grid_pos())
-		elif event.is_action_pressed("move_right"):
-			move_one_cell(Vector2.RIGHT)
-			path.draw_walkable(path.get_target_grid_pos())
-		elif event.is_action_pressed("move_down"):
-			move_one_cell(Vector2.DOWN)
-			path.draw_walkable(path.get_target_grid_pos())
-		elif event.is_action_pressed("move_left"):
-			move_one_cell(Vector2.LEFT)
-			path.draw_walkable(path.get_target_grid_pos())
+# Movement input is now handled by PlayerInputManager
+#func _input(event):
+	
 
 func reset_position():
 	position = Vector2() # position is relative; (0, 0) is on parent

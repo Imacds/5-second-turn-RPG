@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://game-objects/UI/DialogBox.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/AttackTemplate.gd" type="Script" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://game-objects/GeneralCamera.tscn" type="PackedScene" id=13]
 [ext_resource path="res://game-objects/UI/CombatUI.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=15]
+[ext_resource path="res://game-objects/ActionQueueManager.tscn" type="PackedScene" id=16]
 
 [sub_resource type="TileSet" id=1]
 0/name = "zone_to_attack.png 0"
@@ -74,6 +75,7 @@ script = ExtResource( 3 )
 script = ExtResource( 4 )
 
 [node name="Map" type="TileMap" parent="."]
+editor/display_folded = true
 z_index = -1
 tile_set = ExtResource( 5 )
 format = 1
@@ -115,9 +117,13 @@ position = Vector2( 510, 300 )
 [node name="PauseMenu" parent="." instance=ExtResource( 15 )]
 visible = false
 
+[node name="ActionQueueManager" parent="." instance=ExtResource( 16 )]
+
 [connection signal="click_mode_changed" from="AttackTemplate" to="Player1/Char" method="_on_AttackTemplate_click_mode_changed"]
 [connection signal="click_mode_changed" from="AttackTemplate" to="Player2/Char" method="_on_AttackTemplate_click_mode_changed"]
+[connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="selected_player_changed" from="SelectionManager" to="Player1/Char" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="selected_player_changed" from="SelectionManager" to="Player2/Char" method="_on_SelectionManager_selected_player_changed"]
-[connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="action_queue_finished_executing" from="Player1/Char" to="TurnManager" method="_on_Char_action_queue_finished_executing"]
+[connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="Player1/Char" method="_on_ActionQueueManager_all_action_queues_finished_executing"]
+[connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="Player2/Char" method="_on_ActionQueueManager_all_action_queues_finished_executing"]

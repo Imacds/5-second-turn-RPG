@@ -7,7 +7,8 @@ const Agent = preload("res://scripts/Agent.gd")
 
 var agents = []
 onready var selection_manager = $"../SelectionManager"
-onready var players = selection_manager.players
+onready var players = [get_parent().get_node("Player1"), get_parent().get_node("Player2"), get_parent().get_node("AI1")]
+onready var AIs = [get_parent().get_node("AI1")]
 onready var attack_map = $"../AttackMap"
 
 func _ready():
@@ -23,11 +24,14 @@ func _get_agents_recursively(node):
 		_get_agents_recursively(child)
 
 func end_turn():
+	for ai in AIs:
+		ai.get_node('AISystem').do_ai_stuff()
 	for agent in agents:
 		agent.get_node("ActionQueue").execute_all(wait_time_per_tick)
+	
 		
 func get_player_names():
-	return [players[0].get_name(), players[1].get_name()]
+	return [players[0].get_name(), players[1].get_name(), players[2].get_name()]
 
 func _on_TurnTimer_timer_ended():
 	end_turn()

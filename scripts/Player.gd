@@ -142,6 +142,9 @@ func preview_attack(attack_template_attack_mode, dir_str, tile_type):
 func is_selected():
 	return get_parent() == selection_manager.selected
 
+func not_out_of_points():
+	return action_points > 0
+	
 func can_do_action():
 	return action_points > 0 and is_selected() and _state != STATES.TURN
 
@@ -181,7 +184,8 @@ func undo_last_action():
 
 func queue_attack_action(attack_mode, dir_str):
 	var action = AttackAction.new(self, dir_str, attack_template, attack_mode) # agent, direction_str, attack_template, attack_mode, execution_cost = 1
-	attack_template.visualize_attack($PlayerControlledPath.get_target_grid_pos(), attack_mode, dir_str, self, attack_map.TILES.YELLOW_ZONE_TO_ATTACK) # position, attack_mode, attack_dir, owner, tile_type
+	if is_selected():
+		attack_template.visualize_attack($PlayerControlledPath.get_target_grid_pos(), attack_mode, dir_str, self, attack_map.TILES.YELLOW_ZONE_TO_ATTACK) # position, attack_mode, attack_dir, owner, tile_type
 
 	attack_template.set_click_mode(null)
 	var queue_had_room = $ActionQueue.push(WaitAction.new()) and $ActionQueue.push(action)

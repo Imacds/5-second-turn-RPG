@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://scripts/PlayerInputManager.gd" type="Script" id=1]
 [ext_resource path="res://game-objects/UI/DialogBox.tscn" type="PackedScene" id=2]
@@ -16,12 +16,15 @@
 [ext_resource path="res://sprites/tile-set/ThiefSet - Boots2.png" type="Texture" id=14]
 [ext_resource path="res://scripts/AttackMap.gd" type="Script" id=15]
 [ext_resource path="res://game-objects/Player.tscn" type="PackedScene" id=16]
-[ext_resource path="res://scripts/AISystem.gd" type="Script" id=17]
-[ext_resource path="res://game-objects/GeneralCamera.tscn" type="PackedScene" id=18]
-[ext_resource path="res://game-objects/UI/CombatUI.tscn" type="PackedScene" id=19]
-[ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=20]
-[ext_resource path="res://game-objects/ActionQueueManager.tscn" type="PackedScene" id=21]
-[ext_resource path="res://audio/Curse of the Scarab.wav" type="AudioStream" id=22]
+[ext_resource path="res://sprites/npcs/rat/rat1.png" type="Texture" id=17]
+[ext_resource path="res://sprites/npcs/rat/rat2.png" type="Texture" id=18]
+[ext_resource path="res://sprites/npcs/rat/rat3.png" type="Texture" id=19]
+[ext_resource path="res://scripts/AISystem.gd" type="Script" id=20]
+[ext_resource path="res://game-objects/GeneralCamera.tscn" type="PackedScene" id=21]
+[ext_resource path="res://game-objects/UI/CombatUI.tscn" type="PackedScene" id=22]
+[ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=23]
+[ext_resource path="res://game-objects/ActionQueueManager.tscn" type="PackedScene" id=24]
+[ext_resource path="res://audio/Curse of the Scarab.wav" type="AudioStream" id=25]
 
 [sub_resource type="TileSet" id=1]
 0/name = "zone_to_attack.png 0"
@@ -64,6 +67,14 @@
 3/navigation_offset = Vector2( 0, 0 )
 3/shapes = [  ]
 3/z_index = 0
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
 
 [node name="Root" type="Node"]
 
@@ -134,40 +145,46 @@ z_as_relative = false
 [node name="AI1" type="Node" parent="."]
 
 [node name="Char" parent="AI1" instance=ExtResource( 16 )]
-modulate = Color( 1, 0, 0, 1 )
 position = Vector2( 607.689, 479.564 )
 z_index = 1
 z_as_relative = false
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="AI1/Char"]
+position = Vector2( -0.672894, -0.181416 )
+scale = Vector2( 1.9903, 1.9903 )
+frames = SubResource( 2 )
+frame = 2
+playing = true
+
 [node name="AISystem" type="Node" parent="AI1"]
-script = ExtResource( 17 )
+script = ExtResource( 20 )
 
 [node name="StartPosition" type="Node2D" parent="AI1"]
 
-[node name="GeneralCamera" parent="." instance=ExtResource( 18 )]
+[node name="GeneralCamera" parent="." instance=ExtResource( 21 )]
 position = Vector2( 510, 300 )
 
-[node name="CombatUI" parent="GeneralCamera" instance=ExtResource( 19 )]
+[node name="CombatUI" parent="GeneralCamera" instance=ExtResource( 22 )]
 
-[node name="PauseMenu" parent="." instance=ExtResource( 20 )]
+[node name="PauseMenu" parent="." instance=ExtResource( 23 )]
 visible = false
 
-[node name="ActionQueueManager" parent="." instance=ExtResource( 21 )]
+[node name="ActionQueueManager" parent="." instance=ExtResource( 24 )]
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 position = Vector2( 510, 300 )
-stream = ExtResource( 22 )
+stream = ExtResource( 25 )
 autoplay = true
 
-[connection signal="click_mode_changed" from="AttackTemplate" to="Player2/Char" method="_on_AttackTemplate_click_mode_changed"]
 [connection signal="click_mode_changed" from="AttackTemplate" to="Player1/Char" method="_on_AttackTemplate_click_mode_changed"]
-[connection signal="selected_player_changed" from="SelectionManager" to="Player2/Char" method="_on_SelectionManager_selected_player_changed"]
+[connection signal="click_mode_changed" from="AttackTemplate" to="Player2/Char" method="_on_AttackTemplate_click_mode_changed"]
 [connection signal="selected_player_changed" from="SelectionManager" to="Player1/Char" method="_on_SelectionManager_selected_player_changed"]
+[connection signal="selected_player_changed" from="SelectionManager" to="Player2/Char" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TimerLabel" method="_on_TurnTimer_timeout"]
 [connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TurnTimer" method="_on_TurnTimer_timeout"]
 [connection signal="timer_ended" from="TurnManager/TurnTimer" to="TurnManager" method="_on_TurnTimer_timer_ended"]
+[connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="Player1/Char" method="_on_ActionQueueManager_all_action_queues_finished_executing"]
 [connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="Player2/Char" method="_on_ActionQueueManager_all_action_queues_finished_executing"]
 [connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="AI1/Char" method="_on_ActionQueueManager_all_action_queues_finished_executing"]
-[connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="Player1/Char" method="_on_ActionQueueManager_all_action_queues_finished_executing"]
 [connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="TurnManager" method="_on_ActionQueueManager_all_action_queues_finished_executing"]

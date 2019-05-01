@@ -10,6 +10,10 @@ onready var attack_player = agent.get_node('Attack')
 
 var target_agent
 
+func _ready():
+	$"../Char/Sprite".visible = false
+	$"../Char/AnimatedSprite".flip_h = true
+
 func _process(delta):
 	target_agent = selection_manager.selected.get_node('Char')
 	

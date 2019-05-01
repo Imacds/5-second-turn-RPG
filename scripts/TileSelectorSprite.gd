@@ -46,14 +46,13 @@ func undo_one_move(direction: Vector2):
 	
 # set visibility and reset position
 func set_enabled(enabled):
-	reset_position()
 	self.enabled = enabled
 	visible = enabled
 
 func is_walkable(next_position):
 	# don't allow moving out of bounds
 	# don't allow moving outside of agent movable tiles
-	var walkable_cells = path.get_agent_walkable_cell_coords() # todo: cache this in PlayerControlledPath
+	var walkable_cells = path.get_agent_walkable_cell_coords()
 	var destination_cell = map.world_to_mapa(next_position)
 
 	return destination_cell in walkable_cells

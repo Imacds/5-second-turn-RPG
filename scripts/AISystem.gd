@@ -24,14 +24,14 @@ func do_ai_stuff():
 
 func do_move(move_dir):	
 	# Move
-		if agent.not_out_of_points():
-			tss.move_one_cell(move_dir)
-			path.draw_walkable(path.get_target_grid_pos())
+	if agent.not_out_of_points():
+		tss.move_one_cell(move_dir)
+		path.draw_walkable(path.get_target_grid_pos())
 	
 func do_attack(attack_mode, attack_dir):
 	# Attack
-		if attack_mode != null and agent.not_out_of_points():
-			agent.queue_attack_action(attack_mode, attack_player.get_attack_dir_str(attack_dir))
+	if attack_mode != null and agent.not_out_of_points():
+		agent.queue_attack_action(attack_mode, attack_player.get_attack_dir_str(attack_dir))
 
 func array_to_vec2(array):
 	return Vector2(array[0],array[1])

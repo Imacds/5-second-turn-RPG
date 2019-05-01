@@ -76,11 +76,11 @@ func get_path_relative(start, end):
 
 func _on_Char_agent_enters_walk_mode(cell_coords):
 	draw_walkable(cell_coords)
-	$"TileSelectorSprite".set_enabled(true)
+	$"../TileSelectorSprite".set_enabled(true)
 
 func _on_Char_agent_exits_walk_mode(cell_coords):
 	attack_map.clear_cells(get_parent().get_name(), attack_map.TILES.AGENT_CAN_MOVE_HERE)
-	$"TileSelectorSprite".set_enabled(false)
+	$"../TileSelectorSprite".set_enabled(false)
 	clear_draw_path()
 	
 func get_agent_walkable_cell_coords(agent_cell = null): # get the list of cell coords (lists) that the agent can walk to

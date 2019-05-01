@@ -85,22 +85,25 @@ func to_relative_coords():
 	
 	for y in range(len(matrix)):
 		for x in range(len(matrix[y])):
-			if matrix[y][x] == ELEMENTS.HITBOX || matrix[y][x] == ELEMENTS.ATTACKER_AND_HITBOX:
+			if matrix[y][x] == ELEMENTS.HITBOX or matrix[y][x] == ELEMENTS.ATTACKER_AND_HITBOX:
 				coords.append([x - size, y - size])
 				
 	return coords
 	
 
-func to_world_coords(attack_coords, constraint: FuncRef = null):
+# param attack_coords:
+func to_world_coords(attack_coords, constraint: FuncRef = null, agent = null):
 	var relative_coords = to_relative_coords()
 	var cell_coords = []
 	var enable_filter = constraint
+	var attack_coords_array = [attack_coords[0], attack_coords[1]]
     
 	for coords in relative_coords:
 		coords[0] += attack_coords[0]
 		coords[1] += attack_coords[1]
         
-		if not enable_filter or (enable_filter and constraint.call_func(coords)):
+		# Map.gd constraint args: cell_start: Array, cell_destination: Array, distance_limit = 3
+		if not enable_filter or (enable_filter and constraint.call_func(attack_coords_array, coords, agent)):
 			cell_coords.append(coords)
             
 	return cell_coords

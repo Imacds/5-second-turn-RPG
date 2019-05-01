@@ -128,6 +128,13 @@ func calculate_point_index(point): # point: Array or Vector2. it should be a cel
 func distance_between_points(cell_coord1: Array, cell_coord2: Array):
 	var path = astar_node.get_point_path(calculate_point_index(cell_coord1), calculate_point_index(cell_coord2))
 	return len(path)
+
+func vector2toarray(vector):
+	return [vector.x, vector.y]
+
+func get_point_path(cell_coord1: Array, cell_coord2: Array):
+	var path = astar_node.get_point_path(calculate_point_index(cell_coord1), calculate_point_index(cell_coord2))
+	return path
 	
 # override
 func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, transpose = false, autotile_coord = Vector2(0, 0)):

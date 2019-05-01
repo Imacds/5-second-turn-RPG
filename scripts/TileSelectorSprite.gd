@@ -41,7 +41,6 @@ func undo_one_move(direction: Vector2):
 	
 # set visibility and reset position
 func set_enabled(enabled):
-	reset_position()
 	self.enabled = enabled
 	visible = enabled
 

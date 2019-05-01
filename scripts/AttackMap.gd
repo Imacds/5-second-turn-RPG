@@ -19,7 +19,7 @@ func _ready():
 	for x in range(map_size.x):
 		grid.append([])
 		for y in range(map_size.y):
-			grid[x].append(GridElement.new("void", int(TILES.VOID), null, [x, y]))
+			grid[x].append(GridElement.new("void", int(TILES.VOID), null, [x, y])) # ele_name, ele_tile_index, ele_owner, grid_coords, prev_element = null
 
 func is_outside_map_bounds(point):
 	return point[0] < 0 or point[1] < 0 or point[0] >= map_size.x or point[1] >= map_size.y
@@ -46,11 +46,13 @@ func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, tr
 	var cell = get_cell_content(Vector2(x, y))
 	
 	.set_cell(x, y, tile_index, flip_x, flip_y, transpose, autotile_coord) # call super.set_cell
-	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, cell) 
+	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, [x, y], cell) 
 	
 # clear (remove) tiles/cells from map where the cell owner or/and tile_index matches
 # param owner: Object or str
 func clear_cells(owner = null, tile_index = null):
+	if tile_index != null:
+		tile_index = int(tile_index)
 	if not owner and tile_index == null: # nothing to clear
 		print("warning: you called clear_cells without any owner or tile_index, do you mean to call clear() ?")
 		return

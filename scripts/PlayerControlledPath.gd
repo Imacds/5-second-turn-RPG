@@ -79,9 +79,7 @@ func _on_Char_agent_enters_walk_mode(cell_coords):
 	$"../TileSelectorSprite".set_enabled(true)
 
 func _on_Char_agent_exits_walk_mode(cell_coords):
-	attack_map.clear_cells(get_parent().get_name(), attack_map.TILES.AGENT_CAN_MOVE_HERE)
-	$"../TileSelectorSprite".set_enabled(false)
-	clear_draw_path()
+	pass
 	
 func get_agent_walkable_cell_coords(agent_cell = null): # get the list of cell coords (lists) that the agent can walk to
 	return walk_matrix.to_world_coords(agent_cell if agent_cell else agent.get_cell_coords(), map.reachable_cell_constraint)

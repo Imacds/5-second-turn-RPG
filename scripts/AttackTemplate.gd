@@ -71,9 +71,9 @@ func damage_in_attack_radius(position, attack_mode, attack_dir, owner):
 	var hitboxes = rotated_matrix.to_world_coords(position)
 	
 	for coords in hitboxes:
-		for player in turn_manager.players:
-			if player.get_node("Char").get_cell_coords() == Vector2(coords[0], coords[1]):
-				player.get_node("Char").take_damage()
+		for agent in turn_manager.agents:
+			if agent.get_cell_coords() == Vector2(coords[0], coords[1]):
+				agent.take_damage()
 	
 
 func visualize_attack(position, attack_mode, attack_dir, owner, tile_type):

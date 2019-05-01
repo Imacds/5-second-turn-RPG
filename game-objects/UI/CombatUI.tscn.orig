@@ -172,34 +172,38 @@ align = 1
 valign = 1
 script = ExtResource( 12 )
 
+<<<<<<< HEAD
+=======
 [node name="ColorRect2" type="ColorRect" parent="."]
-margin_left = 15.0
-margin_top = 349.0
-margin_right = 193.0
-margin_bottom = 525.0
+margin_left = 28.0
+margin_top = 336.0
+margin_right = 187.0
+margin_bottom = 496.0
 color = Color( 0, 0, 0, 1 )
 
-[node name="ColorRect3" type="ColorRect" parent="ColorRect2"]
+[node name="ColorRect" type="ColorRect" parent="ColorRect2"]
 margin_left = 6.0
 margin_top = 6.0
-margin_right = 173.0
-margin_bottom = 173.0
+margin_right = 154.0
+margin_bottom = 154.0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="ColorRect2/ColorRect3"]
-margin_left = 5.0
-margin_right = 186.0
-margin_bottom = 167.0
-custom_fonts/normal_font = ExtResource( 10 )
+[node name="QueueListLabel" type="RichTextLabel" parent="ColorRect2/ColorRect"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 154.0
+margin_bottom = 153.0
+custom_fonts/normal_font = ExtResource( 4 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 text = "Queue List
 
 1. Swing Right
 
-2.
+2. Swing Right
 
-3."
+3. Swing Right"
 script = ExtResource( 13 )
 
+>>>>>>> Added a queue list Combat UI element
 [connection signal="pressed" from="ColorRect/Attacks/UndoTurnButton" to="ColorRect/Attacks/UndoTurnButton" method="_on_Undo_pressed"]
 [connection signal="pressed" from="ColorRect/Attacks/SlashAttackButtonButton" to="ColorRect/Attacks/SlashAttackButtonButton" method="_on_SlashAttackButton_pressed"]
 [connection signal="pressed" from="ColorRect/Attacks/SwingAttackButton" to="ColorRect/Attacks/SwingAttackButton" method="_on_SwingAttackButton_pressed"]

@@ -44,11 +44,12 @@ func rat_ai():
 			var dir = array_to_vec2(path[j+1]-path[j])
 			do_move(dir)
 			j+=1
-		else:
-			var dir = array_to_vec2(path[j+1]-path[j])
+		elif len(path) > 1:
+			var dir = array_to_vec2(path[1]-path[0])
 			do_attack(attack_mode, dir)
 			do_move(dir)
-		
+		else:
+			do_move(Vector2.RIGHT)
 	
 func path_to_player(from, to):
 	return map.get_point_path(map.vector2toarray(from), map.vector2toarray(to))

@@ -26,8 +26,8 @@ signal action_queue_finished_executing(agent_name) # only here to forward the si
 # enums #
 ###################
 # idle is waiting for player input, wait is waiting for turn to end or player to complete action ?, turn indicates it's this player reads inputs & not the other
-# waiting_for_all_actions is the current player does not read input, but is waiting for all queued actions of all actions to complete 
-enum STATES { IDLE, WAIT, TURN, WAITING_FOR_ALL_ACTIONS } 
+# waiting_for_all_actions is the current player does not read input, but is waiting for all queued actions of all actions to complete
+enum STATES { IDLE, WAIT, TURN, WAITING_FOR_ALL_ACTIONS }
 # null: read no input from this player, move: allow reading and queue for move action, attack: allow reading queue of attack action
 enum COMMAND_MODES { NULL, MOVE, ATTACK }
 
@@ -61,7 +61,7 @@ func _ready():
 	_change_command_mode(COMMAND_MODES.MOVE)
 	set_process_input(true)
 	set_physics_process(true)
-	
+
 func get_position():
 	return position
 
@@ -70,16 +70,16 @@ func get_cell_coords():
 
 func _change_state(new_state):
 	_state = new_state
-	
+
 func _change_command_mode(new_mode):
 	if command_mode == COMMAND_MODES.MOVE:
 		emit_signal("agent_exits_walk_mode", get_cell_coords())
 	elif command_mode == COMMAND_MODES.ATTACK:
 		emit_signal("agent_exits_attack_mode", get_cell_coords())
-	
+
 	if action_points > 0:
 		command_mode = new_mode
-		
+
 		if can_move():
 			emit_signal("agent_enters_walk_mode", get_cell_coords())
 		elif can_attack():
@@ -119,17 +119,17 @@ func move_to(world_position):
 	var steering = desired_velocity - velocity
 	velocity += steering / mass
 	position += velocity * get_process_delta_time()
-	
+
 	return position.distance_to(world_position) <= arrive_distance
 
 func move_one_cell(direction):
 	_change_state(STATES.WAIT)
 	# get pos (cells)
 	var coords = get_cell_coords()
-	
+
 	# get destination (cells)
 	coords += direction
-	
+
 	# calc world destination
 	var world_destination = map.map_to_world(coords, false) + map._half_cell_size # todo: why is this method giving the wrong world coords?
 	target_point_world = world_destination
@@ -138,16 +138,16 @@ func move_one_cell(direction):
 
 func preview_attack(attack_template_attack_mode, dir_str, tile_type):
 	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, dir_str, self, tile_type) # position, attack_mode, attack_dir, owner, tile_type
-	
+
 func is_selected():
 	return get_parent() == selection_manager.selected
-	
+
 func can_do_action():
 	return action_points > 0 and is_selected() and _state != STATES.TURN
-	
+
 func can_attack():
 	return can_do_action() and command_mode == COMMAND_MODES.ATTACK
-	
+
 func can_move():
 	return can_do_action() and command_mode == COMMAND_MODES.MOVE
 
@@ -163,26 +163,25 @@ func queue_move_action(direction: Vector2):
 func undo_last_action():
 	var last = action_queue.peek_back()
 	if last != null:
+		action_points += last.get_cost()
 		if last is AttackAction:
 			action_queue.pop_back()
 			action_queue.pop_back()
 		elif last is MoveAction:
 			action_queue.pop_back()
-			$TileSelectorSprite.undo_one_move(last.direction)
 			$PlayerControlledPath.undo_last()
+			$TileSelectorSprite.undo_one_move(last.direction) #WARNING: needs to be after PlayerControlledPath.undo_last() to work
 		else:
 			print_debug("A wierd state is being undone...")
 			action_queue.pop_back()
-			
-		action_points += last.get_cost()
-	
+
 func queue_attack_action(attack_mode, dir_str):
 	var action = AttackAction.new(self, dir_str, attack_template, attack_mode) # agent, direction_str, attack_template, attack_mode, execution_cost = 1
 	attack_template.visualize_attack(get_cell_coords(), attack_mode, dir_str, self, attack_map.TILES.YELLOW_ZONE_TO_ATTACK) # position, attack_mode, attack_dir, owner, tile_type
-	
+
 	attack_template.set_click_mode(null)
 	var queue_had_room = $ActionQueue.push(WaitAction.new()) and $ActionQueue.push(action)
-	
+
 	if AttackAction.can_do_action(action, action_points) and queue_had_room:
 		action_points -= action.get_cost()
 		_change_state(STATES.IDLE)
@@ -190,7 +189,7 @@ func queue_attack_action(attack_mode, dir_str):
 	else: # not enough AP or queue is full
 		_change_state(STATES.TURN)
 		_change_command_mode(COMMAND_MODES.NULL)
-		
+
 # override
 func get_name():
 	return get_parent().get_name()
@@ -223,11 +222,10 @@ func _on_ActionQueue_begin_executing_actions(agent_name): # begin the action exe
 
 func _on_ActionQueue_finished_executing_actions(agent_name): # turn end and signal forwarding
 	action_points = action_points_per_turn
-	
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
 	_change_command_mode(COMMAND_MODES.MOVE if is_selected() else COMMAND_MODES.NULL)
-	attack_map.clear_cells(get_name())
 	$TileSelectorSprite.reset_position()
+	attack_map.clear()
 	$PlayerControlledPath.clear_draw_path()
-	
+
 	emit_signal("action_queue_finished_executing", agent_name) # forward the signal

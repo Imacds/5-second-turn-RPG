@@ -7,8 +7,8 @@
 [ext_resource path="res://scripts/UI/SlashAttackButton.gd" type="Script" id=5]
 [ext_resource path="res://scripts/UI/SwingAttackButton.gd" type="Script" id=6]
 [ext_resource path="res://scripts/UI/LungeAttackButton.gd" type="Script" id=7]
-[ext_resource path="res://scripts/UI/TurnButton.gd" type="Script" id=8]
-[ext_resource path="res://scripts/UI/ControlSwitch.gd" type="Script" id=9]
+[ext_resource path="res://scripts/UI/ControlSwitch.gd" type="Script" id=8]
+[ext_resource path="res://scripts/UI/TurnButton.gd" type="Script" id=9]
 [ext_resource path="res://Assets/fonts/lunchds_size_20.tres" type="DynamicFont" id=10]
 [ext_resource path="res://scripts/CharacterSelectedLabel.gd" type="Script" id=11]
 [ext_resource path="res://scripts/UI/CommandSelectedLabel.gd" type="Script" id=12]
@@ -67,7 +67,7 @@ margin_right = 210.0
 margin_bottom = 60.0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
-text = "Slash"
+text = "Slash [Q]"
 script = ExtResource( 5 )
 
 [node name="SwingAttackButton" type="Button" parent="ColorRect/Attacks"]
@@ -76,7 +76,7 @@ margin_top = 10.0
 margin_right = 340.0
 margin_bottom = 60.0
 custom_fonts/font = ExtResource( 4 )
-text = "Swing"
+text = "Swing [E]"
 script = ExtResource( 6 )
 
 [node name="LungeAttackButton" type="Button" parent="ColorRect/Attacks"]
@@ -85,42 +85,42 @@ margin_top = 10.0
 margin_right = 470.0
 margin_bottom = 60.0
 custom_fonts/font = ExtResource( 4 )
-text = "Lunge"
+text = "Lunge [R]"
 script = ExtResource( 7 )
 
 [node name="TurnControl" type="ColorRect" parent="ColorRect"]
-margin_left = 387.479
-margin_top = 7.5
-margin_right = 767.479
-margin_bottom = 77.5
+margin_left = 387.0
+margin_top = 8.0
+margin_right = 830.0
+margin_bottom = 78.0
 rect_scale = Vector2( 0.75, 0.75 )
-
-[node name="TurnButton" type="Button" parent="ColorRect/TurnControl"]
-material = SubResource( 4 )
-margin_left = 200.0
-margin_top = 10.0
-margin_right = 360.0
-margin_bottom = 60.0
-custom_fonts/font = ExtResource( 4 )
-custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
-text = "End Turn"
-script = ExtResource( 8 )
 
 [node name="ControlSwitch" type="Button" parent="ColorRect/TurnControl"]
 material = SubResource( 4 )
 margin_left = 16.6947
 margin_top = 10.0
-margin_right = 178.695
+margin_right = 218.695
 margin_bottom = 60.0
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
-text = "Switch Charcter"
+text = "Switch Charcter [F]"
+script = ExtResource( 8 )
+
+[node name="TurnButton" type="Button" parent="ColorRect/TurnControl"]
+material = SubResource( 4 )
+margin_left = 243.0
+margin_top = 10.0
+margin_right = 360.0
+margin_bottom = 60.0
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+text = "End Turn [Space]"
 script = ExtResource( 9 )
 
 [node name="CharacterSelectionRect" type="ColorRect" parent="ColorRect"]
-margin_left = 685.764
+margin_left = 735.81
 margin_top = 8.0
-margin_right = 898.764
+margin_right = 948.81
 margin_bottom = 78.0
 rect_scale = Vector2( 0.75, 0.75 )
 
@@ -145,15 +145,15 @@ valign = 1
 script = ExtResource( 11 )
 
 [node name="CommandRect" type="ColorRect" parent="ColorRect"]
-margin_left = 857.479
+margin_left = 910.0
 margin_top = 8.0
-margin_right = 1070.48
+margin_right = 1053.0
 margin_bottom = 78.0
 rect_scale = Vector2( 0.75, 0.75 )
 
 [node name="CommandMode" type="Label" parent="ColorRect/CommandRect"]
 margin_top = 3.0
-margin_right = 213.0
+margin_right = 143.0
 margin_bottom = 70.0
 custom_fonts/font = ExtResource( 10 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -161,10 +161,10 @@ text = "Mode:"
 align = 1
 
 [node name="CommandSelectedLabel" type="Label" parent="ColorRect/CommandRect/CommandMode"]
-margin_left = -4.36792
-margin_top = 26.3333
-margin_right = 208.632
-margin_bottom = 66.3333
+margin_left = -4.0
+margin_top = 26.0
+margin_right = 134.0
+margin_bottom = 66.0
 custom_fonts/font = ExtResource( 10 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Move"
@@ -204,5 +204,5 @@ script = ExtResource( 13 )
 [connection signal="pressed" from="ColorRect/Attacks/SlashAttackButtonButton" to="ColorRect/Attacks/SlashAttackButtonButton" method="_on_SlashAttackButton_pressed"]
 [connection signal="pressed" from="ColorRect/Attacks/SwingAttackButton" to="ColorRect/Attacks/SwingAttackButton" method="_on_SwingAttackButton_pressed"]
 [connection signal="pressed" from="ColorRect/Attacks/LungeAttackButton" to="ColorRect/Attacks/LungeAttackButton" method="_on_LungeAttackButton_pressed"]
-[connection signal="pressed" from="ColorRect/TurnControl/TurnButton" to="ColorRect/TurnControl/TurnButton" method="_on_TurnButton_pressed"]
 [connection signal="pressed" from="ColorRect/TurnControl/ControlSwitch" to="ColorRect/TurnControl/ControlSwitch" method="_on_ControlSwitch_pressed"]
+[connection signal="pressed" from="ColorRect/TurnControl/TurnButton" to="ColorRect/TurnControl/TurnButton" method="_on_TurnButton_pressed"]

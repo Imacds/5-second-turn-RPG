@@ -41,6 +41,7 @@ func queue_set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = fal
 # override
 func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, transpose = false, autotile_coord = Vector2(0, 0)):
 	if is_outside_map_bounds(Vector2(x, y)):
+		print_debug("Error adding cell " + str(x) + ", " + str(y) + ", " + str(owner) )
 		return null
 	
 	var cell = get_cell_content(Vector2(x, y))

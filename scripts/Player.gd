@@ -163,18 +163,17 @@ func queue_move_action(direction: Vector2):
 func undo_last_action():
 	var last = action_queue.peek_back()
 	if last != null:
+		action_points += last.get_cost()
 		if last is AttackAction:
 			action_queue.pop_back()
 			action_queue.pop_back()
 		elif last is MoveAction:
 			action_queue.pop_back()
-			$TileSelectorSprite.undo_one_move(last.direction)
 			$PlayerControlledPath.undo_last()
+			$TileSelectorSprite.undo_one_move(last.direction) #WARNING: needs to be after PlayerControlledPath.undo_last() to work
 		else:
 			print_debug("A wierd state is being undone...")
 			action_queue.pop_back()
-			
-		action_points += last.get_cost()
 	
 func queue_attack_action(attack_mode, dir_str):
 	var action = AttackAction.new(self, dir_str, attack_template, attack_mode) # agent, direction_str, attack_template, attack_mode, execution_cost = 1
@@ -215,10 +214,10 @@ func _on_ActionQueue_begin_executing_actions(agent_name): # begin the action exe
 
 func _on_ActionQueue_finished_executing_actions(agent_name): # turn end and signal forwarding
 	action_points = action_points_per_turn
-	
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
 	_change_command_mode(COMMAND_MODES.MOVE if is_selected() else COMMAND_MODES.NULL)
-	attack_map.clear_cells(get_name())
+	#attack_map.clear_cells(get_name())
+	attack_map.clear()
 	$PlayerControlledPath.clear_draw_path()
 	
 	emit_signal("action_queue_finished_executing", agent_name) # forward the signal

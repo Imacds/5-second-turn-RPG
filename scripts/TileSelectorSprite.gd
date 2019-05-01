@@ -43,6 +43,7 @@ func undo_one_move(direction: Vector2):
 	var next_pos = agent.position + position - direction * map.cell_size # position where agent would move
 	position = next_pos - agent.position # position of this sprite (relative to where agent currently is)
 	path.draw_walkable(path.get_target_grid_pos())
+	set_enabled(true)
 	
 # set visibility and reset position
 func set_enabled(enabled):

@@ -137,7 +137,7 @@ func move_one_cell(direction):
 	var arrived = move_to(world_destination)
 
 func preview_attack(attack_template_attack_mode, dir_str, tile_type):
-	attack_template.visualize_attack(get_cell_coords(), attack_template_attack_mode, dir_str, self, tile_type) # position, attack_mode, attack_dir, owner, tile_type
+	attack_template.visualize_attack($PlayerControlledPath.get_target_grid_pos(), attack_template_attack_mode, dir_str, self, tile_type) # position, attack_mode, attack_dir, owner, tile_type
 
 func is_selected():
 	return get_parent() == selection_manager.selected
@@ -156,6 +156,8 @@ func queue_move_action(direction: Vector2):
 	if MoveAction.can_do_action(action, action_points) and $ActionQueue.push(action):
 		$PlayerControlledPath.push_draw_path(direction)
 		action_points -= action.get_cost()
+		if action_points <= 0:
+			$"TileSelectorSprite".set_enabled(false)
 	else: # not enough AP or queue is full
 		_change_state(STATES.TURN)
 		_change_command_mode(COMMAND_MODES.NULL)
@@ -165,9 +167,11 @@ func undo_last_action():
 	if last != null:
 		action_points += last.get_cost()
 		if last is AttackAction:
+			_change_command_mode(COMMAND_MODES.MOVE)
 			action_queue.pop_back()
 			action_queue.pop_back()
 		elif last is MoveAction:
+			_change_command_mode(COMMAND_MODES.MOVE)
 			action_queue.pop_back()
 			$PlayerControlledPath.undo_last()
 			$TileSelectorSprite.undo_one_move(last.direction) #WARNING: needs to be after PlayerControlledPath.undo_last() to work
@@ -177,7 +181,7 @@ func undo_last_action():
 
 func queue_attack_action(attack_mode, dir_str):
 	var action = AttackAction.new(self, dir_str, attack_template, attack_mode) # agent, direction_str, attack_template, attack_mode, execution_cost = 1
-	attack_template.visualize_attack(get_cell_coords(), attack_mode, dir_str, self, attack_map.TILES.YELLOW_ZONE_TO_ATTACK) # position, attack_mode, attack_dir, owner, tile_type
+	attack_template.visualize_attack($PlayerControlledPath.get_target_grid_pos(), attack_mode, dir_str, self, attack_map.TILES.YELLOW_ZONE_TO_ATTACK) # position, attack_mode, attack_dir, owner, tile_type
 
 	attack_template.set_click_mode(null)
 	var queue_had_room = $ActionQueue.push(WaitAction.new()) and $ActionQueue.push(action)
@@ -199,6 +203,7 @@ func get_name():
 ###################
 func _on_SelectionManager_selected_player_changed(player):
 	if is_selected(): # switched to this player
+		attack_map.clear()
 		_change_state(STATES.IDLE)
 		_change_command_mode(COMMAND_MODES.MOVE)
 	else:

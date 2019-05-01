@@ -36,6 +36,8 @@ func _ready():
 	
 
 func get_cell_content(pos):
+	if is_outside_map_bounds(pos):
+		return
 	return grid[pos[0]][pos[1]]
 	
 

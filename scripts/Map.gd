@@ -19,15 +19,17 @@ onready var _half_cell_size = cell_size / 2
 
 enum TILES { VOID0, VOID1, VOID2, WALL, GROUND, VOID5 }
 
+onready var reachable_cell_constraint = funcref(self, "reachable_cell_constraint_func") # filter func to return true if cell is reachable by agent
+
 
 func _ready():
 	for x in range(map_size.x):
 		grid.append([])
 		for y in range(map_size.y):
-			grid[x].append(GridElement.new("walkable", 3, null, [x, y]))
+			grid[x].append(GridElement.new("walkable", int(TILES.GROUND), null, [x, y]))
 			
 	for id in obstacles:
-		grid[id.x][id.y] = GridElement.new("obstacle", 4, null, [id.x, id.y])
+		grid[id.x][id.y] = GridElement.new("obstacle", int(TILES.WALL), null, [id.x, id.y])
 		
 	var walkable_cells_list = astar_add_walkable_cells(obstacles)
 	astar_connect_walkable_cells(walkable_cells_list)
@@ -114,12 +116,16 @@ func astar_connect_walkable_cells_diagonal(points_array):
 
 
 func is_outside_map_bounds(point):
-	return point.x < 0 or point.y < 0 or point.x >= map_size.x or point.y >= map_size.y
+	return point[0] < 0 or point[1] < 0 or point[0] >= map_size[0] or point[1] >= map_size[1]
 
 
-func calculate_point_index(point):
-	return point.x + map_size.x * point.y
+func calculate_point_index(point): # point: Array or Vector2. it should be a cell coordinate
+	return point[0] + map_size[0] * point[1]
 	
+	
+func distance_between_points(cell_coord1: Array, cell_coord2: Array):
+	var path = astar_node.get_point_path(calculate_point_index(cell_coord1), calculate_point_index(cell_coord2))
+	return len(path)
 	
 # override
 func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, transpose = false, autotile_coord = Vector2(0, 0)):
@@ -139,3 +145,22 @@ func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, tr
 func world_to_mapa(world_position) -> Array:
 	var cell = world_to_map(world_position)
 	return [cell.x, cell.y]
+	
+
+# param agent: any class that has an attribute, walk_distance
+# return: true if destination is within map boudnaries, is a walkable tile, and is walkable distance from cell_start
+func reachable_cell_constraint_func(cell_start: Array, cell_destination: Array, agent = null) -> bool:
+	var in_boundaries = not is_outside_map_bounds(cell_destination)
+	
+	var cell = get_cell_content(cell_destination)
+	var is_walkable_tile = true
+	
+	if cell and cell.tile_index == int(TILES.WALL):
+		is_walkable_tile = false
+
+	var is_walking_distance = true
+	
+	if agent and agent.walk_distance:
+		is_walking_distance = distance_between_points(cell_start, cell_destination) <= agent.walk_distance
+		
+	return in_boundaries and is_walkable_tile and is_walking_distance

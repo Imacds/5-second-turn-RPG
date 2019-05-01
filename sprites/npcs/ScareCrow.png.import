@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ScareCrow.png-f37398c579b30ce88f1697d3bf5ebfe7.stex"
+path="res://.import/ScareCrow.png-a6602f21404ea162a03bcce2a2546413.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/enemies/ScareCrow.png"
-dest_files=[ "res://.import/ScareCrow.png-f37398c579b30ce88f1697d3bf5ebfe7.stex" ]
+source_file="res://sprites/npcs/ScareCrow.png"
+dest_files=[ "res://.import/ScareCrow.png-a6602f21404ea162a03bcce2a2546413.stex" ]
 
 [params]
 

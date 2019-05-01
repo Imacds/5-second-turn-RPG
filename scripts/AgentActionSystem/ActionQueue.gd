@@ -37,6 +37,8 @@ func execute_all(wait_time_between_actions = 0.15):
 	$Timer.set_wait_time(wait_time_between_actions)
 	$Timer.start()
 
+func get_queue():
+	return queue
 
 func _on_Timer_timeout():
 	if not queue.empty(): # more to execute

@@ -51,7 +51,6 @@ func rat_ai():
 		elif len(path) > 1:
 			var dir = array_to_vec2(path[1]-path[0])
 			do_attack(attack_mode, dir)
-			do_move(dir)
 		else:
 			do_move(Vector2.RIGHT)
 	

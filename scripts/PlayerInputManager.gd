@@ -26,5 +26,15 @@ func _unhandled_input(event):
 			
 	# Attacks
 	var attack_player = agent.get_node('Attack')
-	if attack_template.get_click_mode() != null and agent.can_attack() and event.is_action_pressed("click"):
-		agent.queue_attack_action(attack_template.get_click_mode(), attack_player.direction_str)
+	if attack_template.get_click_mode() != null and agent.can_attack():
+		if event.is_action_pressed("click"):
+			agent.queue_attack_action(attack_template.get_click_mode(), attack_player.direction_str)
+			
+		if event.is_action_pressed("move_up"):
+			agent.queue_attack_action(attack_template.get_click_mode(), attack_player.get_attack_dir_str(Vector2.UP))
+		elif event.is_action_pressed("move_right"):
+			agent.queue_attack_action(attack_template.get_click_mode(), attack_player.get_attack_dir_str(Vector2.RIGHT))
+		elif event.is_action_pressed("move_down"):
+			agent.queue_attack_action(attack_template.get_click_mode(), attack_player.get_attack_dir_str(Vector2.DOWN))
+		elif event.is_action_pressed("move_left"):
+			agent.queue_attack_action(attack_template.get_click_mode(), attack_player.get_attack_dir_str(Vector2.LEFT))

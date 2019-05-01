@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scripts/CombatUI.gd" type="Script" id=1]
 [ext_resource path="res://Assets/fonts/lunchds.ttf" type="DynamicFontData" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://scripts/CharacterSelectedLabel.gd" type="Script" id=11]
 [ext_resource path="res://scripts/UI/CommandSelectedLabel.gd" type="Script" id=12]
 [ext_resource path="res://scripts/UI/QueueListLabel.gd" type="Script" id=13]
+[ext_resource path="res://scripts/UI/GoalList.gd" type="Script" id=14]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 
@@ -173,9 +174,9 @@ valign = 1
 script = ExtResource( 12 )
 
 [node name="ColorRect2" type="ColorRect" parent="."]
-margin_left = 15.0
+margin_left = 8.53818
 margin_top = 349.0
-margin_right = 193.0
+margin_right = 186.538
 margin_bottom = 525.0
 color = Color( 0, 0, 0, 1 )
 
@@ -199,6 +200,33 @@ text = "Queue List
 
 3."
 script = ExtResource( 13 )
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+margin_left = 823.894
+margin_top = 346.462
+margin_right = 1010.89
+margin_bottom = 522.462
+color = Color( 0, 0, 0, 1 )
+
+[node name="ColorRect3" type="ColorRect" parent="ColorRect3"]
+margin_left = 4.0
+margin_top = 5.0
+margin_right = 181.0
+margin_bottom = 172.0
+
+[node name="GoalList" type="RichTextLabel" parent="ColorRect3/ColorRect3"]
+margin_left = 3.0
+margin_top = 7.0
+margin_right = 189.0
+margin_bottom = 145.0
+custom_fonts/normal_font = ExtResource( 10 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+text = "Tasks
+
+Go to (0, 0)
+
+Kill All Enemies"
+script = ExtResource( 14 )
 
 [connection signal="pressed" from="ColorRect/Attacks/UndoTurnButton" to="ColorRect/Attacks/UndoTurnButton" method="_on_Undo_pressed"]
 [connection signal="pressed" from="ColorRect/Attacks/SlashAttackButtonButton" to="ColorRect/Attacks/SlashAttackButtonButton" method="_on_SlashAttackButton_pressed"]

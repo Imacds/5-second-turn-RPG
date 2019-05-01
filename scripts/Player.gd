@@ -90,6 +90,9 @@ func _change_command_mode(new_mode):
 func take_damage():
 	hp = hp - 1
 
+func is_dead():
+	return hp < 0
+
 func render_hp():
 	if hp >= 0:
 		$Label.text = "HP: "
@@ -143,10 +146,10 @@ func is_selected():
 	return get_parent() == selection_manager.selected
 
 func not_out_of_points():
-	return action_points > 0
+	return action_points > 0 and not is_dead()
 	
 func can_do_action():
-	return action_points > 0 and is_selected() and _state != STATES.TURN
+	not_out_of_points() and is_selected() and _state != STATES.TURN
 
 func can_attack():
 	return can_do_action() and command_mode == COMMAND_MODES.ATTACK

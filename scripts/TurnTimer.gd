@@ -12,3 +12,8 @@ func _on_TurnTimer_timeout():
 		stop()
 		time_remaining = time_per_turn
 		emit_signal("timer_ended")
+
+func _unhandled_input(event):
+	if Input.is_action_just_pressed("pause"):
+		print('pausin')
+		set_paused(!paused)

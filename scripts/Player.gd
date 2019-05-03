@@ -50,6 +50,7 @@ onready var selection_manager = get_tree().get_root().get_node("Root/SelectionMa
 onready var map = get_tree().get_root().get_node("Root/Map")
 onready var attack_map = Finder.get_node_from_root("Root/AttackMap")
 onready var action_queue = $ActionQueue
+onready var action_queue_manager = Finder.get_node_from_root("Root/ActionQueueManager")
 
 var velocity = Vector2()
 
@@ -61,6 +62,7 @@ func _ready():
 	_change_command_mode(COMMAND_MODES.MOVE)
 	set_process_input(true)
 	set_physics_process(true)
+	action_queue_manager.connect("all_action_queues_finished_executing", self, "_on_ActionQueueManager_all_action_queues_finished_executing")
 
 func get_position():
 	return position

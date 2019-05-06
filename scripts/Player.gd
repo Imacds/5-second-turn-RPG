@@ -96,9 +96,7 @@ func render_hp():
 	if hp >= 0:
 		$Label.text = "HP: "
 		for i in range(0, hp):
-			$Label.text+= "O "
-		for i in range(0, 4-hp):
-			$Label.text+= "X "
+			$Label.text += "X "
 	else:
 		$Label.text = "DEAD"
 

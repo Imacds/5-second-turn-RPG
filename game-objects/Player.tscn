@@ -24,13 +24,14 @@ shape = SubResource( 1 )
 script = ExtResource( 3 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = -19.9998
-margin_top = 33.9619
-margin_right = 20.0002
-margin_bottom = 47.9619
+margin_left = -30.0
+margin_top = 32.0
+margin_right = 40.0
+margin_bottom = 46.0
 custom_colors/font_color = Color( 1, 0, 0, 1 )
-text = "HP: 20"
+text = "HP: X X X X"
 align = 1
+valign = 1
 
 [node name="PlayerControlledPath" type="Node2D" parent="."]
 script = ExtResource( 4 )

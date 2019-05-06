@@ -18,7 +18,8 @@ func _on_TurnTimer_timeout(): # 1 second tick from timer
 	time_remaining = clamp(time_remaining - wait_time, 0, INF)
 	if time_remaining <= 0: # the turn ends 
 		reset_timer()
-		emit_signal("timer_ended")
+		# emit signal to call end_turn which executes all agents action queues
+		emit_signal("timer_ended") # user didn't manually end turn, 
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("pause"):

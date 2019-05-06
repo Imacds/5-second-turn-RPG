@@ -1,5 +1,7 @@
 extends Node
 
+export(int) var hp = 2
+
 onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
 onready var attack_template = get_tree().get_root().get_node("Root/AttackTemplate")
 onready var map = get_tree().get_root().get_node("Root/Map")
@@ -13,10 +15,10 @@ var target_agent
 func _ready():
 	$"../Char/Sprite".visible = false
 	$"../Char/AnimatedSprite".flip_h = true
-
+	agent.hp = hp
+	
 func _process(delta):
 	target_agent = selection_manager.selected.get_node('Char')
-	
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func do_ai_stuff():
@@ -43,7 +45,7 @@ func rat_ai():
 	var path = path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords())
 	
 	var j = 0
-	for i in range(0,3):
+	for i in range(0, 3):
 		if len(path) > 2+j:
 			var dir = array_to_vec2(path[j+1]-path[j])
 			do_move(dir)

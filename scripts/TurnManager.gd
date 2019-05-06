@@ -6,6 +6,7 @@ signal begin_action_queues_execution()
 
 const Player = preload("res://scripts/Player.gd")
 const Agent = preload("res://scripts/Agent.gd")
+var Utils = load("res://scripts/globals/Utils.gd")
 
 var agents = []
 onready var selection_manager = $"../SelectionManager"
@@ -37,7 +38,7 @@ func end_turn():
 		agent.get_node("ActionQueue").execute_all(wait_time_per_tick)
 	
 func get_player_names():
-	return [players[0].get_name(), players[1].get_name()]
+	return [players[0].get_name(), Utils.get_name(players[1])]
 
 func _on_TurnTimer_timer_ended():
 	end_turn()

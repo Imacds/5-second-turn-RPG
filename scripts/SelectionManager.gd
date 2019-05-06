@@ -8,7 +8,13 @@ onready var players = [get_parent().get_node("Player1"), get_parent().get_node("
 
 var index = 0
 
+func _ready():
+	if not players[1]:
+		players = [players[0]]
+
 func toggle_control():
 	index = (index + 1) % 2
-	selected = players[index]
-	emit_signal("selected_player_changed", selected)
+	var next = players[index]
+	if next:
+		selected = next
+		emit_signal("selected_player_changed", selected)

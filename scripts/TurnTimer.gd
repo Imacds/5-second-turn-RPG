@@ -3,17 +3,29 @@ extends Timer
 signal timer_ended()
 
 export(float) var time_per_turn = 6
-
 var time_remaining = time_per_turn
+onready var Finder = get_node("/root/ObjectFinder")
+onready var action_queue_manager = Finder.get_node_from_root("Root/ActionQueueManager")
 
-func _on_TurnTimer_timeout():
+func _ready():
+	action_queue_manager.connect("all_action_queues_finished_executing", self, "_on_ActionQueueManager_all_action_queues_finished_executing")
+	
+func reset_timer():
+	stop()
+	time_remaining = time_per_turn
+
+func _on_TurnTimer_timeout(): # 1 second tick from timer
 	time_remaining = clamp(time_remaining - wait_time, 0, INF)
-	if time_remaining <= 0:
-		stop()
-		time_remaining = time_per_turn
+	if time_remaining <= 0: # the turn ends 
+		reset_timer()
 		emit_signal("timer_ended")
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("pause"):
-		print('pausin')
 		set_paused(!paused)
+		
+func _on_ActionQueueManager_all_action_queues_finished_executing():
+	start()
+
+func _on_TurnManager_begin_action_queues_execution():
+	reset_timer()

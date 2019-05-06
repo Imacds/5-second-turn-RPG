@@ -2,6 +2,8 @@ extends Node
 
 export(int) var wait_time_per_tick = 0.15
 
+signal begin_action_queues_execution()
+
 const Player = preload("res://scripts/Player.gd")
 const Agent = preload("res://scripts/Agent.gd")
 
@@ -26,6 +28,8 @@ func _get_agents_recursively(node):
 		_get_agents_recursively(child)
 
 func end_turn():
+	emit_signal("begin_action_queues_execution")
+	
 	for ai in AIs:
 		ai.get_node('AISystem').do_ai_stuff()
 		

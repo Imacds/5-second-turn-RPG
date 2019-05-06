@@ -153,6 +153,7 @@ z_as_relative = false
 position = Vector2( -0.672894, -0.181416 )
 scale = Vector2( 1.9903, 1.9903 )
 frames = SubResource( 2 )
+frame = 1
 playing = true
 
 [node name="AISystem" type="Node" parent="AI1"]
@@ -177,13 +178,14 @@ autoplay = true
 
 [connection signal="click_mode_changed" from="AttackTemplate" to="Player1/Char" method="_on_AttackTemplate_click_mode_changed"]
 [connection signal="click_mode_changed" from="AttackTemplate" to="Player2/Char" method="_on_AttackTemplate_click_mode_changed"]
-[connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="selected_player_changed" from="SelectionManager" to="Player1/Char" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="selected_player_changed" from="SelectionManager" to="Player2/Char" method="_on_SelectionManager_selected_player_changed"]
+[connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
+[connection signal="begin_action_queues_execution" from="TurnManager" to="TurnManager/TurnTimer" method="_on_TurnManager_begin_action_queues_execution"]
 [connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TimerLabel" method="_on_TurnTimer_timeout"]
 [connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TurnTimer" method="_on_TurnTimer_timeout"]
 [connection signal="timer_ended" from="TurnManager/TurnTimer" to="TurnManager" method="_on_TurnTimer_timer_ended"]
-[connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="AI1/Char" method="_on_ActionQueueManager_all_action_queues_finished_executing"]
+[connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="TurnManager" method="_on_ActionQueueManager_all_action_queues_finished_executing"]
 [connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="Player1/Char" method="_on_ActionQueueManager_all_action_queues_finished_executing"]
 [connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="Player2/Char" method="_on_ActionQueueManager_all_action_queues_finished_executing"]
-[connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="TurnManager" method="_on_ActionQueueManager_all_action_queues_finished_executing"]
+[connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="AI1/Char" method="_on_ActionQueueManager_all_action_queues_finished_executing"]

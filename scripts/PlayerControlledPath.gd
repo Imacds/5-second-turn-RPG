@@ -12,6 +12,7 @@ onready var walk_distance: int = agent.walk_distance
 onready var attack_map = $"../../../AttackMap"
 onready var Finder = get_node("/root/ObjectFinder") # Finder global
 onready var map = Finder.get_node_from_root("Root/Map")
+onready var tile_selector = $"../TileSelectorSprite"
 
 onready var path = [Vector2.ZERO]
 onready var old_center = agent.target_point_world
@@ -129,4 +130,5 @@ func _on_Char_agent_exits_walk_mode(cell_coords):
 
 func get_agent_walkable_cell_coords(agent_cell = null): # get the list of cell coords (lists) that the agent can walk to
 	var ap = agent.action_points
-	return walk_matrix[ap].to_world_coords(agent_cell if agent_cell else agent.get_cell_coords(), map.reachable_cell_constraint)
+	var cell = agent_cell if agent_cell else agent.get_cell_coords() + tile_selector.get_cell_coords()
+	return walk_matrix[ap].to_world_coords(cell, map.reachable_cell_constraint)

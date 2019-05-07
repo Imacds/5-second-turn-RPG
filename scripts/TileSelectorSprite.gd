@@ -46,3 +46,6 @@ func is_walkable(next_position):
 	var destination_cell = map.world_to_mapa(next_position)
 
 	return destination_cell in walkable_cells
+
+func get_cell_coords():
+	return map.world_to_map(position)

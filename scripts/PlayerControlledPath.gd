@@ -24,6 +24,7 @@ func _process(delta):
 func _ready():
 	for i in range(walk_distance + 1):
 		walk_matrix.append(_generate_walk_matrix(i))
+#		print(walk_matrix[i].to_str())
 	
 func _generate_walk_matrix(walking_distance):
 	if walking_distance == 0:
@@ -40,7 +41,7 @@ func _generate_walk_matrix(walking_distance):
 	for row in range(size):
 		var row_array = _surround_with_zeroes(2, walkable_tiles, size)
 		matrix += row_array
-		walkable_tiles += -2 if row > walking_distance else 2
+		walkable_tiles += -2 if row >= walking_distance else 2
 		
 	return AttackMatrix.new(matrix)
 	

@@ -143,7 +143,6 @@ z_as_relative = false
 position = Vector2( -0.672894, -0.181416 )
 scale = Vector2( 1.9903, 1.9903 )
 frames = SubResource( 2 )
-frame = 1
 playing = true
 
 [node name="AISystem" type="Node" parent="AI1"]

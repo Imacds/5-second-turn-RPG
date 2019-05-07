@@ -108,3 +108,14 @@ func to_world_coords(attack_coords, constraint: FuncRef = null, agent = null):
             
 	return cell_coords
 	
+func to_str():
+	var repr = ""
+	var size = len(matrix) - 1
+	
+	for j in range(len(matrix)):
+		for i in range(len(matrix)):
+			repr += str(matrix[j][i]) + " "
+		repr += "\n"
+			
+	return repr
+	

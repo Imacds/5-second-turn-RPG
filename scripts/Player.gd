@@ -233,7 +233,6 @@ func _on_ActionQueue_finished_executing_actions(agent_name): # turn end and sign
 
 func _on_ActionQueueManager_all_action_queues_finished_executing():
 	action_points = action_points_per_turn
-	attack_map.clear()
 	_change_state(STATES.IDLE if is_selected() else STATES.TURN)
 	_change_command_mode(COMMAND_MODES.MOVE if is_selected() else COMMAND_MODES.NULL)
 	$TileSelectorSprite.reset_position()

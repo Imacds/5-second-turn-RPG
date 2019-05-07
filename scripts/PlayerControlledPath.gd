@@ -121,7 +121,6 @@ func get_path_relative(start, end):
 	pass
 
 func _on_Char_agent_enters_walk_mode(cell_coords):
-	attack_map.clear()
 	draw_walkable(cell_coords)
 	$"../TileSelectorSprite".set_enabled(true)
 

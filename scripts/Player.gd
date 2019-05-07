@@ -83,6 +83,7 @@ func _change_command_mode(new_mode):
 		command_mode = new_mode
 
 		if can_move():
+			attack_template.click_mode = null
 			emit_signal("agent_enters_walk_mode", get_cell_coords())
 		elif can_attack():
 			emit_signal("agent_enters_attack_mode", get_cell_coords())

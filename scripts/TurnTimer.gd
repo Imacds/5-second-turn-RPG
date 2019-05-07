@@ -13,6 +13,16 @@ func _ready():
 func reset_timer():
 	stop()
 	time_remaining = time_per_turn
+	
+# override
+func start(time_sec = -1):
+	$"../TurnChangeRect".play_animation("Turn Began")
+	.start(time_sec)
+	
+# override
+func stop():
+	$"../TurnChangeRect".play_animation("Turn Ended")
+	.stop()
 
 func _on_TurnTimer_timeout(): # 1 second tick from timer
 	time_remaining = clamp(time_remaining - wait_time, 0, INF)
@@ -24,9 +34,6 @@ func _on_TurnTimer_timeout(): # 1 second tick from timer
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("pause"):
 		set_paused(!paused)
-		
-func _on_ActionQueueManager_all_action_queues_finished_executing():
-	start()
 
 func _on_TurnManager_begin_action_queues_execution():
 	reset_timer()

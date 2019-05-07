@@ -14,7 +14,7 @@ func _ready():
 
 func toggle_control():
 	index = (index + 1) % 2
-	var next = players[index]
+	var next = players[index] if index < len(players) else null
 	if next:
 		selected = next
 		emit_signal("selected_player_changed", selected)

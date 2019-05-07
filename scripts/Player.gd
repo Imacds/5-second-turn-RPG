@@ -7,8 +7,8 @@ export(float) var speed = 300
 export(float) var max_speed = 400
 export(float) var mass = 10.0
 export(int) var hp = 4
-export(int) var walk_distance = 3
-export(int) var action_points_per_turn = 3
+export(int) var walk_distance = 2
+export(int) var action_points_per_turn = 2
 
 ###################
 # signals #
@@ -40,7 +40,7 @@ var WaitAction = load("res://scripts/AgentActionSystem/WaitAction.gd")
 
 var _state = STATES.TURN
 var command_mode = COMMAND_MODES.NULL # indicates allowed input reading for this player controlled character
-var action_points = 3
+var action_points = action_points_per_turn
 var target_point_world = position
 
 onready var Finder = get_node("/root/ObjectFinder")

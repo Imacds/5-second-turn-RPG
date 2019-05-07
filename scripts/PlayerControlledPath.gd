@@ -1,6 +1,3 @@
-#
-# TODO: pass map and constraint_func objs into methods to then filter walkable tiles
-#
 extends Node2D
 
 export(Color) var line_color = Color.green
@@ -19,46 +16,46 @@ onready var map = Finder.get_node_from_root("Root/Map")
 onready var path = [Vector2.ZERO]
 onready var old_center = agent.target_point_world
 
-var walk_matrix # AttackMatrix
+var walk_matrix = [] # AttackMatrix
 
 func _process(delta):
 	position = agent.target_point_world - old_center
 
 func _ready():
-	# todo: dont hard code this, generate it from agent walk distance
-	walk_matrix = [AttackMatrix.new([
-		0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0
-	]),AttackMatrix.new([
-		0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 2, 0, 0, 0,
-		0, 0, 2, 2, 2, 0, 0,
-		0, 0, 0, 2, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0
-	]),AttackMatrix.new([
-		0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 2, 0, 0, 0,
-		0, 0, 2, 2, 2, 0, 0,
-		0, 2, 2, 2, 2, 2, 0,
-		0, 0, 2, 2, 2, 0, 0,
-		0, 0, 0, 2, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0
-	]),AttackMatrix.new([
-		0, 0, 0, 2, 0, 0, 0,
-		0, 0, 2, 2, 2, 0, 0,
-		0, 2, 2, 2, 2, 2, 0,
-		2, 2, 2, 2, 2, 2, 2,
-		0, 2, 2, 2, 2, 2, 0,
-		0, 0, 2, 2, 2, 0, 0,
-		0, 0, 0, 2, 0, 0, 0
-	])]
+	for i in range(walk_distance + 1):
+		walk_matrix.append(_generate_walk_matrix(i))
+	
+func _generate_walk_matrix(walking_distance):
+	if walking_distance == 0:
+		return AttackMatrix.new([
+			0, 0, 0,
+			0, 0, 0,
+			0, 0, 0,
+		])
+	
+	var matrix = []
+	var size = walking_distance * 2 + 1
+	
+	var walkable_tiles = 1
+	for row in range(size):
+		var row_array = _surround_with_zeroes(2, walkable_tiles, size)
+		matrix += row_array
+		walkable_tiles += -2 if row > walking_distance else 2
+		
+	return AttackMatrix.new(matrix)
+	
+func _surround_with_zeroes(center_element: int, center_element_count: int, size: int):
+	var array = []
+	for i in range(center_element_count):
+		array.append(center_element)
+	
+	var elements_per_side = (size - len(array)) / 2
+	
+	for i in range(elements_per_side):
+		array.push_front(0)
+		array.push_back(0)
+		
+	return array
 
 func get_target_grid_pos():
 	var grid_pos = agent.get_cell_coords()
@@ -96,7 +93,7 @@ func draw_path():
 
 # color the tiles that can be walked to
 func draw_walkable(agent_cell_coords):
-	var cell_coords = get_agent_walkable_cell_coords(agent_cell_coords, agent.action_points)
+	var cell_coords = get_agent_walkable_cell_coords(agent_cell_coords)
 	#attack_map.clear_cells(owner_name, attack_map.TILES.AGENT_CAN_MOVE_HERE)
 	attack_map.clear()
 
@@ -129,5 +126,6 @@ func _on_Char_agent_enters_walk_mode(cell_coords):
 func _on_Char_agent_exits_walk_mode(cell_coords):
 	pass
 
-func get_agent_walkable_cell_coords(agent_cell = null, agent_mana = 3): # get the list of cell coords (lists) that the agent can walk to
-	return walk_matrix[agent_mana].to_world_coords(agent_cell if agent_cell else agent.get_cell_coords(), map.reachable_cell_constraint)
+func get_agent_walkable_cell_coords(agent_cell = null): # get the list of cell coords (lists) that the agent can walk to
+	var ap = agent.action_points
+	return walk_matrix[ap].to_world_coords(agent_cell if agent_cell else agent.get_cell_coords(), map.reachable_cell_constraint)

@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scripts/ScarecrowAgent.gd" type="Script" id=1]
+[ext_resource path="res://sprites/source/RedSword.png" type="Texture" id=2]
+[ext_resource path="res://game-objects/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://sprites/npcs/mug-of-fizz-enemy.png" type="Texture" id=4]
+[ext_resource path="res://scripts/AISystem.gd" type="Script" id=5]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "New Anim",
+"speed": 5.0
+} ]
+
+[node name="ScarecrowAgent" type="Node"]
+script = ExtResource( 1 )
+sword = ExtResource( 2 )
+
+[node name="Char" parent="." instance=ExtResource( 3 )]
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Char"]
+z_index = 10
+frames = SubResource( 1 )
+animation = "New Anim"
+playing = true
+
+[node name="AISystem" type="Node" parent="."]
+script = ExtResource( 5 )
+hp = 8
+enemy_type = "range"
+

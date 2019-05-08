@@ -19,6 +19,7 @@ func load_scene(scene, load_the_scene = true):
 			]
 			scene_name = "Tutorial 1"
 			dialog = ["Welcome to 6 second rpg by Gridventure", "This is a safe place to practice, the training dummy does not fight back", "Plan your movement with WASD", "Press Q and a movement to queue up a short range slash attack","Press E and a movement to queue up a medium range swing attack","Press R and a movement to queue up a long range lunge attack","You can view your plan in the bottom left. You may take up to 2 action a turn","Z can be used to undo the latest queued item from your plan","Remember, the turn timer can be lengthened in the options menu","Good Luck!"]
+		
 		SCENES.TUTORIAL2: # place an AI pretty close
 			agents_to_create = [
 				AgentMapPlacement.new("player", [2, 1]),
@@ -26,39 +27,16 @@ func load_scene(scene, load_the_scene = true):
 			]
 			dialog = ["Let's step it up a notch", "This rat will run after you. It can bite you if you get close","Hit it a few times and it shouldn't be much of a problem.", "Remember, you have a time limit to enter turns!"]
 			scene_name = "Tutorial 2"
+			
 		SCENES.TUTORIAL3:
 			agents_to_create = [
 				AgentMapPlacement.new("player", [2, 1]),
-				AgentMapPlacement.new("rat", [8, 1]),
-				AgentMapPlacement.new("rat", [14, 6]),
+				AgentMapPlacement.new("swing", [14, 6]),
 			]
+			dialog = ["This opponent has better range, be careful"]
 			scene_name = "Tutorial 3"
+			
 		SCENES.LEVEL1:
-			agents_to_create = [
-				AgentMapPlacement.new("player", [2, 1]),
-				AgentMapPlacement.new("rat", [8, 1]),
-				AgentMapPlacement.new("rat", [14, 6]),
-				AgentMapPlacement.new("rat", [0, 5]),
-				AgentMapPlacement.new("rat", [4, 5]),
-				AgentMapPlacement.new("rat", [8, 5]),
-			]
-			scene_name = "Level 1"
-		SCENES.LEVEL2:
-			agents_to_create = [
-				AgentMapPlacement.new("player", [2, 1]),
-				AgentMapPlacement.new("rat", [8, 1]),
-				AgentMapPlacement.new("rat", [14, 6]),
-				AgentMapPlacement.new("rat", [0, 5]),
-				AgentMapPlacement.new("rat", [4, 5]),
-				AgentMapPlacement.new("rat", [8, 5]),
-				AgentMapPlacement.new("rat", [8, 8]),
-				AgentMapPlacement.new("rat", [14, 5]),
-				AgentMapPlacement.new("rat", [1, 5]),
-				AgentMapPlacement.new("rat", [4, 6]),
-				AgentMapPlacement.new("rat", [7, 5]),
-			]
-			scene_name = "Level 2"
-		SCENES.LEVEL3:
 			agents_to_create = [
 				AgentMapPlacement.new("player", [2, 1]),
 				AgentMapPlacement.new("rat", [8, 1]),
@@ -75,6 +53,27 @@ func load_scene(scene, load_the_scene = true):
 				AgentMapPlacement.new("rat", [4, 7]),
 				AgentMapPlacement.new("rat", [8, 5]),
 			]
+			dialog = ["This is a lot of rats, but if you kite them they shouldn't be a problem"] 
+			scene_name = "Level 1"
+		
+		SCENES.LEVEL2:
+			agents_to_create = [
+				AgentMapPlacement.new("player", [2, 1]),
+				AgentMapPlacement.new("swing", [8, 1]),
+				AgentMapPlacement.new("swing", [14, 6]),
+				AgentMapPlacement.new("swing", [0, 5]),
+				AgentMapPlacement.new("swing", [4, 5]),
+				AgentMapPlacement.new("swing", [8, 5]),
+			]
+			dialog = ["The same kiting can be applied to this small group of fighters"]
+			scene_name = "Level 2"
+		
+		SCENES.LEVEL3:
+			agents_to_create = [
+				AgentMapPlacement.new("player", [2, 1]),
+				AgentMapPlacement.new("range", [8, 1]),
+			]
+			dialog = ["This fighter can outrange you. Close it to do the blow."]
 			scene_name = "Level 3"
 		_: # default
 			print_debug("invalid scene given to SceneManager.load_scene")

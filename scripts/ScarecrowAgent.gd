@@ -3,11 +3,13 @@ extends Node
 const RATE = 0.5
 var mode = 0
 var counter = 0
+export (Texture) var sword = load("res://sprites/source/Sword.png")
 
 func _ready():
 	$"Char/Sprite".visible = false
 	$"Char/PlayerAnimatedSprite".visible = false
 	$"Char/AnimatedSprite".flip_h = true
+	$'Char/AttackPath'.switch_out_sprite_to(sword, Vector2(0.5,0.5))
 
 func _process(delta):
 	counter+= delta

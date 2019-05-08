@@ -2,7 +2,7 @@ extends Node
 
 signal click_mode_changed(new_mode)
 
-enum MODE { SLASH, SWING, LUNGE, BITE }
+enum MODE { SLASH, SWING, LUNGE, BITE, RANGE }
 onready var DIRECTIONS = { 'up': 0, 'right': 90, 'down': 180, 'left': 270 } # init pos is upwards (at PI / 2)
 
 onready var AttackMatrix = load("res://scripts/AttackMatrix.gd")
@@ -44,6 +44,18 @@ func _ready():
 			0, 2, 0,
 			0, 1, 0,
 			0, 0, 0
+		]),
+		
+		AttackMatrix.new([ # range
+			0, 0, 0, 0, 2, 0, 0, 0, 0,
+			0, 0, 0, 0, 2, 0, 0, 0, 0,
+			0, 0, 0, 0, 2, 0, 0, 0, 0,
+			0, 0, 0, 0, 2, 0, 0, 0, 0,
+			0, 0, 0, 0, 1, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0,
+			0, 0, 0, 0, 0, 0, 0, 0, 0,
 		]),
 	]
 

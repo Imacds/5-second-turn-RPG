@@ -4,8 +4,7 @@ onready var attack_template = get_tree().get_root().get_node("Root/AttackTemplat
 var AttackAction = load("res://scripts/AgentActionSystem/AttackAction.gd")
 var DIRECTIONS = { 'up': 0, 'right': 90, 'down': 180, 'left': 270 }
 
-onready var attacks = {attack_template.MODE.SLASH:load("res://paths/SlashCurve.tres"),attack_template.MODE.SWING:load("res://paths/SwingCurve.tres"),attack_template.MODE.LUNGE:load("res://paths/LungeCurve.tres"),attack_template.MODE.BITE:load("res://paths/BiteCurve.tres")}
-
+onready var attacks = {attack_template.MODE.SLASH:load("res://paths/SlashCurve.tres"),attack_template.MODE.SWING:load("res://paths/SwingCurve.tres"),attack_template.MODE.LUNGE:load("res://paths/LungeCurve.tres"),attack_template.MODE.BITE:load("res://paths/BiteCurve.tres"),attack_template.MODE.RANGE:load("res://paths/RangeCurve.tres")}
 var playing = false
 
 func switch_out_sprite_to(var sprite, var scale):

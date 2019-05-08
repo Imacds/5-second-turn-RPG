@@ -22,12 +22,15 @@ func _ready():
 func _process(delta):
 	target_agent = selection_manager.selected.get_node('Char')
 	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func do_ai_stuff():
 	if enemy_type == 'rat':
 		rat_ai()
 	if enemy_type == 'scarecrow':
 		scarecrow_ai()
+	if enemy_type == 'swing':
+		swing_ai()
+	if enemy_type == 'range':
+		range_ai()
 
 func do_move(move_dir):	
 	# Move
@@ -47,6 +50,48 @@ func array_to_vec2(array):
 func scarecrow_ai():
 	pass
 
+#do nothin
+func swing_ai():
+	var attack_mode = attack_template.MODE.SWING
+	
+	var path = path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords())
+	
+	var j = 0
+	for i in range(0, 3):
+		if len(path) > 3+j:
+			var dir = array_to_vec2(path[j+1]-path[j])
+			do_move(dir)
+			j+=1
+		elif len(path) > 2+j:
+			var dir = array_to_vec2(path[j+1]-path[j])
+			do_attack(attack_mode, dir)
+		elif len(path) > 1:
+			var dir = array_to_vec2(path[1]-path[0])
+			do_attack(attack_mode, dir)
+		else:
+			do_move(Vector2.RIGHT)
+	
+#do nothin
+func range_ai():
+	var attack_mode = attack_template.MODE.RANGE
+	
+	var path = path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords())
+	
+	var j = 0
+	for i in range(0, 3):
+		if len(path) > 4+j:
+			var dir = array_to_vec2(path[j+1]-path[j])
+			do_move(dir)
+			j+=1
+		elif len(path) > 3+j:
+			var dir = array_to_vec2(path[j+1]-path[j])
+			do_attack(attack_mode, dir)
+		elif len(path) > 1:
+			var dir = array_to_vec2(path[1]-path[0])
+			do_attack(attack_mode, dir)
+		else:
+			do_move(Vector2.RIGHT)
+
 # The idea of the rat is to run up orthogonal to the player and try to bite it
 func rat_ai():
 	var attack_mode = attack_template.MODE.BITE
@@ -59,6 +104,9 @@ func rat_ai():
 			var dir = array_to_vec2(path[j+1]-path[j])
 			do_move(dir)
 			j+=1
+		elif len(path) > 1+j:
+			var dir = array_to_vec2(path[j+1]-path[j])
+			do_attack(attack_mode, dir)
 		elif len(path) > 1:
 			var dir = array_to_vec2(path[1]-path[0])
 			do_attack(attack_mode, dir)

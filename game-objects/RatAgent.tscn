@@ -26,6 +26,7 @@ scale = Vector2( 2.02463, 2.01066 )
 z_index = 10
 frames = SubResource( 1 )
 animation = "RatAnim"
+frame = 1
 playing = true
 
 [node name="AISystem" type="Node" parent="."]

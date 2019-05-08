@@ -41,7 +41,7 @@ func get_queue():
 	return queue
 
 func _on_Timer_timeout():
-	if not queue.empty(): # more to execute
+	if not queue.empty() and not $"../".is_dead(): # more to execute & agent is not dead
 		queue[0].execute()
 		queue.pop_front()
 		$Timer.start()

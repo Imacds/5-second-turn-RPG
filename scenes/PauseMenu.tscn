@@ -15,62 +15,49 @@ modulate = Color( 1, 1, 1, 0.490196 )
 polygon = PoolVector2Array( 0, 0, 0, 600, 1030, 600, 1030, 0 )
 
 [node name="PauseContainer" type="CenterContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -512.0
-margin_top = -300.0
-margin_right = 512.0
-margin_bottom = 300.0
-
-[node name="CenterContainer" type="CenterContainer" parent="PauseContainer"]
 margin_left = 414.0
 margin_top = 203.0
 margin_right = 610.0
 margin_bottom = 397.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseContainer/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseContainer"]
 margin_right = 196.0
 margin_bottom = 194.0
 
-[node name="Label" type="Label" parent="PauseContainer/CenterContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="PauseContainer/VBoxContainer"]
 margin_right = 196.0
 margin_bottom = 41.0
 custom_fonts/font = ExtResource( 2 )
 text = "Pause"
 align = 1
 
-[node name="Resume" type="Button" parent="PauseContainer/CenterContainer/VBoxContainer"]
+[node name="Resume" type="Button" parent="PauseContainer/VBoxContainer"]
+pause_mode = 2
 margin_top = 45.0
 margin_right = 196.0
 margin_bottom = 92.0
 custom_fonts/font = ExtResource( 2 )
 text = "Resume"
 
-[node name="Settings" type="Button" parent="PauseContainer/CenterContainer/VBoxContainer"]
+[node name="Settings" type="Button" parent="PauseContainer/VBoxContainer"]
+pause_mode = 2
 margin_top = 96.0
 margin_right = 196.0
 margin_bottom = 143.0
 custom_fonts/font = ExtResource( 2 )
 text = "Settings"
 
-[node name="Exit" type="Button" parent="PauseContainer/CenterContainer/VBoxContainer"]
+[node name="Exit" type="Button" parent="PauseContainer/VBoxContainer"]
+pause_mode = 2
 margin_top = 147.0
 margin_right = 196.0
 margin_bottom = 194.0
 custom_fonts/font = ExtResource( 2 )
 text = "Exit"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseContainer"]
-margin_left = 512.0
-margin_top = 300.0
-margin_right = 512.0
-margin_bottom = 300.0
-
 [node name="SettingsMenu" parent="." instance=ExtResource( 3 )]
 visible = false
 
-[connection signal="pressed" from="PauseContainer/CenterContainer/VBoxContainer/Resume" to="." method="_on_Resume_pressed"]
-[connection signal="pressed" from="PauseContainer/CenterContainer/VBoxContainer/Settings" to="." method="_on_Settings_pressed"]
-[connection signal="pressed" from="PauseContainer/CenterContainer/VBoxContainer/Exit" to="." method="_on_Exit_pressed"]
+[connection signal="pressed" from="PauseContainer/VBoxContainer/Resume" to="." method="_on_Resume_pressed"]
+[connection signal="pressed" from="PauseContainer/VBoxContainer/Settings" to="." method="_on_Settings_pressed"]
+[connection signal="pressed" from="PauseContainer/VBoxContainer/Exit" to="." method="_on_Exit_pressed"]

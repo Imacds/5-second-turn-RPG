@@ -1,6 +1,5 @@
 extends Control
 
-var menu = false
 var open = false
 var visibile = true
 
@@ -8,45 +7,33 @@ var visibile = true
 func _ready():
 	set_process_unhandled_key_input(true)
 	set_process(true)
-	
 
 func _process(delta):
-	if get_node("SettingsMenu").settingsVisibile == false:
+	if not $SettingsMenu.settingsVisibile:
 		get_node("PauseContainer").show()
-		
-	if open:
-		if menu:
-			hide()
-			get_tree().paused = false
-			open = false
-			
-		menu = false
 
 func _unhandled_key_input(event):
-	if open:
-		if event.is_action_pressed("ui_cancel"):
-			menu = true
-		elif event.is_action_released("ui_cancel"):
-			menu = false
+	if event.is_action_pressed("ui_cancel"):
+		open_menu() if not open else hide_menu()
 
 func _on_Resume_pressed():
 	get_tree().paused = false
 	hide()
-	pass # Replace with function body.
-
 
 func _on_Settings_pressed():
 	get_node("PauseContainer").hide()
 	get_node("SettingsMenu").show()
-	pass # Replace with function body.
-
 
 func _on_Exit_pressed():
+	_on_Resume_pressed()
 	get_tree().change_scene("res://scenes/StartMenu.tscn")
-	pass # Replace with function body.
 
 func open_menu():
 	show()
 	get_tree().paused = true
-	menu = false
 	open = true
+	
+func hide_menu():
+	hide()
+	get_tree().paused = false
+	open = false

@@ -44,6 +44,7 @@ var _state = STATES.TURN
 var command_mode = COMMAND_MODES.NULL # indicates allowed input reading for this player controlled character
 var action_points = action_points_per_turn
 var target_point_world = position
+var dead = false
 
 onready var Finder = get_node("/root/ObjectFinder")
 
@@ -64,7 +65,6 @@ func _ready():
 	_change_command_mode(COMMAND_MODES.MOVE)
 	set_process_input(true)
 	set_physics_process(true)
-	
 	
 	# listen to action queue manager signal
 	action_queue_manager.connect("all_action_queues_finished_executing", self, "_on_ActionQueueManager_all_action_queues_finished_executing")
@@ -100,8 +100,9 @@ func _change_command_mode(new_mode):
 
 func take_damage():
 	hp = hp - 1
-	$CharSounds.play_effect($CharSounds.sound_damaged)
-	if is_dead():
+	if hp > 0:
+		$CharSounds.play_effect($CharSounds.sound_damaged)
+	else:
 		die()
 
 func is_dead():
@@ -110,7 +111,7 @@ func is_dead():
 func render_hp():
 	if hp >= 0:
 		$Label.text = "HP: "
-		for i in range(0, hp):
+		for i in range(0, hp+1):
 			$Label.text += "X "
 	else:
 		$Label.text = ""
@@ -122,16 +123,18 @@ func _physics_process(delta):
 	_move()
 	
 func die():
-	$Sprite.visible = false
-	if $AnimatedSprite:
-		$AnimatedSprite.visible = false
+	if not dead:
+		$Sprite.visible = false
+		if $AnimatedSprite:
+			$AnimatedSprite.visible = false
+			
+		$CharDeathAnimation.play()
+		$CharSounds.play_effect($CharSounds.sound_death)
+		action_points = 0
+		action_points_per_turn = 0
 		
-	$CharDeathAnimation.play()
-	$CharSounds.play_effect($CharSounds.sound_death)
-	action_points = 0
-	action_points_per_turn = 0
-	
-	emit_signal("agent_died", self)
+		emit_signal("agent_died", self)
+		dead = true
 
 func _move():
 	if _state != STATES.TURN and _state != STATES.IDLE: # if we're not waiting for the other player to make their move and we're not in "not moving" state waiting for command input

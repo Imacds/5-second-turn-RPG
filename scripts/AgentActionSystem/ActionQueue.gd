@@ -7,6 +7,7 @@ var max_size
 var queue = []
 
 onready var parent_name = get_parent().get_name()
+onready var sounds = $"../CharSounds"
 
 func _init(max_queue_size = 6):
 	max_size = max_queue_size
@@ -43,6 +44,7 @@ func get_queue():
 func _on_Timer_timeout():
 	if not queue.empty(): # more to execute
 		queue[0].execute()
+		sounds.play_corresponding_sound(queue[0])
 		queue.pop_front()
 		$Timer.start()
 	else:

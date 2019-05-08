@@ -65,6 +65,7 @@ func _ready():
 	set_process_input(true)
 	set_physics_process(true)
 	
+	
 	# listen to action queue manager signal
 	action_queue_manager.connect("all_action_queues_finished_executing", self, "_on_ActionQueueManager_all_action_queues_finished_executing")
 	
@@ -99,6 +100,7 @@ func _change_command_mode(new_mode):
 
 func take_damage():
 	hp = hp - 1
+	$CharSounds.play_effect($CharSounds.sound_damaged)
 	if is_dead():
 		die()
 
@@ -125,6 +127,7 @@ func die():
 		$AnimatedSprite.visible = false
 		
 	$CharDeathAnimation.play()
+	$CharSounds.play_effect($CharSounds.sound_death)
 	action_points = 0
 	action_points_per_turn = 0
 	

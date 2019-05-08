@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://sprites/icon.png" type="Texture" id=2]
@@ -38,6 +38,9 @@
 [ext_resource path="res://sprites/player/MOVING/m21.png" type="Texture" id=36]
 [ext_resource path="res://sprites/player/MOVING/m22.png" type="Texture" id=37]
 [ext_resource path="res://scripts/CharSounds.gd" type="Script" id=38]
+[ext_resource path="res://paths/BiteCurve.tres" type="Curve2D" id=39]
+[ext_resource path="res://scripts/AttackPath.gd" type="Script" id=40]
+[ext_resource path="res://sprites/source/Sword.png" type="Texture" id=41]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32.4706, 31.8495 )
@@ -119,12 +122,27 @@ scale = Vector2( 0.161345, 0.161345 )
 z_index = 10
 z_as_relative = false
 frames = SubResource( 3 )
-frame = 3
+frame = 11
 speed_scale = 3.0
 playing = true
 
 [node name="CharSounds" type="AudioStreamPlayer2D" parent="."]
 script = ExtResource( 38 )
+
+[node name="AttackPath" type="Path2D" parent="."]
+rotation = 1.5708
+curve = ExtResource( 39 )
+script = ExtResource( 40 )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="AttackPath"]
+position = Vector2( -20.0701, -33.9347 )
+rotation = 0.0475835
+rotate = false
+loop = false
+
+[node name="Sword" type="Sprite" parent="AttackPath/PathFollow2D"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 41 )
 
 [connection signal="agent_enters_attack_mode" from="." to="Attack" method="_on_Char_agent_enters_attack_mode"]
 [connection signal="agent_enters_walk_mode" from="." to="PlayerControlledPath" method="_on_Char_agent_enters_walk_mode"]

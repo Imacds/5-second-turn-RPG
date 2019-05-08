@@ -8,6 +8,7 @@ var queue = []
 
 onready var parent_name = get_parent().get_name()
 onready var sounds = $"../CharSounds"
+onready var attack = $"../AttackPath"
 
 func _init(max_queue_size = 6):
 	max_size = max_queue_size
@@ -45,6 +46,7 @@ func _on_Timer_timeout():
 	if not queue.empty() and not $"../".is_dead(): # more to execute & agent is not dead
 		queue[0].execute()
 		sounds.play_corresponding_sound(queue[0])
+		attack.play_action(queue[0])		
 		queue.pop_front()
 		$Timer.start()
 	else:

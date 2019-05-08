@@ -14,7 +14,7 @@ onready var half_tile_size = tile_size / 2
 
 # get_used_cells_by_id is a method from the TileMap node
 # here the id 0 corresponds to the grey tile, the obstacles
-onready var obstacles = get_used_cells_by_id(3)
+onready var obstacles = get_used_cells_by_id(TILES.WALL2)
 onready var _half_cell_size = cell_size / 2
 
 enum TILES { VOID0, VOID1, VOID2, WALL, GROUND, GROUND2, WALL2, VOID7 }

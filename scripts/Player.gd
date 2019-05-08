@@ -22,6 +22,8 @@ signal agent_exits_attack_mode(cell_coords)
 signal single_action_finished(action_name)
 signal action_queue_finished_executing(agent_name) # only here to forward the signal from ActionQueue
 
+signal agent_died(agent)
+
 ###################
 # enums #
 ###################
@@ -97,8 +99,11 @@ func _change_command_mode(new_mode):
 
 func take_damage():
 	hp = hp - 1
-	if hp < 0:
+	if is_dead():
 		die()
+
+func is_dead():
+	return hp < 0
 
 func render_hp():
 	if hp >= 0:
@@ -123,6 +128,7 @@ func die():
 	action_points = 0
 	action_points_per_turn = 0
 	
+	emit_signal("agent_died", self)
 
 func _move():
 	if _state != STATES.TURN and _state != STATES.IDLE: # if we're not waiting for the other player to make their move and we're not in "not moving" state waiting for command input
@@ -171,6 +177,9 @@ func can_attack():
 
 func can_move():
 	return can_do_action() and command_mode == COMMAND_MODES.MOVE
+	
+func is_ai_agent():
+	return not not $"../AISystem"
 
 func queue_move_action(direction: Vector2):
 	var action = MoveAction.new(self, direction)

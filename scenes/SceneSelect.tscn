@@ -54,37 +54,37 @@ margin_right = 224.0
 margin_bottom = 44.0
 columns = 3
 
-[node name="Level 1" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
+[node name="Tut1" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
 margin_right = 72.0
 margin_bottom = 20.0
 text = "Tutorial 1"
 
-[node name="Level 2" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
+[node name="Tut2" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
 margin_left = 76.0
 margin_right = 148.0
 margin_bottom = 20.0
 text = "Tutorial 2"
 
-[node name="Level 3" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
+[node name="Tut3" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
 margin_left = 152.0
 margin_right = 224.0
 margin_bottom = 20.0
 text = "Tutorial 3"
 
-[node name="Level 5" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
+[node name="Level1" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
 margin_top = 24.0
 margin_right = 72.0
 margin_bottom = 44.0
 text = "Fight 1"
 
-[node name="Level 6" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
+[node name="Level2" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
 margin_left = 76.0
 margin_top = 24.0
 margin_right = 148.0
 margin_bottom = 44.0
 text = "Fight 2"
 
-[node name="Level 7" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
+[node name="Level3" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
 margin_left = 152.0
 margin_top = 24.0
 margin_right = 224.0
@@ -101,10 +101,10 @@ margin_right = 939.316
 margin_bottom = 563.158
 text = "Back to Menu"
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 1" to="." method="_on_Continue_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 2" to="." method="_on_Continue_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 3" to="." method="_on_Continue_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 5" to="." method="_on_Continue_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 6" to="." method="_on_Continue_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 7" to="." method="_on_Continue_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Tut1" to="." method="_on_Tut1_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Tut2" to="." method="_on_Tut2_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Tut3" to="." method="_on_Tut3_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level1" to="." method="_on_Level1_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level2" to="." method="_on_Level2_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level3" to="." method="_on_Level3_pressed"]
 [connection signal="pressed" from="MainMenu_button" to="." method="_on_MainMenu_button_pressed"]

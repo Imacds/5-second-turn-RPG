@@ -22,9 +22,9 @@ func find_all_agents():
 
 func _get_agents_recursively(node):
 	for child in node.get_children():
-		if child is Agent or child is Player:
+		if child is Agent or child is Player: # Char / Player.gd
 			agents.append(child)
-		if child.get_node("AISystem") != null:
+		if child.get_node("AISystem") != null: # RatAgent w/ children: Char, AISystem
 			AIs.append(child)
 		_get_agents_recursively(child)
 

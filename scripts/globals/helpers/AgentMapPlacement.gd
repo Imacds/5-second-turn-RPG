@@ -2,6 +2,7 @@ extends Node
 
 const PlayerAgent = preload("res://game-objects/PlayerAgent.tscn")
 const RatAgent = preload("res://game-objects/RatAgent.tscn")
+const ScarecrowAgent = preload("res://game-objects/ScarecrowAgent.tscn")
 
 var agent_class
 var init_cell_coords
@@ -14,7 +15,10 @@ func _init(agent_type_name, cell_coords):
 	elif agent_type_name == "rat":
 		agent_class = RatAgent
 		node_name = "RatAgent"
-		
+	elif agent_type_name == "scarecrow":
+		agent_class = ScarecrowAgent
+		node_name = "ScarecrowAgent"
+			
 	init_cell_coords = cell_coords
 
 func create_and_place(scene_root_node, map_node):

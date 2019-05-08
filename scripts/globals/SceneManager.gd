@@ -11,10 +11,10 @@ var scene_name = "Tutorial 1"
 # can change the Map, add enemies, change init placement of agents,
 func load_scene(scene, load_the_scene = true):
 	match scene:
-		SCENES.TUTORIAL1: # place an AI far away
+		SCENES.TUTORIAL1: # place a scarecrow close
 			agents_to_create = [
 				AgentMapPlacement.new("player", [2, 1]),
-				AgentMapPlacement.new("rat", [14, 6]),
+				AgentMapPlacement.new("scarecrow", [8, 1]),
 			]
 			scene_name = "Tutorial 1"
 		SCENES.TUTORIAL2: # place an AI pretty close

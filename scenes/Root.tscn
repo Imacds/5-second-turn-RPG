@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scripts/Root.gd" type="Script" id=1]
 [ext_resource path="res://scripts/PlayerInputManager.gd" type="Script" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=20]
 [ext_resource path="res://game-objects/ActionQueueManager.tscn" type="PackedScene" id=21]
 [ext_resource path="res://audio/Curse of the Scarab.wav" type="AudioStream" id=22]
+[ext_resource path="res://scripts/GameEndManager.gd" type="Script" id=23]
 
 [sub_resource type="TileSet" id=1]
 0/name = "zone_to_attack.png 0"
@@ -132,6 +133,9 @@ stream = ExtResource( 22 )
 autoplay = true
 
 [node name="LargeNotifyBanner" parent="." instance=ExtResource( 10 )]
+
+[node name="GameEndManager" type="Node" parent="."]
+script = ExtResource( 23 )
 
 [connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="begin_action_queues_execution" from="TurnManager" to="TurnManager/TurnTimer" method="_on_TurnManager_begin_action_queues_execution"]

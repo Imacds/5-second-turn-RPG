@@ -127,6 +127,8 @@ func die():
 		$Sprite.visible = false
 		if $AnimatedSprite:
 			$AnimatedSprite.visible = false
+		if $PlayerAnimatedSprite:
+			$PlayerAnimatedSprite.visible = false
 			
 		$CharDeathAnimation.play()
 		$CharSounds.play_effect($CharSounds.sound_death)

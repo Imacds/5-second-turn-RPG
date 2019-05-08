@@ -9,13 +9,13 @@ Imported assets
 | font | Lunchtime Doubly So Font | codeman38 | https://www.1001fonts.com/lunchtime-doubly-so-font.html | UI font | --- |
 | sprite | ThiefSet | SCay | https://opengameart.org/content/thief-job-set | image of boots for movement tile in tile set | GPL 3.0 |
 | sprite | ScareCrow | TanBoonHing | https://opengameart.org/content/scare-crow | enemy scare crow / training dummy | CC-BY 3.0 |
-| sprite | Rodents (Rat Rework) | Tuomo Untinen (Reemax) & Jordan Irwin (AntumDeluge)
- | https://opengameart.org/content/rodents-rat-rework | rat enemy | CC-BY 3.0 |
+| sprite | Rodents (Rat Rework) | Tuomo Untinen (Reemax) & Jordan Irwin (AntumDeluge) | https://opengameart.org/content/rodents-rat-rework | rat enemy | CC-BY 3.0 |
 | sprite | Assorted 32x32 Creatures | AndHeGames | https://opengameart.org/content/assorted-32x32-creatures | mug of fizz enemy, and others | CC0 |
 | sprite | Classical Temple Tiles | surt | https://opengameart.org/content/classical-temple-tiles | tile map (background) | CC-BY 4.0 |
 | sprite | Smoke & Fire Animated Particle [16x16] | KnoblePersona | https://opengameart.org/content/smoke-fire-animated-particle-16x16 | death smoke | CC-BY 3.0 |
 | sprite | LPC Grave Markers Rework | AntumDeluge, Casper Nilsson, Barbara Rivera, & ak-blanc | https://opengameart.org/content/lpc-grave-markers-rework | death grave | CC-BY-SA 3.0 |
-| sprite | Pyramid background | bart | https://opengameart.org/content/pyramid-background | main menu bg | CC-BY-SA 3.0 |
+| image | Pyramid background | bart | https://opengameart.org/content/pyramid-background | main menu bg | CC-BY-SA 3.0 |
+| sprite | claw sprite | John2k | https://opengameart.org/content/bearclaw | claw attack | CC-BY-SA 3.0
 | sfx | zapsplat_animal_rodent_squeak_single_001 | ZapSplat | https://www.zapsplat.com | rat_attack | CC-BY 3.0 |
 | sfx | zapsplat_animal_rodent_squeak_single_002 | ZapSplat | https://www.zapsplat.com | rat_damaged | CC-BY 3.0 |
 | sfx | zapsplat_animal_rodent_squeak_single_003 | ZapSplat | https://www.zapsplat.com | rat_death | CC-BY 3.0 |

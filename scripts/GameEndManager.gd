@@ -6,6 +6,9 @@ onready var turn_manager = $"../TurnManager"
 onready var agents = turn_manager.agents
 onready var agents_alive = len(agents)
 
+onready var player_input_manager = get_parent().get_node("PlayerInputManager")
+onready var combat_ui = get_parent().get_node("GeneralCamera/CombatUI")
+
 var end_state = "null"
 
 func _ready():

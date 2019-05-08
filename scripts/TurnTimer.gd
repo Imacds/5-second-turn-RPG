@@ -54,5 +54,6 @@ func _on_TurnManager_begin_action_queues_execution():
 	reset_timer()
 
 func _on_GameEndManager_game_over(state):
+	get_parent().allow_inputs(false)
 	game_over = true
-	stop()
+	pause()

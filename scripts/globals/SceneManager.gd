@@ -60,12 +60,10 @@ func load_scene(scene, load_the_scene = true):
 			agents_to_create = [
 				AgentMapPlacement.new("player", [2, 1]),
 				AgentMapPlacement.new("swing", [8, 1]),
-				AgentMapPlacement.new("swing", [14, 6]),
 				AgentMapPlacement.new("swing", [0, 5]),
-				AgentMapPlacement.new("swing", [4, 5]),
-				AgentMapPlacement.new("swing", [8, 5]),
+				AgentMapPlacement.new("swing", [14, 5]),
 			]
-			dialog = ["The same kiting can be applied to this small group of fighters"]
+			dialog = ["The same kiting can be applied to this small group of fighters","Be careful not to get cornered or surrounded!"]
 			scene_name = "Level 2"
 		
 		SCENES.LEVEL3:

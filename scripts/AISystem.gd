@@ -57,7 +57,7 @@ func swing_ai():
 	var path = path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords())
 	
 	var j = 0
-	for i in range(0, 3):
+	for i in range(0, 2):
 		if len(path) > 3+j:
 			var dir = array_to_vec2(path[j+1]-path[j])
 			do_move(dir)
@@ -78,12 +78,12 @@ func range_ai():
 	var path = path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords())
 	
 	var j = 0
-	for i in range(0, 3):
-		if len(path) > 4+j:
+	for i in range(0, 2):
+		if len(path) > 5+j:
 			var dir = array_to_vec2(path[j+1]-path[j])
 			do_move(dir)
 			j+=1
-		elif len(path) > 3+j:
+		elif len(path) > 4+j:
 			var dir = array_to_vec2(path[j+1]-path[j])
 			do_attack(attack_mode, dir)
 		elif len(path) > 1:
@@ -99,7 +99,7 @@ func rat_ai():
 	var path = path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords())
 	
 	var j = 0
-	for i in range(0, 3):
+	for i in range(0, 2):
 		if len(path) > 2+j:
 			var dir = array_to_vec2(path[j+1]-path[j])
 			do_move(dir)

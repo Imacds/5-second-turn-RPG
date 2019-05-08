@@ -122,7 +122,7 @@ scale = Vector2( 0.161345, 0.161345 )
 z_index = 10
 z_as_relative = false
 frames = SubResource( 3 )
-frame = 11
+frame = 9
 speed_scale = 3.0
 playing = true
 

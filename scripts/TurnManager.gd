@@ -14,6 +14,9 @@ onready var players = selection_manager.players
 onready var AIs = []
 onready var attack_map = $"../AttackMap"
 
+var agent_count = len(agents)
+var keep_going = false
+
 func _ready():
 	find_all_agents()
 	
@@ -34,8 +37,27 @@ func end_turn():
 	for ai in AIs:
 		ai.get_node('AISystem').do_ai_stuff()
 		
+	agent_count = 0
+	keep_going = false
+	
 	for agent in agents:
-		agent.get_node("ActionQueue").execute_all(wait_time_per_tick)
+		agent.get_node("ActionQueue").execute_one(wait_time_per_tick, true)
+
+func report_end_of_one(any_left):
+	agent_count += 1
+	keep_going = keep_going or any_left
+	if agent_count >= len(agents):
+		if keep_going: #There needs to be an extra call to successfully finish the turn
+			for agent in agents:
+				agent.get_node("ActionQueue").execute_one(wait_time_per_tick, false)
+			agent_count = 0
+			keep_going = false
+		else:
+			for agent in agents:
+				agent.get_node("ActionQueue").finish_executing_one()
+			agent_count = 0
+			keep_going = false
+			$TurnTimer.start()
 	
 func get_player_names():
 	return [players[0].get_name(), Utils.get_name(players[1])]
@@ -44,4 +66,5 @@ func _on_TurnTimer_timer_ended():
 	end_turn()
 
 func _on_ActionQueueManager_all_action_queues_finished_executing():
-	$TurnTimer.start()
+	pass
+	#$TurnTimer.start()

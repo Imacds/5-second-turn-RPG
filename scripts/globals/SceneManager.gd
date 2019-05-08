@@ -7,6 +7,7 @@ const AgentMapPlacement = preload("res://scripts/globals/helpers/AgentMapPlaceme
 var map
 var agents_to_create # list of Agent info for creation and placement of agents
 var scene_name = "Tutorial 1"
+var dialog = null
 
 # can change the Map, add enemies, change init placement of agents,
 func load_scene(scene, load_the_scene = true):
@@ -17,11 +18,13 @@ func load_scene(scene, load_the_scene = true):
 				AgentMapPlacement.new("scarecrow", [8, 1]),
 			]
 			scene_name = "Tutorial 1"
+			dialog = ["Welcome to 6 second rpg by Gridventure", "This is a safe place to practice, the training dummy does not fight back", "Plan your movement with WASD", "Press Q and a movement to queue up a short range slash attack","Press E and a movement to queue up a medium range swing attack","Press R and a movement to queue up a long range lunge attack","You can view your plan in the bottom left. You may take up to 2 action a turn","Z can be used to undo the latest queued item from your plan","Remember, the turn timer can be lengthened in the options menu","Good Luck!"]
 		SCENES.TUTORIAL2: # place an AI pretty close
 			agents_to_create = [
 				AgentMapPlacement.new("player", [2, 1]),
 				AgentMapPlacement.new("rat", [8, 1]),
 			]
+			dialog = ["Let's step it up a notch", "This rat will run after you. It can bite you if you get close","Hit it a few times and it shouldn't be much of a problem.", "Remember, you have a time limit to enter turns!"]
 			scene_name = "Tutorial 2"
 		SCENES.TUTORIAL3:
 			agents_to_create = [

@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/ScarecrowAgent.gd" type="Script" id=1]
 [ext_resource path="res://game-objects/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sprites/npcs/ScareCrow.png" type="Texture" id=3]
+[ext_resource path="res://scripts/AISystem.gd" type="Script" id=4]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -24,4 +25,9 @@ z_index = 10
 frames = SubResource( 1 )
 animation = "New Anim"
 playing = true
+
+[node name="AISystem" type="Node" parent="."]
+script = ExtResource( 4 )
+hp = 5
+enemy_type = "scarecrow"
 

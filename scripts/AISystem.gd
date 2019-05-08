@@ -1,6 +1,7 @@
 extends Node
 
 export(int) var hp = 2
+export(String) var enemy_type = 'rat'
 
 onready var selection_manager = get_tree().get_root().get_node("Root/SelectionManager")
 onready var attack_template = get_tree().get_root().get_node("Root/AttackTemplate")
@@ -23,7 +24,10 @@ func _process(delta):
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func do_ai_stuff():
-	rat_ai()
+	if enemy_type == 'rat':
+		rat_ai()
+	if enemy_type == 'scarecrow':
+		scarecrow_ai()
 
 func do_move(move_dir):	
 	# Move
@@ -38,6 +42,10 @@ func do_attack(attack_mode, attack_dir):
 
 func array_to_vec2(array):
 	return Vector2(array[0],array[1])
+
+#do nothin
+func scarecrow_ai():
+	pass
 
 # The idea of the rat is to run up orthogonal to the player and try to bite it
 func rat_ai():

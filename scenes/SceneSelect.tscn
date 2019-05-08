@@ -60,12 +60,10 @@ margin_right = 879.0
 margin_bottom = 374.0
 
 [node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer"]
-editor/display_folded = true
 margin_right = 734.0
 margin_bottom = 98.0
 
 [node name="GridContainer" type="GridContainer" parent="CenterContainer/VBoxContainer/CenterContainer"]
-editor/display_folded = true
 margin_right = 734.0
 margin_bottom = 98.0
 columns = 3

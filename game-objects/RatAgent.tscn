@@ -30,5 +30,4 @@ playing = true
 
 [node name="AISystem" type="Node" parent="."]
 script = ExtResource( 6 )
-hp = 0
 

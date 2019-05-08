@@ -106,12 +106,12 @@ func take_damage():
 		die()
 
 func is_dead():
-	return hp < 0
+	return hp <= 0
 
 func render_hp():
-	if hp >= 0:
+	if hp > 0:
 		$Label.text = "HP: "
-		for i in range(0, hp+1):
+		for i in range(0, hp):
 			$Label.text += "X "
 	else:
 		$Label.text = ""

@@ -98,6 +98,7 @@ text = "Move"
 script = ExtResource( 9 )
 
 [node name="QueueListRect" type="ColorRect" parent="."]
+editor/display_folded = true
 modulate = Color( 1, 1, 1, 0.588235 )
 margin_left = 15.0
 margin_top = 349.0

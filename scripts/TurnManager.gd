@@ -4,6 +4,10 @@ export(int) var wait_time_per_tick = 0.15
 
 signal begin_action_queues_execution()
 
+
+onready var player_input_manager = get_tree().get_root().get_node("Root/PlayerInputManager")
+onready var combat_ui = get_tree().get_root().get_node("Root/GeneralCamera/CombatUI")
+
 const Player = preload("res://scripts/Player.gd")
 const Agent = preload("res://scripts/Agent.gd")
 var Utils = load("res://scripts/globals/Utils.gd")
@@ -31,8 +35,14 @@ func _get_agents_recursively(node):
 			AIs.append(child)
 		_get_agents_recursively(child)
 
+func allow_inputs(var boolean):
+	combat_ui.enabled = boolean
+	player_input_manager.enabled = boolean
+
 func end_turn():
 	emit_signal("begin_action_queues_execution")
+	
+	allow_inputs(false)
 	
 	for ai in AIs:
 		ai.get_node('AISystem').do_ai_stuff()
@@ -57,6 +67,7 @@ func report_end_of_one(any_left):
 				agent.get_node("ActionQueue").finish_executing_one()
 			agent_count = 0
 			keep_going = false
+			allow_inputs(true)
 			$TurnTimer.start()
 	
 func get_player_names():

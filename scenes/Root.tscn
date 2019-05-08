@@ -73,7 +73,6 @@ script = ExtResource( 1 )
 script = ExtResource( 2 )
 
 [node name="DialogBox" parent="." instance=ExtResource( 3 )]
-visible = false
 position = Vector2( 1.58627, -125.316 )
 
 [node name="AttackTemplate" type="Node" parent="."]
@@ -102,6 +101,7 @@ script = ExtResource( 9 )
 [node name="LargeNotifyBanner2" parent="TurnManager" instance=ExtResource( 10 )]
 
 [node name="Map" type="TileMap" parent="."]
+editor/display_folded = true
 z_index = -1
 tile_set = ExtResource( 11 )
 format = 1
@@ -139,7 +139,7 @@ script = ExtResource( 23 )
 
 [connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="begin_action_queues_execution" from="TurnManager" to="TurnManager/TurnTimer" method="_on_TurnManager_begin_action_queues_execution"]
-[connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TimerLabel" method="_on_TurnTimer_timeout"]
 [connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TurnTimer" method="_on_TurnTimer_timeout"]
+[connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TimerLabel" method="_on_TurnTimer_timeout"]
 [connection signal="timer_ended" from="TurnManager/TurnTimer" to="TurnManager" method="_on_TurnTimer_timer_ended"]
 [connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="TurnManager" method="_on_ActionQueueManager_all_action_queues_finished_executing"]

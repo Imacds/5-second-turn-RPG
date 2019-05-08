@@ -25,6 +25,14 @@ func start(time_sec = -1):
 		
 	$"../LargeNotifyBanner2".play_animation("Turn Began")
 	.start(time_sec)
+
+#stop silently
+func pause():
+	.stop()
+	
+#start silently
+func resume(time_sec = -1):
+	.start(time_sec)
 	
 # override
 func stop():

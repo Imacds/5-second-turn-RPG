@@ -16,10 +16,7 @@ onready var reachable_cell_constraint = funcref(self, "reachable_cell_constraint
 
 
 func _ready():
-	for x in range(map_size.x):
-		grid.append([])
-		for y in range(map_size.y):
-			grid[x].append(GridElement.new("void", int(TILES.VOID), null, [x, y])) # ele_name, ele_tile_index, ele_owner, grid_coords, prev_element = null
+	clear()
 
 func is_outside_map_bounds(point):
 	return point[0] < 0 or point[1] < 0 or point[0] >= map_size.x or point[1] >= map_size.y
@@ -30,7 +27,7 @@ func get_cell_content(pos):
 
 func _process(delta):
 	if not cell_set_queue.empty():
-		.clear() # remove all tiles from tile map
+		clear() # remove all tiles from tile map
 		for c in cell_set_queue:
 			set_cell(c[0],c[1],c[2],c[3],c[4],c[5],c[6],c[7])
 		cell_set_queue.clear()
@@ -41,13 +38,13 @@ func queue_set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = fal
 # override
 func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, transpose = false, autotile_coord = Vector2(0, 0)):
 	if is_outside_map_bounds(Vector2(x, y)):
-		print_debug("Error adding cell " + str(x) + ", " + str(y) + ", " + str(owner) )
+#		print_debug("Error adding cell " + str(x) + ", " + str(y) + ", " + str(owner) )
 		return null
 	
 	var cell = get_cell_content(Vector2(x, y))
 	
-	.set_cell(x, y, tile_index, flip_x, flip_y, transpose, autotile_coord) # call super.set_cell
 	grid[y][x] = GridElement.new("set_cell element", tile_index, owner, [x, y], cell) 
+	.set_cell(x, y, tile_index, flip_x, flip_y, transpose, autotile_coord) # call super.set_cell
 	
 # clear (remove) tiles/cells from map where the cell owner or/and tile_index matches
 # param owner: Object or str
@@ -83,3 +80,12 @@ func clear_cells(owner = null, tile_index = null):
 func reachable_cell_constraint_func(cell_coord: Array) -> bool:
 	# todo: do a* pathing and check to see if cell is on wall/obstacle or walks through a wall
 	return not is_outside_map_bounds(cell_coord)
+	
+func clear():
+	grid = []
+	for x in range(map_size.x):
+		grid.append([])
+		for y in range(map_size.y):
+			grid[x].append(GridElement.new("void", int(TILES.VOID), null, [x, y])) # ele_name, ele_tile_index, ele_owner, grid_coords, prev_element = null
+		
+	.clear()

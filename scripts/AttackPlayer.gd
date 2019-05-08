@@ -52,7 +52,7 @@ func clear_attack():
 func flash_attack(mode, dir):
 	draw_attack(mode, dir)
 	OS.delay_msec(1000)
-	clear_attack()	
+	clear_attack()
 
 
 func _on_Char_agent_enters_attack_mode(cell_coords):

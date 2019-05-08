@@ -62,7 +62,12 @@ func _ready():
 	_change_command_mode(COMMAND_MODES.MOVE)
 	set_process_input(true)
 	set_physics_process(true)
+	
+	# listen to action queue manager signal
 	action_queue_manager.connect("all_action_queues_finished_executing", self, "_on_ActionQueueManager_all_action_queues_finished_executing")
+	
+	# listen to attack template signal
+	attack_template.connect("click_mode_changed", self, "_on_AttackTemplate_click_mode_changed")
 
 func get_position():
 	return position
@@ -185,6 +190,8 @@ func undo_last_action():
 
 func queue_attack_action(attack_mode, dir_str):
 	var action = AttackAction.new(self, dir_str, attack_template, attack_mode) # agent, direction_str, attack_template, attack_mode, execution_cost = 1
+	attack_map.clear()
+	
 	if is_selected():
 		attack_template.visualize_attack($PlayerControlledPath.get_target_grid_pos(), attack_mode, dir_str, self, attack_map.TILES.YELLOW_ZONE_TO_ATTACK) # position, attack_mode, attack_dir, owner, tile_type
 

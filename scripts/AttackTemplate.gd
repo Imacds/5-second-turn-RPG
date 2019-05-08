@@ -74,7 +74,6 @@ func damage_in_attack_radius(position, attack_mode, attack_dir, owner):
 		for agent in turn_manager.agents:
 			if agent.get_cell_coords() == Vector2(coords[0], coords[1]):
 				agent.take_damage()
-	
 
 func visualize_attack(position, attack_mode, attack_dir, owner, tile_type):
 #	if not position or not attack_mode: 

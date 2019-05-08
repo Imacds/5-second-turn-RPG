@@ -12,6 +12,7 @@ Imported assets
 | sprite | Rodents (Rat Rework) | Tuomo Untinen (Reemax) & Jordan Irwin (AntumDeluge)
  | https://opengameart.org/content/rodents-rat-rework | rat enemy | CC-BY 3.0 |
 | sprite | Assorted 32x32 Creatures | AndHeGames | https://opengameart.org/content/assorted-32x32-creatures | mug of fizz enemy, and others | CC0 |
+| sprite | Classical Temple Tiles | surt | https://opengameart.org/content/classical-temple-tiles | tile map (background) | CC-BY 4.0 |
 
 
 Developers and Designers:

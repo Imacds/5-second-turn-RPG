@@ -17,19 +17,18 @@ onready var half_tile_size = tile_size / 2
 onready var obstacles = get_used_cells_by_id(3)
 onready var _half_cell_size = cell_size / 2
 
-enum TILES { VOID0, VOID1, VOID2, WALL, GROUND, VOID5 }
+enum TILES { VOID0, VOID1, VOID2, WALL, GROUND, GROUND2, WALL2, VOID7 }
 
 onready var reachable_cell_constraint = funcref(self, "reachable_cell_constraint_func") # filter func to return true if cell is reachable by agent
-
 
 func _ready():
 	for x in range(map_size.x):
 		grid.append([])
 		for y in range(map_size.y):
-			grid[x].append(GridElement.new("walkable", int(TILES.GROUND), null, [x, y]))
+			grid[x].append(GridElement.new("walkable", int(TILES.GROUND2), null, [x, y]))
 			
 	for id in obstacles:
-		grid[id.x][id.y] = GridElement.new("obstacle", int(TILES.WALL), null, [id.x, id.y])
+		grid[id.x][id.y] = GridElement.new("obstacle", int(TILES.WALL2), null, [id.x, id.y])
 		
 	var walkable_cells_list = astar_add_walkable_cells(obstacles)
 	astar_connect_walkable_cells(walkable_cells_list)
@@ -154,7 +153,6 @@ func set_cell(x, y, tile_index, owner = null, flip_x = false, flip_y = false, tr
 func world_to_mapa(world_position) -> Array:
 	var cell = world_to_map(world_position)
 	return [cell.x, cell.y]
-	
 
 # param agent: any class that has an attribute, walk_distance
 # return: true if destination is within map boudnaries, is a walkable tile, and is walkable distance from cell_start
@@ -164,7 +162,7 @@ func reachable_cell_constraint_func(cell_start: Array, cell_destination: Array, 
 	var cell = get_cell_content(cell_destination)
 	var is_walkable_tile = true
 	
-	if cell and cell.tile_index == int(TILES.WALL):
+	if cell and is_tile_index_wall(cell.tile_index):
 		is_walkable_tile = false
 
 	var is_walking_distance = true
@@ -173,3 +171,9 @@ func reachable_cell_constraint_func(cell_start: Array, cell_destination: Array, 
 		is_walking_distance = distance_between_points(cell_start, cell_destination) <= agent.walk_distance
 		
 	return in_boundaries and is_walkable_tile and is_walking_distance
+	
+func is_tile_index_ground(tile_index):
+	return tile_index == TILES.GROUND or tile_index == TILES.GROUND2
+	
+func is_tile_index_wall(tile_index):
+	return tile_index == TILES.WALL or tile_index == TILES.WALL2

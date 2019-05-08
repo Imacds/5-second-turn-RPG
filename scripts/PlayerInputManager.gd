@@ -29,7 +29,6 @@ func _unhandled_input(event):
 	if attack_template.get_click_mode() != null and agent.can_attack():
 		if event.is_action_pressed("click"):
 			agent.queue_attack_action(attack_template.get_click_mode(), attack_player.direction_str)
-			
 		if event.is_action_pressed("move_up"):
 			agent.queue_attack_action(attack_template.get_click_mode(), attack_player.get_attack_dir_str(Vector2.UP))
 		elif event.is_action_pressed("move_right"):

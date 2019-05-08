@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/not-found.png-4e01edce313b6fa625b9b30d2a700955.stex"
+path="res://.import/classical_temple_tiles.png-fb6a46bf971d8ee7bdf4d35624007c47.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/not-found.png"
-dest_files=[ "res://.import/not-found.png-4e01edce313b6fa625b9b30d2a700955.stex" ]
+source_file="res://sprites/tile-set/sources/classical_temple_tiles.png"
+dest_files=[ "res://.import/classical_temple_tiles.png-fb6a46bf971d8ee7bdf4d35624007c47.stex" ]
 
 [params]
 

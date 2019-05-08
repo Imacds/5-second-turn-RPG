@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/not-found.png-4e01edce313b6fa625b9b30d2a700955.stex"
+path="res://.import/Dungeon Tileset.png-0c221bc9ded5158bc301d2ff96e3894d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/not-found.png"
-dest_files=[ "res://.import/not-found.png-4e01edce313b6fa625b9b30d2a700955.stex" ]
+source_file="res://sprites/tile-set/sources/Dungeon Tileset.png"
+dest_files=[ "res://.import/Dungeon Tileset.png-0c221bc9ded5158bc301d2ff96e3894d.stex" ]
 
 [params]
 

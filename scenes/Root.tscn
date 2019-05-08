@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scripts/Root.gd" type="Script" id=1]
 [ext_resource path="res://scripts/PlayerInputManager.gd" type="Script" id=2]
@@ -9,51 +9,23 @@
 [ext_resource path="res://scripts/TurnTimer.gd" type="Script" id=7]
 [ext_resource path="res://assets/fonts/lunchds_size_40.tres" type="DynamicFont" id=8]
 [ext_resource path="res://scripts/TimerLabel.gd" type="Script" id=9]
-[ext_resource path="res://scripts/TurnChangeRect.gd" type="Script" id=10]
-[ext_resource path="res://assets/fonts/lunchds_size_66.tres" type="DynamicFont" id=11]
-[ext_resource path="res://paths/TilePath.tres" type="TileSet" id=12]
-[ext_resource path="res://scripts/Map.gd" type="Script" id=13]
-[ext_resource path="res://scripts/GridVisualize.gd" type="Script" id=14]
-[ext_resource path="res://sprites/tile-set/zone_to_attack.png" type="Texture" id=15]
-[ext_resource path="res://sprites/tile-set/dirt_floor.png" type="Texture" id=16]
-[ext_resource path="res://sprites/tile-set/ThiefSet - Boots3.png" type="Texture" id=17]
-[ext_resource path="res://scripts/AttackMap.gd" type="Script" id=18]
-[ext_resource path="res://game-objects/GeneralCamera.tscn" type="PackedScene" id=19]
-[ext_resource path="res://game-objects/UI/CombatUI.tscn" type="PackedScene" id=20]
-[ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=21]
-[ext_resource path="res://game-objects/ActionQueueManager.tscn" type="PackedScene" id=22]
-[ext_resource path="res://audio/Curse of the Scarab.wav" type="AudioStream" id=23]
-
-[sub_resource type="Animation" id=1]
-resource_name = "TurnChangeAnim"
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("TurnChangeLabel:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5, 1 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
+[ext_resource path="res://game-objects/UI/LargeNotifyBanner.tscn" type="PackedScene" id=10]
+[ext_resource path="res://paths/TilePath.tres" type="TileSet" id=11]
+[ext_resource path="res://scripts/Map.gd" type="Script" id=12]
+[ext_resource path="res://scripts/GridVisualize.gd" type="Script" id=13]
+[ext_resource path="res://sprites/tile-set/zone_to_attack.png" type="Texture" id=14]
+[ext_resource path="res://sprites/tile-set/dirt_floor.png" type="Texture" id=15]
+[ext_resource path="res://sprites/tile-set/ThiefSet - Boots3.png" type="Texture" id=16]
+[ext_resource path="res://scripts/AttackMap.gd" type="Script" id=17]
+[ext_resource path="res://game-objects/GeneralCamera.tscn" type="PackedScene" id=18]
+[ext_resource path="res://game-objects/UI/CombatUI.tscn" type="PackedScene" id=19]
+[ext_resource path="res://scenes/PauseMenu.tscn" type="PackedScene" id=20]
+[ext_resource path="res://game-objects/ActionQueueManager.tscn" type="PackedScene" id=21]
+[ext_resource path="res://audio/Curse of the Scarab.wav" type="AudioStream" id=22]
 
 [sub_resource type="TileSet" id=2]
 0/name = "zone_to_attack.png 0"
-0/texture = ExtResource( 15 )
+0/texture = ExtResource( 14 )
 0/tex_offset = Vector2( 0, 0 )
 0/modulate = Color( 1, 1, 1, 1 )
 0/region = Rect2( 0, 0, 64, 64 )
@@ -63,7 +35,7 @@ tracks/1/keys = {
 0/shapes = [  ]
 0/z_index = 0
 1/name = "yellow_zone_to_attack.png 1"
-1/texture = ExtResource( 16 )
+1/texture = ExtResource( 15 )
 1/tex_offset = Vector2( 0, 0 )
 1/modulate = Color( 0.898039, 1, 0, 1 )
 1/region = Rect2( 0, 0, 64, 64 )
@@ -73,7 +45,7 @@ tracks/1/keys = {
 1/shapes = [  ]
 1/z_index = 0
 2/name = "green_zone_to_attack.png 2"
-2/texture = ExtResource( 16 )
+2/texture = ExtResource( 15 )
 2/tex_offset = Vector2( 0, 0 )
 2/modulate = Color( 0.0352941, 0.803922, 0.192157, 1 )
 2/region = Rect2( 0, 0, 64, 64 )
@@ -83,7 +55,7 @@ tracks/1/keys = {
 2/shapes = [  ]
 2/z_index = 0
 3/name = "ThiefSet - Boots3.png 3"
-3/texture = ExtResource( 17 )
+3/texture = ExtResource( 16 )
 3/tex_offset = Vector2( 0, 0 )
 3/modulate = Color( 1, 1, 1, 0.392157 )
 3/region = Rect2( 0, 0, 64, 64 )
@@ -126,63 +98,44 @@ align = 1
 valign = 1
 script = ExtResource( 9 )
 
-[node name="TurnChangeRect" type="ColorRect" parent="TurnManager"]
-modulate = Color( 1, 1, 1, 0 )
-margin_top = 190.0
-margin_right = 1024.0
-margin_bottom = 340.0
-color = Color( 0, 0, 0, 1 )
-script = ExtResource( 10 )
-
-[node name="TurnChangeLabel" type="Label" parent="TurnManager/TurnChangeRect"]
-modulate = Color( 1, 1, 1, 0 )
-margin_right = 1020.0
-margin_bottom = 150.0
-custom_fonts/font = ExtResource( 11 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "Turn Ended"
-align = 1
-valign = 1
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="TurnManager/TurnChangeRect"]
-playback_speed = 0.5
-anims/TurnChangeAnim = SubResource( 1 )
+[node name="LargeNotifyBanner2" parent="TurnManager" instance=ExtResource( 10 )]
 
 [node name="Map" type="TileMap" parent="."]
 z_index = -1
-tile_set = ExtResource( 12 )
+tile_set = ExtResource( 11 )
 format = 1
 tile_data = PoolIntArray( 0, 5, 0, 1, 5, 0, 2, 5, 0, 3, 5, 0, 4, 5, 0, 5, 5, 0, 6, 6, 0, 7, 6, 0, 8, 6, 0, 9, 6, 0, 10, 5, 0, 11, 5, 0, 12, 5, 0, 13, 5, 0, 14, 5, 0, 15, 5, 0, 65536, 5, 0, 65537, 5, 0, 65538, 5, 0, 65539, 5, 0, 65540, 5, 0, 65541, 5, 0, 65542, 5, 0, 65543, 5, 0, 65544, 5, 0, 65545, 5, 0, 65546, 5, 0, 65547, 5, 0, 65548, 5, 0, 65549, 5, 0, 65550, 5, 0, 65551, 5, 0, 131072, 5, 0, 131073, 5, 0, 131074, 5, 0, 131075, 5, 0, 131076, 5, 0, 131077, 5, 0, 131078, 5, 0, 131079, 5, 0, 131080, 5, 0, 131081, 5, 0, 131082, 5, 0, 131083, 5, 0, 131084, 5, 0, 131085, 5, 0, 131086, 5, 0, 131087, 5, 0, 196608, 6, 0, 196609, 6, 0, 196610, 5, 0, 196611, 6, 0, 196612, 6, 0, 196613, 6, 0, 196614, 5, 0, 196615, 5, 0, 196616, 5, 0, 196617, 5, 0, 196618, 6, 0, 196619, 6, 0, 196620, 6, 0, 196621, 5, 0, 196622, 6, 0, 196623, 6, 0, 262144, 5, 0, 262145, 5, 0, 262146, 5, 0, 262147, 5, 0, 262148, 5, 0, 262149, 6, 0, 262150, 5, 0, 262151, 5, 0, 262152, 5, 0, 262153, 5, 0, 262154, 6, 0, 262155, 5, 0, 262156, 5, 0, 262157, 5, 0, 262158, 5, 0, 262159, 5, 0, 327680, 5, 0, 327681, 5, 0, 327682, 5, 0, 327683, 5, 0, 327684, 5, 0, 327685, 6, 0, 327686, 5, 0, 327687, 5, 0, 327688, 5, 0, 327689, 5, 0, 327690, 6, 0, 327691, 5, 0, 327692, 5, 0, 327693, 5, 0, 327694, 5, 0, 327695, 5, 0, 393216, 5, 0, 393217, 5, 0, 393218, 6, 0, 393219, 5, 0, 393220, 5, 0, 393221, 5, 0, 393222, 5, 0, 393223, 5, 0, 393224, 5, 0, 393225, 5, 0, 393226, 5, 0, 393227, 5, 0, 393228, 5, 0, 393229, 6, 0, 393230, 5, 0, 393231, 5, 0, 458752, 5, 0, 458753, 5, 0, 458754, 5, 0, 458755, 5, 0, 458756, 5, 0, 458757, 6, 0, 458758, 5, 0, 458759, 5, 0, 458760, 5, 0, 458761, 5, 0, 458762, 6, 0, 458763, 5, 0, 458764, 5, 0, 458765, 5, 0, 458766, 5, 0, 458767, 5, 0, 524288, 5, 0, 524289, 5, 0, 524290, 5, 0, 524291, 5, 0, 524292, 5, 0, 524293, 6, 0, 524294, 5, 0, 524295, 5, 0, 524296, 5, 0, 524297, 5, 0, 524298, 6, 0, 524299, 5, 0, 524300, 5, 0, 524301, 5, 0, 524302, 5, 0, 524303, 5, 0, 589824, 3, 0, 589825, 3, 0, 589826, 3, 0, 589827, 3, 0, 589828, 3, 0, 589829, 6, 0, 589830, 3, 0, 589831, 3, 0, 589832, 3, 0, 589833, 3, 0, 589834, 6, 0, 589835, 3, 0, 589836, 3, 0, 589837, 3, 0, 589838, 3, 0, 589839, 3, 0, 655360, 3, 0, 655361, 3, 0, 655362, 3, 0, 655363, 3, 0, 655364, 3, 0, 655365, 3, 0, 655366, 3, 0, 655367, 3, 0, 655368, 3, 0, 655369, 3, 0, 655370, 3, 0, 655371, 3, 0, 655372, 3, 0, 655373, 3, 0, 655374, 3, 0, 655375, 3, 0, 720896, 3, 0, 720897, 3, 0, 720898, 3, 0, 720899, 3, 0, 720900, 3, 0, 720901, 3, 0, 720902, 3, 0, 720903, 3, 0, 720904, 3, 0, 720905, 3, 0, 720906, 3, 0, 720907, 3, 0, 720908, 3, 0, 720909, 3, 0, 720910, 3, 0, 720911, 3, 0, 786432, 3, 0, 786433, 3, 0, 786434, 3, 0, 786435, 3, 0, 786436, 3, 0, 786437, 3, 0, 786438, 3, 0, 786439, 3, 0, 786440, 3, 0, 786441, 3, 0, 786442, 3, 0, 786443, 3, 0, 786444, 3, 0, 786445, 3, 0, 786446, 3, 0, 786447, 3, 0, 851968, 3, 0, 851969, 3, 0, 851970, 3, 0, 851971, 3, 0, 851972, 3, 0, 851973, 3, 0, 851974, 3, 0, 851975, 3, 0, 851976, 3, 0, 851977, 3, 0, 851978, 3, 0, 851979, 3, 0, 851980, 3, 0, 851981, 3, 0, 851982, 3, 0, 851983, 3, 0, 917504, 3, 0, 917505, 3, 0, 917506, 3, 0, 917507, 3, 0, 917508, 3, 0, 917509, 3, 0, 917510, 3, 0, 917511, 3, 0, 917512, 3, 0, 917513, 3, 0, 917514, 3, 0, 917515, 3, 0, 917516, 3, 0, 917517, 3, 0, 917518, 3, 0, 917519, 3, 0, 983040, 3, 0, 983041, 3, 0, 983042, 3, 0, 983043, 3, 0, 983044, 3, 0, 983045, 3, 0, 983046, 3, 0, 983047, 3, 0, 983048, 3, 0, 983049, 3, 0, 983050, 3, 0, 983051, 3, 0, 983052, 3, 0, 983053, 3, 0, 983054, 3, 0, 983055, 3, 0 )
-script = ExtResource( 13 )
+script = ExtResource( 12 )
 
 [node name="GridVisualize" type="Node2D" parent="Map"]
 visible = false
-script = ExtResource( 14 )
+script = ExtResource( 13 )
 
 [node name="AttackMap" type="TileMap" parent="."]
 tile_set = SubResource( 2 )
 format = 1
-script = ExtResource( 18 )
+script = ExtResource( 17 )
 
-[node name="GeneralCamera" parent="." instance=ExtResource( 19 )]
+[node name="GeneralCamera" parent="." instance=ExtResource( 18 )]
 position = Vector2( 510, 300 )
 
-[node name="CombatUI" parent="GeneralCamera" instance=ExtResource( 20 )]
+[node name="CombatUI" parent="GeneralCamera" instance=ExtResource( 19 )]
 
-[node name="PauseMenu" parent="." instance=ExtResource( 21 )]
+[node name="PauseMenu" parent="." instance=ExtResource( 20 )]
 visible = false
 
-[node name="ActionQueueManager" parent="." instance=ExtResource( 22 )]
+[node name="ActionQueueManager" parent="." instance=ExtResource( 21 )]
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
 position = Vector2( 510, 300 )
-stream = ExtResource( 23 )
+stream = ExtResource( 22 )
 autoplay = true
+
+[node name="LargeNotifyBanner" parent="." instance=ExtResource( 10 )]
 
 [connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="begin_action_queues_execution" from="TurnManager" to="TurnManager/TurnTimer" method="_on_TurnManager_begin_action_queues_execution"]
 [connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TurnTimer" method="_on_TurnTimer_timeout"]
 [connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TimerLabel" method="_on_TurnTimer_timeout"]
 [connection signal="timer_ended" from="TurnManager/TurnTimer" to="TurnManager" method="_on_TurnTimer_timer_ended"]
-[connection signal="animation_finished" from="TurnManager/TurnChangeRect/AnimationPlayer" to="TurnManager/TurnChangeRect" method="_on_AnimationPlayer_animation_finished"]
 [connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="TurnManager" method="_on_ActionQueueManager_all_action_queues_finished_executing"]

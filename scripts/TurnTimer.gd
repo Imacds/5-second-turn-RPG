@@ -16,12 +16,12 @@ func reset_timer():
 	
 # override
 func start(time_sec = -1):
-	$"../TurnChangeRect".play_animation("Turn Began")
+	$"../LargeNotifyBanner2".play_animation("Turn Began")
 	.start(time_sec)
 	
 # override
 func stop():
-	$"../TurnChangeRect".play_animation("Turn Ended")
+	$"../LargeNotifyBanner2".play_animation("Turn Ended")
 	.stop()
 
 func _on_TurnTimer_timeout(): # 1 second tick from timer

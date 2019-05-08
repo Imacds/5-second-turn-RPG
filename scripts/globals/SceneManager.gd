@@ -6,22 +6,29 @@ const AgentMapPlacement = preload("res://scripts/globals/helpers/AgentMapPlaceme
 
 var map
 var agents_to_create = create_scene_for_tutorial1() # list of Agent info for creation and placement of agents
+var scene_name = "Tutorial 1"
 
 # can change the Map, add enemies, change init placement of agents,
 func load_scene(scene):
 	match scene:
 		SCENES.TUTORIAL1:
 			create_scene_for_tutorial1()
+			scene_name = "Tutorial 1"
 		SCENES.TUTORIAL2:
 			create_scene_for_tutorial1()
+			scene_name = "Tutorial 2"
 		SCENES.TUTORIAL3:
 			create_scene_for_tutorial1()
+			scene_name = "Tutorial 3"
 		SCENES.LEVEL1:
 			create_scene_for_tutorial1()
+			scene_name = "Level 1"
 		SCENES.LEVEL2:
 			create_scene_for_tutorial1()
+			scene_name = "Level 2"
 		SCENES.LEVEL3:
 			create_scene_for_tutorial1()
+			scene_name = "Level 3"
 		_: # default
 			print_debug("invalid scene given to SceneManager.load_scene")
 		

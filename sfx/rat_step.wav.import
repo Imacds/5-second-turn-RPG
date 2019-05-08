@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/rat_step.wav-2e0b9b9d98be08703487e72c8992c251.sample"
+
+[deps]
+
+source_file="res://sfx/rat_step.wav"
+dest_files=[ "res://.import/rat_step.wav-2e0b9b9d98be08703487e72c8992c251.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

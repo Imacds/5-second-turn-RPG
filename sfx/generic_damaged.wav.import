@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/generic_damaged.wav-d6cda08dc3ac15082e2719c9827ca116.sample"
+
+[deps]
+
+source_file="res://sfx/generic_damaged.wav"
+dest_files=[ "res://.import/generic_damaged.wav-d6cda08dc3ac15082e2719c9827ca116.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

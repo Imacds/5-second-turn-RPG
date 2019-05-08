@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/generic_death.wav-f32e4f43531dfb0e677dbeb1358529fb.sample"
+
+[deps]
+
+source_file="res://sfx/generic_death.wav"
+dest_files=[ "res://.import/generic_death.wav-f32e4f43531dfb0e677dbeb1358529fb.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

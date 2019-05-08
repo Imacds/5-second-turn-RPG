@@ -50,69 +50,51 @@ func array_to_vec2(array):
 func scarecrow_ai():
 	pass
 
+func in_a_line(var path, var dist):
+	var index = min(len(path)-1, dist)
+	var dir = array_to_vec2(path[index]-path[0])
+	if (dir.x == 0 || dir.y == 0) && dir.distance_to(Vector2.ZERO) <= dist:
+		return true
+	return false
+
 #do nothin
 func swing_ai():
 	var attack_mode = attack_template.MODE.SWING
 	
-	var path = path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords())
-	
-	var j = 0
-	for i in range(0, 2):
-		if len(path) > 3+j:
-			var dir = array_to_vec2(path[j+1]-path[j])
-			do_move(dir)
-			j+=1
-		elif len(path) > 2+j:
-			var dir = array_to_vec2(path[j+1]-path[j])
-			do_attack(attack_mode, dir)
-		elif len(path) > 1:
-			var dir = array_to_vec2(path[1]-path[0])
-			do_attack(attack_mode, dir)
-		else:
-			do_move(Vector2.RIGHT)
+	var path = Array(path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords(), false))
+	var attack_dist = 2
+	var random_move = Vector2.LEFT
+	do_generic_action(path, attack_dist, attack_mode, random_move)
 	
 #do nothin
 func range_ai():
 	var attack_mode = attack_template.MODE.RANGE
 	
-	var path = path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords())
-	
-	var j = 0
-	for i in range(0, 2):
-		if len(path) > 5+j:
-			var dir = array_to_vec2(path[j+1]-path[j])
-			do_move(dir)
-			j+=1
-		elif len(path) > 4+j:
-			var dir = array_to_vec2(path[j+1]-path[j])
-			do_attack(attack_mode, dir)
-		elif len(path) > 1:
-			var dir = array_to_vec2(path[1]-path[0])
-			do_attack(attack_mode, dir)
-		else:
-			do_move(Vector2.RIGHT)
+	var path = Array(path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords(), true))
+	var attack_dist = 4
+	var random_move = Vector2.DOWN
+	do_generic_action(path, attack_dist, attack_mode, random_move)
 
 # The idea of the rat is to run up orthogonal to the player and try to bite it
 func rat_ai():
 	var attack_mode = attack_template.MODE.BITE
 	
-	var path = path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords())
+	var path = Array(path_to_player(agent.get_cell_coords(),target_agent.get_cell_coords(), false))
+	var attack_dist = 1
+	var random_move = Vector2.RIGHT
+	do_generic_action(path, attack_dist, attack_mode, random_move)
 	
-	var j = 0
-	for i in range(0, 2):
-		if len(path) > 2+j:
-			var dir = array_to_vec2(path[j+1]-path[j])
-			do_move(dir)
-			j+=1
-		elif len(path) > 1+j:
-			var dir = array_to_vec2(path[j+1]-path[j])
-			do_attack(attack_mode, dir)
-		elif len(path) > 1:
-			var dir = array_to_vec2(path[1]-path[0])
-			do_attack(attack_mode, dir)
-		else:
-			do_move(Vector2.RIGHT)
+func path_to_player(from, to, line_greed):
+	return map.get_point_path(map.vector2toarray(from), map.vector2toarray(to), line_greed)
 	
-func path_to_player(from, to):
-	return map.get_point_path(map.vector2toarray(from), map.vector2toarray(to))
-	
+func do_generic_action(var path, var attack_dist, var attack_mode, var random_move):
+		for i in range(0, 2):
+			if len(path) > attack_dist+1 or !in_a_line(path,attack_dist):
+				var dir = array_to_vec2(path[1]-path[0])
+				do_move(dir)
+				path.pop_front()
+			elif len(path) > 1 and in_a_line(path,attack_dist):
+				var dir = array_to_vec2(path[1]-path[0])
+				do_attack(attack_mode, dir)
+			else:
+				do_move(random_move)

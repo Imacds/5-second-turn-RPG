@@ -1,7 +1,7 @@
 extends TileMap
 
 # You can only create an AStar node from code, not from the Scene tab
-onready var astar_node = AStar.new()
+onready var astar_node = load("res://scripts/LineGreedA.gd").new()
 # The Tilemap node doesn't have clear bounds so we're defining the map's limits here
 export(Vector2) var map_size = Vector2(16, 16)
 
@@ -22,6 +22,7 @@ enum TILES { VOID0, VOID1, VOID2, WALL, GROUND, GROUND2, WALL2, VOID7 }
 onready var reachable_cell_constraint = funcref(self, "reachable_cell_constraint_func") # filter func to return true if cell is reachable by agent
 
 func _ready():
+	astar_node.map = self
 	for x in range(map_size.x):
 		grid.append([])
 		for y in range(map_size.y):
@@ -123,6 +124,11 @@ func is_outside_map_bounds(point):
 func calculate_point_index(point): # point: Array or Vector2. it should be a cell coordinate
 	return point[0] + map_size[0] * point[1]
 	
+func get_x_from_index(index):
+	return index % int(map_size[0])
+
+func get_y_from_index(index):
+	return index / int(map_size[0])
 	
 func distance_between_points(cell_coord1: Array, cell_coord2: Array):
 	var path = astar_node.get_point_path(calculate_point_index(cell_coord1), calculate_point_index(cell_coord2))
@@ -131,7 +137,8 @@ func distance_between_points(cell_coord1: Array, cell_coord2: Array):
 func vector2toarray(vector):
 	return [vector.x, vector.y]
 
-func get_point_path(cell_coord1: Array, cell_coord2: Array):
+func get_point_path(cell_coord1: Array, cell_coord2: Array, do_linear_greed = false):
+	astar_node.do_line_greed = do_linear_greed
 	var path = astar_node.get_point_path(calculate_point_index(cell_coord1), calculate_point_index(cell_coord2))
 	return path
 	

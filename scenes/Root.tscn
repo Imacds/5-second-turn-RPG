@@ -82,6 +82,7 @@ script = ExtResource( 4 )
 script = ExtResource( 5 )
 
 [node name="TurnManager" type="Node2D" parent="."]
+editor/display_folded = true
 z_index = 1
 script = ExtResource( 6 )
 
@@ -138,7 +139,7 @@ script = ExtResource( 23 )
 
 [connection signal="selected_player_changed" from="SelectionManager" to="GeneralCamera/CombatUI" method="_on_SelectionManager_selected_player_changed"]
 [connection signal="begin_action_queues_execution" from="TurnManager" to="TurnManager/TurnTimer" method="_on_TurnManager_begin_action_queues_execution"]
-[connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TurnTimer" method="_on_TurnTimer_timeout"]
 [connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TimerLabel" method="_on_TurnTimer_timeout"]
+[connection signal="timeout" from="TurnManager/TurnTimer" to="TurnManager/TurnTimer" method="_on_TurnTimer_timeout"]
 [connection signal="timer_ended" from="TurnManager/TurnTimer" to="TurnManager" method="_on_TurnTimer_timer_ended"]
 [connection signal="all_action_queues_finished_executing" from="ActionQueueManager" to="TurnManager" method="_on_ActionQueueManager_all_action_queues_finished_executing"]

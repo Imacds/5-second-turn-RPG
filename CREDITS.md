@@ -13,8 +13,9 @@ Imported assets
  | https://opengameart.org/content/rodents-rat-rework | rat enemy | CC-BY 3.0 |
 | sprite | Assorted 32x32 Creatures | AndHeGames | https://opengameart.org/content/assorted-32x32-creatures | mug of fizz enemy, and others | CC0 |
 | sprite | Classical Temple Tiles | surt | https://opengameart.org/content/classical-temple-tiles | tile map (background) | CC-BY 4.0 |
+| sprite | Smoke & Fire Animated Particle [16x16] | KnoblePersona | https://opengameart.org/content/smoke-fire-animated-particle-16x16 | death smoke | CC-BY 3.0 |
+| sprite | LPC Grave Markers Rework | AntumDeluge, Casper Nilsson, Barbara Rivera, & ak-blanc | https://opengameart.org/content/lpc-grave-markers-rework | death grave | CC-BY-SA 3.0 |
 
-
-Developers and Designers:
+Developers and designers of the game:
 
 Jakub, Brandon, Val, Aiden, Nathan, James

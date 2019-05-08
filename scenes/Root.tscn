@@ -23,7 +23,7 @@
 [ext_resource path="res://game-objects/ActionQueueManager.tscn" type="PackedScene" id=21]
 [ext_resource path="res://audio/Curse of the Scarab.wav" type="AudioStream" id=22]
 
-[sub_resource type="TileSet" id=2]
+[sub_resource type="TileSet" id=1]
 0/name = "zone_to_attack.png 0"
 0/texture = ExtResource( 14 )
 0/tex_offset = Vector2( 0, 0 )
@@ -112,7 +112,7 @@ visible = false
 script = ExtResource( 13 )
 
 [node name="AttackMap" type="TileMap" parent="."]
-tile_set = SubResource( 2 )
+tile_set = SubResource( 1 )
 format = 1
 script = ExtResource( 17 )
 

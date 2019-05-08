@@ -97,6 +97,8 @@ func _change_command_mode(new_mode):
 
 func take_damage():
 	hp = hp - 1
+	if hp < 0:
+		die()
 
 func render_hp():
 	if hp >= 0:
@@ -104,13 +106,23 @@ func render_hp():
 		for i in range(0, hp):
 			$Label.text += "X "
 	else:
-		$Label.text = "DEAD"
+		$Label.text = ""
 
 func _process(delta):
 	render_hp()
 
 func _physics_process(delta):
 	_move()
+	
+func die():
+	$Sprite.visible = false
+	if $AnimatedSprite:
+		$AnimatedSprite.visible = false
+		
+	$CharDeathAnimation.play()
+	action_points = 0
+	action_points_per_turn = 0
+	
 
 func _move():
 	if _state != STATES.TURN and _state != STATES.IDLE: # if we're not waiting for the other player to make their move and we're not in "not moving" state waiting for command input

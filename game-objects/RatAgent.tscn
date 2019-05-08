@@ -23,9 +23,10 @@ position = Vector2( -0.605844, 0.829381 )
 scale = Vector2( 2.02463, 2.01066 )
 frames = SubResource( 1 )
 animation = "RatAnim"
-frame = 2
+frame = 1
 playing = true
 
 [node name="AISystem" type="Node" parent="."]
 script = ExtResource( 5 )
+hp = 0
 

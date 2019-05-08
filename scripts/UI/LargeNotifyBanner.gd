@@ -3,7 +3,6 @@ extends ColorRect
 var animation_name = "TurnChangeAnim"
 
 func play_animation(text):
-	print(get_children())
 	$TurnChangeLabel.set_text(text)
 	$AnimationPlayer.play(animation_name)
 

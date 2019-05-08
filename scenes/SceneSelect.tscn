@@ -40,19 +40,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 362.0
+margin_left = 400.0
 margin_top = 278.0
-margin_right = 662.0
+margin_right = 624.0
 margin_bottom = 322.0
 
 [node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer"]
-margin_right = 300.0
+margin_right = 224.0
 margin_bottom = 44.0
 
 [node name="GridContainer" type="GridContainer" parent="CenterContainer/VBoxContainer/CenterContainer"]
-margin_right = 300.0
+margin_right = 224.0
 margin_bottom = 44.0
-columns = 4
+columns = 3
 
 [node name="Level 1" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
 margin_right = 72.0
@@ -70,12 +70,6 @@ margin_left = 152.0
 margin_right = 224.0
 margin_bottom = 20.0
 text = "Tutorial 3"
-
-[node name="Level 4" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
-margin_left = 228.0
-margin_right = 300.0
-margin_bottom = 20.0
-text = "Tutorial 4"
 
 [node name="Level 5" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
 margin_top = 24.0
@@ -97,13 +91,6 @@ margin_right = 224.0
 margin_bottom = 44.0
 text = "Fight 3"
 
-[node name="Level 8" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/GridContainer"]
-margin_left = 228.0
-margin_top = 24.0
-margin_right = 300.0
-margin_bottom = 44.0
-text = "Fight 4"
-
 [node name="Ending_Anim" type="AnimationPlayer" parent="."]
 anims/fade = SubResource( 1 )
 
@@ -113,12 +100,11 @@ margin_top = 503.158
 margin_right = 939.316
 margin_bottom = 563.158
 text = "Back to Menu"
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 1" to="." method="_on_Continue_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 2" to="." method="_on_Continue_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 3" to="." method="_on_Continue_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 4" to="." method="_on_Continue_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 5" to="." method="_on_Continue_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 6" to="." method="_on_Continue_button_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 7" to="." method="_on_Continue_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/GridContainer/Level 8" to="." method="_on_Continue_button_pressed"]
 [connection signal="pressed" from="MainMenu_button" to="." method="_on_MainMenu_button_pressed"]

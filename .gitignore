@@ -3,6 +3,7 @@
 bin/
 deprecated/
 deprecate/
+*.orig
 
 
 # Godot-specific ignores

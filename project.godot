@@ -23,6 +23,7 @@ config/icon="res://icon.png"
 
 Utils="*res://scripts/globals/Utils.gd"
 ObjectFinder="*res://scripts/globals/ObjectFinder.gd"
+SceneManager="*res://scripts/globals/SceneManager.gd"
 
 [display]
 

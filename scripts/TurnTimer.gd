@@ -2,8 +2,8 @@ extends Timer
 
 signal timer_ended()
 
-export(float) var time_per_turn = 6
-var time_remaining = time_per_turn
+onready var scene_manager = get_node("/root/SceneManager")
+onready var time_remaining = scene_manager.turn_time
 onready var Finder = get_node("/root/ObjectFinder")
 onready var action_queue_manager = Finder.get_node_from_root("Root/ActionQueueManager")
 onready var game_end_manager = get_node("/root/Root/GameEndManager")
@@ -16,7 +16,7 @@ func _ready():
 	
 func reset_timer():
 	stop()
-	time_remaining = time_per_turn
+	time_remaining = scene_manager.turn_time
 	
 # override
 func start(time_sec = -1):

@@ -8,6 +8,7 @@ var map
 var agents_to_create # list of Agent info for creation and placement of agents
 var scene_name = "Tutorial 1"
 var dialog = null
+var turn_time = 6
 
 # can change the Map, add enemies, change init placement of agents,
 func load_scene(scene, load_the_scene = true):

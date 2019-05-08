@@ -6,9 +6,13 @@ export(float) var time_per_turn = 6
 var time_remaining = time_per_turn
 onready var Finder = get_node("/root/ObjectFinder")
 onready var action_queue_manager = Finder.get_node_from_root("Root/ActionQueueManager")
+onready var game_end_manager = get_node("/root/Root/GameEndManager")
+
+var game_over = false
 
 func _ready():
 	action_queue_manager.connect("all_action_queues_finished_executing", self, "_on_ActionQueueManager_all_action_queues_finished_executing")
+	game_end_manager.connect("game_over", self, "_on_GameEndManager_game_over")
 	
 func reset_timer():
 	stop()
@@ -16,6 +20,9 @@ func reset_timer():
 	
 # override
 func start(time_sec = -1):
+	if game_over:
+		return
+		
 	$"../LargeNotifyBanner2".play_animation("Turn Began")
 	.start(time_sec)
 	
@@ -37,3 +44,7 @@ func _unhandled_input(event):
 
 func _on_TurnManager_begin_action_queues_execution():
 	reset_timer()
+
+func _on_GameEndManager_game_over(state):
+	game_over = true
+	stop()

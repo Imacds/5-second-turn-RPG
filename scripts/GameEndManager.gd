@@ -17,7 +17,7 @@ func only_players_remain():
 		if agent.is_ai_agent() and not agent.is_dead():
 			return false
 		
-		return true
+	return true
 
 func wait(seconds, callback):
 	var timer = Timer.new()

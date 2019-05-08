@@ -15,6 +15,7 @@ Imported assets
 | sprite | Classical Temple Tiles | surt | https://opengameart.org/content/classical-temple-tiles | tile map (background) | CC-BY 4.0 |
 | sprite | Smoke & Fire Animated Particle [16x16] | KnoblePersona | https://opengameart.org/content/smoke-fire-animated-particle-16x16 | death smoke | CC-BY 3.0 |
 | sprite | LPC Grave Markers Rework | AntumDeluge, Casper Nilsson, Barbara Rivera, & ak-blanc | https://opengameart.org/content/lpc-grave-markers-rework | death grave | CC-BY-SA 3.0 |
+| sprite | Pyramid background | bart | https://opengameart.org/content/pyramid-background | main menu bg | CC-BY-SA 3.0 |
 | sfx | zapsplat_animal_rodent_squeak_single_001 | ZapSplat | https://www.zapsplat.com | rat_attack | CC-BY 3.0 |
 | sfx | zapsplat_animal_rodent_squeak_single_002 | ZapSplat | https://www.zapsplat.com | rat_damaged | CC-BY 3.0 |
 | sfx | zapsplat_animal_rodent_squeak_single_003 | ZapSplat | https://www.zapsplat.com | rat_death | CC-BY 3.0 |
@@ -27,6 +28,6 @@ Imported assets
 | sfx | zapsplat_animal_mouse_run_by_on_carpet | ZapSplat | https://www.zapsplat.com | rat_step | CC-BY 3.0 |
 | sfx | zapsplat_warfare_sword_swipe_hit_body_impact_hard_squelch_20829 | ZapSplat | https://www.zapsplat.com | generic_damaged | CC-BY 3.0 |
 
-Developers and Designers:
+Developers and designers of the game:
 
 Jakub, Brandon, Val, Aiden, Nathan, James

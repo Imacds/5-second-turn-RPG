@@ -8,7 +8,7 @@ func _ready():
 	pass
 
 func _on_StartButton_pressed():
-	get_tree().change_scene("res://game-objects/UI/Menu/SceneSelect.tscn")
+	get_tree().change_scene("res://scenes/SceneSelect.tscn")
 
 func _on_ExitButton_pressed():
 	get_tree().quit()

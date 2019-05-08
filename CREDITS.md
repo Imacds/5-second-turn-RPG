@@ -15,7 +15,7 @@ Imported assets
 | sprite | Classical Temple Tiles | surt | https://opengameart.org/content/classical-temple-tiles | tile map (background) | CC-BY 4.0 |
 | sprite | Smoke & Fire Animated Particle [16x16] | KnoblePersona | https://opengameart.org/content/smoke-fire-animated-particle-16x16 | death smoke | CC-BY 3.0 |
 | sprite | LPC Grave Markers Rework | AntumDeluge, Casper Nilsson, Barbara Rivera, & ak-blanc | https://opengameart.org/content/lpc-grave-markers-rework | death grave | CC-BY-SA 3.0 |
-
+| sprite | Pyramid background | bart | https://opengameart.org/content/pyramid-background | main menu bg | CC-BY-SA 3.0 |
 Developers and designers of the game:
 
 Jakub, Brandon, Val, Aiden, Nathan, James

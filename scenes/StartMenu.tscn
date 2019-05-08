@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/StartMenu.gd" type="Script" id=1]
-[ext_resource path="res://sprites/Start Menu Background.jpg" type="Texture" id=2]
-[ext_resource path="res://audio/Tempting Secrets.wav" type="AudioStream" id=3]
+[ext_resource path="res://sprites/backgrounds/pyramid.jpg" type="Texture" id=2]
+[ext_resource path="res://assets/fonts/lunchds_size_40.tres" type="DynamicFont" id=3]
+[ext_resource path="res://audio/Tempting Secrets.wav" type="AudioStream" id=4]
 
 [node name="StartMenu" type="Control"]
 anchor_right = 1.0
@@ -13,6 +14,7 @@ script = ExtResource( 1 )
 margin_right = 1024.0
 margin_bottom = 600.0
 texture = ExtResource( 2 )
+expand = true
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_left = 0.5
@@ -25,35 +27,46 @@ margin_right = 320.0
 margin_bottom = 180.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 272.0
-margin_top = 135.0
-margin_right = 367.0
-margin_bottom = 225.0
+margin_left = 159.0
+margin_top = 113.0
+margin_right = 481.0
+margin_bottom = 247.0
 
 [node name="TitleContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer"]
-editor/display_folded = true
-margin_right = 95.0
+margin_right = 322.0
+margin_bottom = 41.0
 
 [node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer/TitleContainer"]
-margin_right = 95.0
+margin_right = 322.0
+margin_bottom = 41.0
 
 [node name="TextureRect" type="TextureRect" parent="CenterContainer/VBoxContainer/TitleContainer/CenterContainer"]
-margin_left = 47.0
-margin_right = 47.0
+margin_left = 161.0
+margin_top = 20.0
+margin_right = 161.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/TitleContainer/CenterContainer"]
+margin_left = 23.0
+margin_right = 299.0
+margin_bottom = 41.0
+custom_fonts/font = ExtResource( 3 )
+text = "6 Second RPG"
 
 [node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer"]
-margin_top = 4.0
-margin_right = 95.0
-margin_bottom = 72.0
+margin_top = 45.0
+margin_right = 322.0
+margin_bottom = 89.0
 
 [node name="VButtonContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer/CenterContainer"]
-margin_left = 16.0
-margin_right = 79.0
-margin_bottom = 68.0
+margin_left = 140.0
+margin_right = 181.0
+margin_bottom = 44.0
 
 [node name="StartButton" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer"]
-margin_right = 63.0
+margin_right = 41.0
 margin_bottom = 20.0
+custom_fonts/font = ExtResource( 3 )
 text = "Start"
 
 [node name="Help" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer"]
@@ -61,30 +74,35 @@ visible = false
 margin_top = 24.0
 margin_right = 87.0
 margin_bottom = 44.0
+custom_fonts/font = ExtResource( 3 )
 text = "How to Play"
 
 [node name="Settings" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer"]
+visible = false
 margin_top = 24.0
 margin_right = 63.0
 margin_bottom = 44.0
+custom_fonts/font = ExtResource( 3 )
 text = "Settings"
 
 [node name="ExitButton" type="Button" parent="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer"]
-margin_top = 48.0
-margin_right = 63.0
-margin_bottom = 68.0
+margin_top = 24.0
+margin_right = 41.0
+margin_bottom = 44.0
+custom_fonts/font = ExtResource( 3 )
 text = "Exit"
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_top = 76.0
-margin_right = 95.0
-margin_bottom = 90.0
+margin_top = 93.0
+margin_right = 322.0
+margin_bottom = 134.0
+custom_fonts/font = ExtResource( 3 )
 text = "by Gridventure"
 align = 1
 
 [node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="."]
 position = Vector2( 514.427, 305.948 )
-stream = ExtResource( 3 )
+stream = ExtResource( 4 )
 autoplay = true
 
 [connection signal="pressed" from="CenterContainer/VBoxContainer/CenterContainer/VButtonContainer/StartButton" to="." method="_on_StartButton_pressed"]

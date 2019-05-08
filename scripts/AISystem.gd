@@ -14,6 +14,7 @@ var target_agent
 
 func _ready():
 	$"../Char/Sprite".visible = false
+	$"../Char/PlayerAnimatedSprite".visible = false
 	$"../Char/AnimatedSprite".flip_h = true
 	agent.hp = hp
 	

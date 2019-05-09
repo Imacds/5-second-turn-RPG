@@ -1,13 +1,13 @@
 [gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/CombatUI.gd" type="Script" id=1]
-[ext_resource path="res://assets/fonts/lunchds_size_28.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/fonts/lunchds_size_28.tres" type="DynamicFont" id=2]
 [ext_resource path="res://scripts/UI/UndoTurnButton.gd" type="Script" id=3]
 [ext_resource path="res://scripts/UI/SlashAttackButton.gd" type="Script" id=4]
 [ext_resource path="res://scripts/UI/SwingAttackButton.gd" type="Script" id=5]
 [ext_resource path="res://scripts/UI/LungeAttackButton.gd" type="Script" id=6]
 [ext_resource path="res://scripts/UI/TurnButton.gd" type="Script" id=7]
-[ext_resource path="res://assets/fonts/lunchds_size_40.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Assets/fonts/lunchds_size_40.tres" type="DynamicFont" id=8]
 [ext_resource path="res://scripts/UI/CommandSelectedLabel.gd" type="Script" id=9]
 [ext_resource path="res://Assets/fonts/lunchds_size_20.tres" type="DynamicFont" id=10]
 [ext_resource path="res://scripts/UI/QueueListLabel.gd" type="Script" id=11]
@@ -98,7 +98,6 @@ text = "Move"
 script = ExtResource( 9 )
 
 [node name="QueueListRect" type="ColorRect" parent="."]
-editor/display_folded = true
 modulate = Color( 1, 1, 1, 0.588235 )
 margin_left = 15.0
 margin_top = 349.0
